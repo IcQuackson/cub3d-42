@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:31:02 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/10 19:21:53 by quackson         ###   ########.fr       */
+/*   Updated: 2023/07/10 20:40:57 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-typedef struct	s_data {
+# define MAX_LINE_LENGTH 1000
+
+typedef struct	s_data
+{
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -28,7 +31,28 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
+void read_map(char *mapfile)
+{
+	char buffer[MAX_LINE_LENGTH + 1];
+	ssize_t bytes_read;
+	int fd;
 
+	fd = open(mapfile, O_RDONLY);
+	if (fd == -1)
+	{
+		perror("Error opening map file");
+		return;
+	}
+	while ((bytes_read = read(fd, buffer, MAX_LINE_LENGTH)) > 0)
+	{
+		buffer[bytes_read] = '\0';
+		printf("%s", buffer);
+	}
+	if (bytes_read == -1)
+		perror("Error reading map file");
+	if (close(fd) == -1)
+		perror("Error closing map file");
+}
 
 int	main(void)
 {
@@ -44,5 +68,8 @@ int	main(void)
 								&img.endian);
 	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+
+	read_map("maps/test.cub");
+
 	mlx_loop(mlx);
 }

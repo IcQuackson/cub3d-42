@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/10 18:21:44 by quackson         ###   ########.fr       */
+/*   Updated: 2023/07/10 20:38:20 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,7 @@
 # include "mlx_int.h"
 # include "libft.h"
 # include <stdio.h>
+# include <fcntl.h>
+# include <unistd.h>
 
 #endif
