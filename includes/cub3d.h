@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/10 22:59:20 by quackson         ###   ########.fr       */
+/*   Updated: 2023/07/10 23:58:38 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,22 @@ typedef struct s_cub3d
 
 }	t_cub3d;
 
+typedef struct s_map {
+    char **grid;
+    int width;
+    int height;
+    int player_x;
+    int player_y;
+    char player_orientation;
+} t_map;
+
+
 int		is_valid_char(char c);
 int		is_map_closed(char *map);
 int		read_map(char *mapfile);
 void	register_hooks(t_cub3d *game_data);
 void	free_resources(t_cub3d *game_data);
 int		handle_closewindow(t_cub3d *game_data);
-
+char	*get_next_line(int fd);
 
 #endif

@@ -18,74 +18,146 @@ int	is_valid_char(char c)
 		|| c == 'E' || c == 'W' || c == ' ' || c == '\n');
 }
 
-int	is_map_closed(char *map)
+int is_map_closed(char *mapfile)
 {
-	size_t	i;
-	size_t	j;
+	int fd = open(mapfile, O_RDONLY);
+	char *line;
+	int first_line = 1;
+	int last_line = 0;
 
-	i = 0;
-	j = ft_strlen(map) - 1;
-	while (map[i] != '\n')
-	{
-		if (map[i] != '1')
-			return (0);
-		i++;
-	}
-	while (map[j] != '\n')
-	{
-		if (map[j--] != '1')
-			return (0);
-	}
-	i = -1;
-	while (++i < ft_strlen(map))
-	{
-		if (map[i] == '\n' && (map[i - 1] != '1' || (i + 1 < ft_strlen(map)
-					&& map[i + 1] != '1')))
-			return (0);
-	}
-	return (1);
-}
-
-
-int	read_map(char *mapfile)
-{
-	int		fd;
-	char	buffer[MAX_LINE_LENGTH + 1];
-	ssize_t	bytes_read;
-	int		i;
-
-	i = 0;
-	fd = open(mapfile, O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Error opening map file");
 		return (0);
 	}
-	bytes_read = read(fd, buffer, MAX_LINE_LENGTH);
-	while (bytes_read > 0)
+	line = get_next_line(fd);
+	while (line)
 	{
-		buffer[bytes_read] = '\0';
-		printf("bytes_read: %ld\n", bytes_read);
-		while (i < bytes_read)
+		if (line[0] != '1' || line[strlen(line) - 1] != '1')
 		{
-			printf("buffer[%d]: %c\n", i, buffer[i]);
-			if (!is_valid_char(buffer[i]))
-			{
-				printf("Invalid character in map: %c\n", buffer[i]);
-				return (0);
-			}
-			i++;
+			printf("Error: Map is not closed\n");
+			free(line);
+			return (0);
 		}
-		printf("%s", buffer);
-		bytes_read = read(fd, buffer, MAX_LINE_LENGTH);
+		if (first_line || last_line)
+		{
+			for (int i = 0; line[i]; i++)
+			{
+				if (line[i] != '1')
+				{
+					free(line);
+					return (0);
+				}
+			}
+		}
+		first_line = 0;
+		free(line);
+		line = get_next_line(fd);
+		if (!line)
+			last_line = 1;
 	}
-	if (bytes_read == -1)
-		perror("Error reading map file");
-	if (!is_map_closed(buffer))
-	{
-		printf("Map is not closed\n");
-		return (0);
-	}
+	free(line);
 	close(fd);
 	return (1);
+}
+
+void get_x_and_y(t_map *map, char *filename)
+{
+    char *line;
+    int fd;
+    int oldx, x = 0;
+    int y = 0;
+
+    fd = open(filename, O_RDONLY);
+    if (fd == -1)
+	{
+        perror("Error opening map file");
+        exit(1);
+    }
+
+    line = get_next_line(fd);
+    while (line)
+	{
+		printf("line: %s\n", line);
+        oldx = x;
+        x = ft_strlen(line);
+        if (x != oldx && y > 0)
+		{
+            printf("Map is not rectangular\n");
+            free(line);
+            exit(1);
+        }
+        free(line);
+        line = get_next_line(fd);
+        y++;
+    }
+    free(line);
+    close(fd);
+    if (y == 0 || x == 0)
+	{
+        printf("Map is not correct or not well formatted\n");
+        exit(1);
+    }
+    map->width = x;
+    map->height = y;
+}
+
+void store_map(t_map *map, char *filename)
+{
+    char *line;
+    int fd;
+    int i, j;
+
+    fd = open(filename, O_RDONLY);
+    if (fd == -1)
+	{
+        perror("Error opening map file");
+        exit(1);
+    }
+
+    map->grid = malloc(sizeof(char *) * map->height);
+    i = 0;
+    while (i < map->height)
+    {
+        map->grid[i] = malloc(sizeof(char) * (map->width + 1));
+        i++;
+    }
+    i = 0;
+    line = get_next_line(fd);
+    while (line)
+	{
+        j = 0;
+        while (j < map->width)
+        {
+            map->grid[i][j] = line[j];
+            if (line[j] == 'N' || line[j] == 'S' || line[j] == 'E' || line[j] == 'W')
+			{
+                map->player_x = j;
+                map->player_y = i;
+                map->player_orientation = line[j];
+            }
+            j++;
+        }
+        map->grid[i][j] = '\0';
+        free(line);
+        line = get_next_line(fd);
+        i++;
+    }
+    free(line);
+    close(fd);
+}
+
+
+int read_map(char *mapfile)
+{
+    t_map map;
+
+    get_x_and_y(&map, mapfile);
+    store_map(&map, mapfile);
+    if (!is_map_closed(mapfile))
+	{
+        printf("Map is not closed\n");
+        return 0;
+    }
+    return 1;
 }
