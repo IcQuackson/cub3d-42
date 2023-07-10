@@ -6,13 +6,14 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/10 22:43:22 by quackson         ###   ########.fr       */
+/*   Updated: 2023/07/10 22:59:20 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# define MAX_LINE_LENGTH 1000
 # define WIDTH 640
 # define HEIGHT 480
 # define TILE_SIZE 30

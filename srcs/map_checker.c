@@ -11,17 +11,17 @@
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-# define MAX_LINE_LENGTH 1000
 
-int is_valid_char(char c)
+int	is_valid_char(char c)
 {
-    return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == ' ' || c == '\n');
+	return (c == '0' || c == '1' || c == 'N' || c == 'S'
+		|| c == 'E' || c == 'W' || c == ' ' || c == '\n');
 }
 
-int is_map_closed(char *map)
+int	is_map_closed(char *map)
 {
-	size_t i;
-	size_t j;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	j = ft_strlen(map) - 1;
@@ -33,38 +33,36 @@ int is_map_closed(char *map)
 	}
 	while (map[j] != '\n')
 	{
-		if (map[j] != '1')
+		if (map[j--] != '1')
 			return (0);
-		j--;
 	}
-	i = 0;
-	while (i < ft_strlen(map))
+	i = -1;
+	while (++i < ft_strlen(map))
 	{
-		if (map[i] == '\n')
-		{
-			if (map[i - 1] != '1' || (i + 1 < ft_strlen(map) && map[i + 1] != '1'))
-				return 0;
-		}
-		i++;
+		if (map[i] == '\n' && (map[i - 1] != '1' || (i + 1 < ft_strlen(map)
+					&& map[i + 1] != '1')))
+			return (0);
 	}
 	return (1);
 }
 
 
-int read_map(char *mapfile)
+int	read_map(char *mapfile)
 {
-    int fd = open(mapfile, O_RDONLY);
-    char buffer[MAX_LINE_LENGTH + 1];
-    ssize_t bytes_read;
-    int i;
+	int		fd;
+	char	buffer[MAX_LINE_LENGTH + 1];
+	ssize_t	bytes_read;
+	int		i;
 
 	i = 0;
-    if (fd == -1)
+	fd = open(mapfile, O_RDONLY);
+	if (fd == -1)
 	{
-        perror("Error opening map file");
-        return (0);
-    }
-	while ((bytes_read = read(fd, buffer, MAX_LINE_LENGTH)) > 0)
+		perror("Error opening map file");
+		return (0);
+	}
+	bytes_read = read(fd, buffer, MAX_LINE_LENGTH);
+	while (bytes_read > 0)
 	{
 		buffer[bytes_read] = '\0';
 		printf("bytes_read: %ld\n", bytes_read);
@@ -79,14 +77,15 @@ int read_map(char *mapfile)
 			i++;
 		}
 		printf("%s", buffer);
+		bytes_read = read(fd, buffer, MAX_LINE_LENGTH);
 	}
-    if (bytes_read == -1)
-        perror("Error reading map file");
-    if (!is_map_closed(buffer))
+	if (bytes_read == -1)
+		perror("Error reading map file");
+	if (!is_map_closed(buffer))
 	{
-        printf("Map is not closed\n");
-        return (0);
-    }
-    close(fd);
+		printf("Map is not closed\n");
+		return (0);
+	}
+	close(fd);
 	return (1);
 }
