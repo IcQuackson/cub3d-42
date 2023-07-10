@@ -1,4 +1,4 @@
-SRC	= srcs/main.c srcs/map_checker.c srcs/hooks.c gnl/get_next_line.c
+SRC	= srcs/main.c srcs/map_checker.c srcs/hooks.c srcs/store_map.c gnl/get_next_line.c
 BIN	= bin
 DEBUGBIN = dbin
 INCS	= includes/

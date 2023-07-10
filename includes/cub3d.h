@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/10 23:58:38 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/11 00:49:00 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,13 @@ void	register_hooks(t_cub3d *game_data);
 void	free_resources(t_cub3d *game_data);
 int		handle_closewindow(t_cub3d *game_data);
 char	*get_next_line(int fd);
-
+int		is_first_or_last_line_wall(char *line);
+int		is_line_wall(char *line);
+int		is_map_closed(char *mapfile);
+int		is_valid_char(char c);
+int		read_map(char *mapfile);
+void	get_x_and_y(t_map *map, char *filename);
+void	store_map(t_map *map, char *filename);
+void check_map_dimensions(int x, int oldx, int y);
+void check_map_validity(int x, int y);
 #endif
