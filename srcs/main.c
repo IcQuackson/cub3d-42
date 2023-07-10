@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:31:02 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/10 20:40:57 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/10 21:01:39 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,29 +31,6 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void read_map(char *mapfile)
-{
-	char buffer[MAX_LINE_LENGTH + 1];
-	ssize_t bytes_read;
-	int fd;
-
-	fd = open(mapfile, O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Error opening map file");
-		return;
-	}
-	while ((bytes_read = read(fd, buffer, MAX_LINE_LENGTH)) > 0)
-	{
-		buffer[bytes_read] = '\0';
-		printf("%s", buffer);
-	}
-	if (bytes_read == -1)
-		perror("Error reading map file");
-	if (close(fd) == -1)
-		perror("Error closing map file");
-}
-
 int	main(void)
 {
 	void	*mlx;
@@ -61,6 +38,12 @@ int	main(void)
 	t_data	img;
 
 	printf("%d\n", ft_isalpha('a'));
+	
+	if(!read_map("maps/test.cub"))
+	{
+		printf("Map is invalid\n");
+		return (0);		
+	}
 	mlx = mlx_init();
 	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
 	img.img = mlx_new_image(mlx, 1920, 1080);
@@ -69,7 +52,6 @@ int	main(void)
 	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 
-	read_map("maps/test.cub");
 
 	mlx_loop(mlx);
 }

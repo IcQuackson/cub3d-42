@@ -1,4 +1,4 @@
-SRC	= srcs/main.c
+SRC	= srcs/main.c srcs/map.c
 BIN	= bin
 DEBUGBIN = dbin
 INCS	= includes/
