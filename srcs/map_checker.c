@@ -75,14 +75,14 @@ int is_map_closed(char *mapfile)
 
 int read_map(char *mapfile)
 {
-    t_map map;
+	t_map map;
 
-    get_x_and_y(&map, mapfile);
-    store_map(&map, mapfile);
-    if (!is_map_closed(mapfile))
+	get_x_and_y(&map, mapfile);
+	store_map(&map, mapfile);
+	if (!is_map_closed(mapfile))
 	{
-        printf("Map is not closed\n");
-        return 0;
-    }
-    return 1;
+		printf("Map is not closed\n");
+		return (0);
+	}
+	return (1);
 }
