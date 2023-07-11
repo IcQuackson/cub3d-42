@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/11 00:49:00 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/11 11:20:25 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,36 @@
 # include <fcntl.h>
 # include <unistd.h>
 
+typedef struct s_map {
+	char	**grid;
+	int		width;
+	int		height;
+	int		player_x;
+	int		player_y;
+	char	player_orientation;
+}	t_map;
+
+typedef struct s_scene {
+	int		num_lines;
+	char	**lines;
+	char	*north_texture_path;
+	char	*south_texture_path;
+	char	*west_texture_path;
+	char	*east_texture_path;
+	t_map	*map;
+}	t_scene;
+
 typedef struct s_cub3d
 {
 	void	*mlx;
 	void	*mlx_win;
 	char	**map;
-	char	*north_texture_path;
-	char	*south_texture_path;
-	char	*west_texture_path;
-	char	*east_texture_path;
+	t_scene	*scene;
+	t_map	*map_data;
 
 }	t_cub3d;
 
-typedef struct s_map {
-    char **grid;
-    int width;
-    int height;
-    int player_x;
-    int player_y;
-    char player_orientation;
-} t_map;
+
 
 
 int		is_valid_char(char c);
@@ -65,6 +75,8 @@ int		is_valid_char(char c);
 int		read_map(char *mapfile);
 void	get_x_and_y(t_map *map, char *filename);
 void	store_map(t_map *map, char *filename);
-void check_map_dimensions(int x, int oldx, int y);
-void check_map_validity(int x, int y);
+void	check_map_dimensions(int x, int oldx, int y);
+void	check_map_validity(int x, int y);
+int		get_textures(t_cub3d *game_data, char *map_file);
+t_cub3d	*init_data(void);
 #endif

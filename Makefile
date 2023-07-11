@@ -1,4 +1,4 @@
-SRC	= srcs/main.c srcs/map_checker.c srcs/hooks.c srcs/store_map.c gnl/get_next_line.c
+SRC	= srcs/main.c srcs/map_checker.c srcs/hooks.c srcs/store_map.c srcs/map_utils.c srcs/textures_parser.c gnl/get_next_line.c
 BIN	= bin
 DEBUGBIN = dbin
 INCS	= includes/
@@ -30,7 +30,7 @@ endif
 all: ${NAME}
 
 ${NAME}: ${BIN} ${OBJS} | ${LIBFT}
-	${CC} -o ${NAME} ${OBJS} ${LFLAGS} -fsanitize=address
+	${CC} -o ${NAME} ${OBJS} ${LFLAGS}
 
 debug: ${DNAME}
 
@@ -62,8 +62,14 @@ fclean: clean
 run: all
 	 ./$(NAME)
 
+gdb:	all
+		gdb $(NAME)
+
+valgrind: 	all
+			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
+
 ${LIBFT}:
-	@make all -C ${LIBFT} --no-print-directory	
+	@make all -C ${LIBFT} --no-print-directory
 
 re: fclean all
 
