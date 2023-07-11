@@ -5,6 +5,8 @@ void	free_char_doub_ptr(char **pointer)
 {
 	int	i;
 
+	if (!pointer)
+		return ;
 	i = 0;
 	while (pointer[i])
 	{
@@ -32,6 +34,12 @@ t_cub3d	*init_data(void)
 	game_data->scene->west_texture_path = NULL;
 	game_data->scene->east_texture_path = NULL;
 	game_data->scene->lines = NULL;
+	game_data->scene->ceil_rgb[0] = -1;
+	game_data->scene->ceil_rgb[1] = -1;
+	game_data->scene->ceil_rgb[2] = -1;
+	game_data->scene->floor_rgb[0] = -1;
+	game_data->scene->floor_rgb[1] = -1;
+	game_data->scene->floor_rgb[2] = -1;
 	game_data->map = NULL;
 	game_data->mlx_win = NULL;
 	return (game_data);
@@ -66,7 +74,7 @@ int	get_num_lines(char *map_file)
 	line = get_next_line(fd);
 	while (line)
 	{
-		printf("%s\n", line);
+		//printf("%s\n", line);
 		num_lines++;
 		free(line);
 		line = get_next_line(fd);
@@ -120,43 +128,104 @@ int	textures_are_loaded(t_cub3d *game_data)
 
 	scene = game_data->scene;
 	if (!scene->north_texture_path || !scene->south_texture_path
-		|| !scene->west_texture_path || !scene->east_texture_path)
+		|| !scene->west_texture_path || !scene->east_texture_path
+		|| scene->ceil_rgb[0] == -1 || scene->ceil_rgb[1] == -1
+		|| scene->ceil_rgb[2] == -1 || scene->floor_rgb[0] == -1
+		|| scene->floor_rgb[1] == -1 || scene->floor_rgb[2] == -1)
 		return (0);
 	return (1);
 }
 
-int	parse_textures(t_cub3d *game_data, char **lines)
+int	parse_textures(t_cub3d *game_data, char *line)
 {
 	char	**split_line;
-	int		i;
+	int		result;
 
-	i = -1;
-	while (lines[++i])
+	split_line = ft_split(line, ' ');
+	if (!split_line || get_split_len(split_line) != 2)
 	{
-		if (lines[i][0] == '\0')
-			continue ;
-		split_line = ft_split(lines[i], ' ');
-		if (!split_line || get_split_len(split_line) != 2)
-			return (-1);
-		if (ft_strcmp(split_line[0], "NO") == 0)
-			game_data->scene->north_texture_path = ft_strdup(split_line[1]);
-		else if (ft_strcmp(split_line[0], "SO") == 0)
-			game_data->scene->south_texture_path = ft_strdup(split_line[1]);
-		else if (ft_strcmp(split_line[0], "WE") == 0)
-			game_data->scene->west_texture_path = ft_strdup(split_line[1]);
-		else if (ft_strcmp(split_line[0], "EA") == 0)
-			game_data->scene->east_texture_path = ft_strdup(split_line[1]);
-		else if ((free(lines[i]), 1) && (free_char_doub_ptr(split_line), 1))
-			return (-1);
-		free(lines[i]);
 		free_char_doub_ptr(split_line);
-		if (textures_are_loaded(game_data))
-			return (1);
+		return (0);
 	}
-	return (i);
+	result = 1;
+	if (ft_strcmp(split_line[0], "NO") == 0)
+		game_data->scene->north_texture_path = ft_strdup(split_line[1]);
+	else if (ft_strcmp(split_line[0], "SO") == 0)
+		game_data->scene->south_texture_path = ft_strdup(split_line[1]);
+	else if (ft_strcmp(split_line[0], "WE") == 0)
+		game_data->scene->west_texture_path = ft_strdup(split_line[1]);
+	else if (ft_strcmp(split_line[0], "EA") == 0)
+		game_data->scene->east_texture_path = ft_strdup(split_line[1]);
+	else
+		result = 0;
+	free_char_doub_ptr(split_line);
+	return (result);
 }
 
+int	ft_isdigit_str(char *str)
+{
+	int	i;
 
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	parse_rgb_aux(t_cub3d *game_data, char *rgb, char asset)
+{
+	char	**split_line;
+	int		result;
+	int		i;
+
+	split_line = ft_split(rgb, ',');
+	if (!split_line || get_split_len(split_line) != 3)
+	{
+		free_char_doub_ptr(split_line);
+		return ;
+	}
+	i = -1;
+	while (split_line[++i])
+	{
+		if (!ft_isdigit_str(split_line[i]))
+			break ;
+		result = ft_atoi(split_line[i]);
+		if (result >= 0 && result <= 255)
+		{
+			if (asset == 'F')
+				game_data->scene->floor_rgb[i] = result;
+			else
+				game_data->scene->ceil_rgb[i] = result;
+		}
+	}
+	free_char_doub_ptr(split_line);
+}
+
+int	parse_rgb(t_cub3d *game_data, char *line)
+{
+	char	**split_line;
+	int		result;
+
+	split_line = ft_split(line, ' ');
+	if (!split_line || get_split_len(split_line) != 2)
+	{
+		free_char_doub_ptr(split_line);
+		return (0);
+	}
+	result = 1;
+	if (ft_strcmp(split_line[0], "F") == 0)
+		parse_rgb_aux(game_data, split_line[1], 'F');
+	else if (ft_strcmp(split_line[0], "C") == 0)
+		parse_rgb_aux(game_data, split_line[1], 'C');
+	else
+		result = 0;
+	free_char_doub_ptr(split_line);
+	return (result);
+}
 
 int	get_scene_data(t_cub3d *game_data, char *map_file)
 {
@@ -170,12 +239,28 @@ int	get_scene_data(t_cub3d *game_data, char *map_file)
 	scene->lines = get_lines(game_data, map_file);
 	if (!scene->lines)
 		return (0);
-	i = parse_textures(game_data, scene->lines);
-	if (i <= 0 || i == scene->num_lines)
-		return (0);
+	i = 0;
+	while (scene->lines[++i])
+	{
+		printf("%s\n", scene->lines[i]);
+		if (scene->lines[i][0] == '\0')
+			continue ;
+		if (!(parse_textures(game_data, scene->lines[i]) || parse_rgb(game_data, scene->lines[i])))
+			return (0);
+		if (textures_are_loaded(game_data))
+			break ;
+	}
 	printf("%s\n", scene->north_texture_path);
 	printf("%s\n", scene->south_texture_path);
 	printf("%s\n", scene->west_texture_path);
 	printf("%s\n", scene->east_texture_path);
+	printf("%d\n", scene->floor_rgb[0]);
+	printf("%d\n", scene->floor_rgb[1]);
+	printf("%d\n", scene->floor_rgb[2]);
+	printf("%d\n", scene->ceil_rgb[0]);
+	printf("%d\n", scene->ceil_rgb[1]);
+	printf("%d\n", scene->ceil_rgb[2]);
+	if (!textures_are_loaded(game_data))
+		return (0);
 	return (1);
 }
