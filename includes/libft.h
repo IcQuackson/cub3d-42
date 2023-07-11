@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 14:12:33 by pedgonca          #+#    #+#             */
-/*   Updated: 2022/10/31 13:32:39 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/07/11 12:17:21 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ char			*ft_strchr(const char *str, int c);
 char			*ft_strrchr(const char *str, int c);
 
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
+
+int				ft_strcmp(const char *s1, const char *s2);
 
 void			*ft_memchr(const void *str, int c, size_t n);
 

@@ -3,7 +3,7 @@ NAME = libft.a
 
 SRC = ft_memset ft_bzero ft_memcpy ft_memmove ft_memchr\
 ft_memcmp ft_strlen ft_strchr ft_strrchr ft_atoi ft_strlcpy\
-ft_strnstr ft_strncmp ft_isalpha ft_isdigit ft_isalnum\
+ft_strnstr ft_strncmp ft_strcmp ft_isalpha ft_isdigit ft_isalnum\
 ft_isascii ft_isprint ft_toupper ft_tolower ft_strlcat\
 ft_calloc ft_strdup ft_strjoin ft_strtrim ft_substr\
 ft_split ft_itoa ft_strmapi ft_striteri ft_putchar_fd\
@@ -14,7 +14,7 @@ ft_lstdelone ft_lstclear ft_lstiter ft_lstmap\
 
 CC = gcc
 RM = rm -f
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 AR	= ar rcs
 
 OBJSF		=	.cache_exists

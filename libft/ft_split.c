@@ -12,87 +12,45 @@
 
 #include "../includes/libft.h"
 
-static int	*ft_calloc_int(int nelem)
+static int	count_words(char const *s, char c)
 {
-	int		*arr;
-	int		i;
+	int	count;
+	int	i;
 
-	arr = malloc(nelem * sizeof(int));
-	if (arr == NULL)
-		return (NULL);
 	i = 0;
-	while (i < nelem)
-		arr[i++] = 0;
-	return (arr);
-}
-
-static int	*get_word_count(int *word_count, char const *s, char c)
-{
-	int			*words_sizes;
-	int			can_count;
-	int			i;
-
-	can_count = 1;
-	i = 0;
-	words_sizes = ft_calloc_int(ft_strlen(s));
-	while (words_sizes != NULL && *s)
+	count = 0;
+	while (s[i])
 	{
-		if (*s != c && can_count)
-		{
-			*word_count = *word_count + 1;
-			can_count = 0;
-		}
-		else if (*s == c && !can_count)
-		{
-			can_count = 1;
-			i++;
-		}
-		if (*s != c)
-			words_sizes[i]++;
-		s++;
+		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
+			count++;
+		i++;
 	}
-	return (words_sizes);
-}
-
-static char	**fill_words(char **split, int *words_sizes, char const *s, char c)
-{
-	int			i;
-	int			can_count;
-
-	i = 0;
-	can_count = 1;
-	while (split != NULL && *s)
-	{
-		if (*s != c && can_count)
-		{
-			split[i] = malloc((words_sizes[i] + 1) * sizeof(char));
-			if (split[i] == NULL)
-				return (NULL);
-			ft_memcpy(split[i], s, words_sizes[i]);
-			split[i][words_sizes[i]] = '\0';
-			i++;
-			can_count = 0;
-		}
-		else if (*s == c && !can_count)
-			can_count = 1;
-		s++;
-	}
-	split[i] = NULL;
-	return (split);
+	return (count);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char		**split;
-	int			*words_sizes;
-	int			word_count;
+	size_t	i;
+	size_t	j;
+	size_t	start;
+	size_t	count;
+	char	**split;
 
-	word_count = 0;
-	words_sizes = get_word_count(&word_count, s, c);
-	split = malloc((word_count + 1) * sizeof(char *));
-	if (split == NULL)
-		return (NULL);
-	fill_words(split, words_sizes, s, c);
-	free(words_sizes);
+	count = count_words((char *)s, c);
+	split = malloc(sizeof(char *) * (count + 1));
+	if (!s || !(split))
+		return (0);
+	i = 0;
+	j = 0;
+	while (s[i] && j < count)
+	{
+		while (s[i] == c && s[i])
+			i++;
+		start = i;
+		while (s[i] != c && s[i])
+			i++;
+		split[j++] = ft_substr(s, start, i - start);
+	}
+	split[count] = 0;
 	return (split);
 }

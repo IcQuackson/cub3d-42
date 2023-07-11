@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/11 11:20:25 by quackson         ###   ########.fr       */
+/*   Updated: 2023/07/11 12:49:03 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ typedef struct s_scene {
 	char	*south_texture_path;
 	char	*west_texture_path;
 	char	*east_texture_path;
+	int		ceil_rgb[3];
+	int		floor_rgb[3];
 	t_map	*map;
 }	t_scene;
 
@@ -77,6 +79,6 @@ void	get_x_and_y(t_map *map, char *filename);
 void	store_map(t_map *map, char *filename);
 void	check_map_dimensions(int x, int oldx, int y);
 void	check_map_validity(int x, int y);
-int		get_textures(t_cub3d *game_data, char *map_file);
+int		get_scene_data(t_cub3d *game_data, char *map_file);
 t_cub3d	*init_data(void);
 #endif
