@@ -114,6 +114,17 @@ int	get_split_len(char **split)
 	return (i);
 }
 
+int	textures_are_loaded(t_cub3d *game_data)
+{
+	t_scene	*scene;
+
+	scene = game_data->scene;
+	if (!scene->north_texture_path || !scene->south_texture_path
+		|| !scene->west_texture_path || !scene->east_texture_path)
+		return (0);
+	return (1);
+}
+
 int	parse_textures(t_cub3d *game_data, char **lines)
 {
 	char	**split_line;
@@ -145,16 +156,7 @@ int	parse_textures(t_cub3d *game_data, char **lines)
 	return (i);
 }
 
-int	textures_are_loaded(t_cub3d *game_data)
-{
-	t_scene	*scene;
 
-	scene = game_data->scene;
-	if (!scene->north_texture_path || !scene->south_texture_path
-		|| !scene->west_texture_path || !scene->east_texture_path)
-		return (0);
-	return (1);
-}
 
 int	get_scene_data(t_cub3d *game_data, char *map_file)
 {
@@ -169,7 +171,7 @@ int	get_scene_data(t_cub3d *game_data, char *map_file)
 	if (!scene->lines)
 		return (0);
 	i = parse_textures(game_data, scene->lines);
-	if (i <= 0 || !textures_are_loaded(game_data))
+	if (i <= 0 || i == scene->num_lines)
 		return (0);
 	printf("%s\n", scene->north_texture_path);
 	printf("%s\n", scene->south_texture_path);
