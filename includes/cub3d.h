@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/11 12:49:03 by quackson         ###   ########.fr       */
+/*   Updated: 2023/07/11 18:07:25 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,19 @@
 # include <fcntl.h>
 # include <unistd.h>
 
-typedef struct s_map {
+typedef struct s_map
+{
 	char	**grid;
 	int		width;
+	int 	line_count;
 	int		height;
 	int		player_x;
 	int		player_y;
 	char	player_orientation;
 }	t_map;
 
-typedef struct s_scene {
+typedef struct s_scene
+{
 	int		num_lines;
 	char	**lines;
 	char	*north_texture_path;
@@ -56,7 +59,7 @@ typedef struct s_cub3d
 	void	*mlx_win;
 	char	**map;
 	t_scene	*scene;
-	t_map	*map_data;
+	t_map	*map;
 
 }	t_cub3d;
 
@@ -70,8 +73,8 @@ void	register_hooks(t_cub3d *game_data);
 void	free_resources(t_cub3d *game_data);
 int		handle_closewindow(t_cub3d *game_data);
 char	*get_next_line(int fd);
-int		is_first_or_last_line_wall(char *line);
 int		is_line_wall(char *line);
+int		is_line_closed(char *line);
 int		is_map_closed(char *mapfile);
 int		is_valid_char(char c);
 int		read_map(char *mapfile);
