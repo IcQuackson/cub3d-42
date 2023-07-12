@@ -1,5 +1,17 @@
 #include "../includes/cub3d.h"
 
+int check_folder(char *av)
+{
+	int i;
+
+	i = 0;
+	while (av[i] != '\0')
+		i++;
+	if (av[i - 1] == '/' || av[i - 1] == '.')
+		return (1);
+	return (0);
+}
+
 int check_cub(char *av)
 {
 	int i;
@@ -28,7 +40,7 @@ int	check_file(char *av, int flag)
 {
 	int	fd;
 
-	if (is_dir(av))
+	if (check_folder(av))
 		return (0);
 	fd = open(av, O_RDONLY);
 	if (fd == -1)
