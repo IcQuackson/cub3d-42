@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/11 22:56:31 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/12 18:47:37 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,31 +57,27 @@ typedef struct s_cub3d
 {
 	void	*mlx;
 	void	*mlx_win;
-	//char	**map;
+	char	**map;
 	t_scene	*scene;
-	t_map	*map;
+	t_map	*map_data;
 }	t_cub3d;
 
 
+/*				Check Map				*/
+int		check_file(char *av, int flag);
+int 	check_xpm(char *av);
+int 	check_cub(char *av);
+int 	check_folder(char *av);
+void	parse_av(t_cub3d *cubed, char **av);
 
-
-int		is_valid_char(char c);
-int		is_map_closed(char *map);
-int		read_map(char *mapfile);
 void	register_hooks(t_cub3d *game_data);
+int		get_split_len(char **split);
+void	free_char_doub_ptr(char **pointer);
 void	free_resources(t_cub3d *game_data);
 int		handle_closewindow(t_cub3d *game_data);
 char	*get_next_line(int fd);
-int		is_line_wall(char *line);
-int		is_line_closed(char *line);
-int		is_map_closed(char *mapfile);
-int		is_valid_char(char c);
-int		read_map(char *mapfile);
-void	get_x_and_y(t_map *map, char *filename);
-void	store_map(t_map *map, char *filename);
 void	check_map_dimensions(int x, int oldx, int y);
 void	check_map_validity(int x, int y);
 int		get_scene_data(t_cub3d *game_data, char *map_file);
 t_cub3d	*init_data(void);
-void parse_av(t_cub3d *cubed, char *path);
 #endif

@@ -45,10 +45,6 @@ void	free_char_doub_ptr(char **pointer)
 	free(pointer);
 }
 
-t_cub3d *init_window(void)
-{
-	
-}
 
 t_cub3d	*init_data(void)
 {
@@ -267,8 +263,8 @@ int	get_scene_data(t_cub3d *game_data, char *map_file)
     {
         if (ft_isdigit(scene->lines[i][0]))
         {
-            if (!parse_map(game_data, i))
-                return (0);
+            /* if (!parse_map(game_data, i))
+                return (0); */
             break;
         }
     }

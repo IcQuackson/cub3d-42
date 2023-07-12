@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:31:02 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/12 18:27:49 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/12 18:42:58 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int ac, char **av)
 		return (0);
 	}
 	game_data = init_data();
-	parse_av(game_data, av[1]);
+	parse_av(game_data, av);
 	game_data->mlx = mlx_init();
 	game_data->mlx_win = mlx_new_window(game_data->mlx,
 			800, 600, "Hello world!");
