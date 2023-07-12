@@ -1,6 +1,35 @@
 
 #include "../includes/cub3d.h"
 
+int	parse_textures(t_cub3d *game_data, char *line)
+{
+	char	**split_line;
+	int		result;
+	int		i = 0;
+
+	while (line[i] == ' ' || line[i] == '\t')
+		i++;
+	split_line = ft_split(line + i, ' ');
+	if (!split_line || get_split_len(split_line) != 2)
+	{
+		free_char_doub_ptr(split_line);
+		return (0);
+	}
+	result = 1;
+	if (split_line[0][0] == 'N' && split_line[0][1] == 'O')
+		game_data->scene->north_texture_path = ft_strdup(split_line[1]);
+	else if (split_line[0][0] == 'S' && split_line[0][1] == 'O')
+		game_data->scene->south_texture_path = ft_strdup(split_line[1]);
+	else if (split_line[0][0] == 'W' && split_line[0][1] == 'E')
+		game_data->scene->west_texture_path = ft_strdup(split_line[1]);
+	else if (split_line[0][0] == 'E' && split_line[0][1] == 'A')
+		game_data->scene->east_texture_path = ft_strdup(split_line[1]);
+	else
+		result = 0;
+	free_char_doub_ptr(split_line);
+	return (result);
+}
+
 void	free_char_doub_ptr(char **pointer)
 {
 	int	i;
@@ -14,6 +43,11 @@ void	free_char_doub_ptr(char **pointer)
 		i++;
 	}
 	free(pointer);
+}
+
+t_cub3d *init_window(void)
+{
+	
 }
 
 t_cub3d	*init_data(void)
@@ -136,32 +170,6 @@ int	textures_are_loaded(t_cub3d *game_data)
 	return (1);
 }
 
-int	parse_textures(t_cub3d *game_data, char *line)
-{
-	char	**split_line;
-	int		result;
-
-	split_line = ft_split(line, ' ');
-	if (!split_line || get_split_len(split_line) != 2)
-	{
-		free_char_doub_ptr(split_line);
-		return (0);
-	}
-	result = 1;
-	if (ft_strcmp(split_line[0], "NO") == 0)
-		game_data->scene->north_texture_path = ft_strdup(split_line[1]);
-	else if (ft_strcmp(split_line[0], "SO") == 0)
-		game_data->scene->south_texture_path = ft_strdup(split_line[1]);
-	else if (ft_strcmp(split_line[0], "WE") == 0)
-		game_data->scene->west_texture_path = ft_strdup(split_line[1]);
-	else if (ft_strcmp(split_line[0], "EA") == 0)
-		game_data->scene->east_texture_path = ft_strdup(split_line[1]);
-	else
-		result = 0;
-	free_char_doub_ptr(split_line);
-	return (result);
-}
-
 int	ft_isdigit_str(char *str)
 {
 	int	i;
@@ -181,8 +189,11 @@ void	parse_rgb_aux(t_cub3d *game_data, char *rgb, char asset)
 	char	**split_line;
 	int		result;
 	int		i;
+	int		j = 0;
 
-	split_line = ft_split(rgb, ',');
+	while (rgb[j] == ' ' || rgb[j] == '\t')
+		j++;
+	split_line = ft_split(rgb + j, ',');
 	if (!split_line || get_split_len(split_line) != 3)
 	{
 		free_char_doub_ptr(split_line);
@@ -250,17 +261,16 @@ int	get_scene_data(t_cub3d *game_data, char *map_file)
 		if (textures_are_loaded(game_data))
 			break ;
 	}
-	printf("%s\n", scene->north_texture_path);
-	printf("%s\n", scene->south_texture_path);
-	printf("%s\n", scene->west_texture_path);
-	printf("%s\n", scene->east_texture_path);
-	printf("%d\n", scene->floor_rgb[0]);
-	printf("%d\n", scene->floor_rgb[1]);
-	printf("%d\n", scene->floor_rgb[2]);
-	printf("%d\n", scene->ceil_rgb[0]);
-	printf("%d\n", scene->ceil_rgb[1]);
-	printf("%d\n", scene->ceil_rgb[2]);
 	if (!textures_are_loaded(game_data))
 		return (0);
+    for (i = 0; i < scene->num_lines; i++)
+    {
+        if (ft_isdigit(scene->lines[i][0]))
+        {
+            if (!parse_map(game_data, i))
+                return (0);
+            break;
+        }
+    }
 	return (1);
 }
