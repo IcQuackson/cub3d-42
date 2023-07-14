@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/14 19:52:53 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/14 23:36:10 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_cub3d
 /*				Check Map				*/
 int		file_exists(char *filename);
 int		is_file_type(int type, char *filename);
-int		is_valid_file(t_cub3d *cubed, char *file);
+int		is_valid_file(char *file);
 
 t_cub3d	*init_data(void);
 void	register_hooks(t_cub3d *game_data);
@@ -84,5 +84,9 @@ void	check_map_validity(int x, int y);
 int		get_scene_data(t_cub3d *game_data, char *map_file);
 int		get_num_lines(char *map_file);
 int		parse_data(t_cub3d *cubed, char *file);
-int	get_file_data(t_cub3d *cubed, char **map);
+int		get_file_data(t_cub3d *game_data, char *map_file);
+int		textures_are_loaded(t_cub3d *game_data);
+int		parse_rgb(t_cub3d *game_data, char *line);
+char	**get_lines(t_cub3d *game_data, char *map_file);
+
 #endif

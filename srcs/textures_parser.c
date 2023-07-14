@@ -56,7 +56,7 @@ void	free_resources(t_cub3d *game_data)
 	free(game_data->scene->south_texture_path);
 	free(game_data->scene->west_texture_path);
 	free(game_data->scene->east_texture_path);
-	//free_char_doub_ptr(game_data->scene->lines);
+	free_char_doub_ptr(game_data->scene->lines);
 	//free_char_doub_ptr(game_data->map);
 	//free(game_data->map_data);
 	free(game_data->scene);
@@ -72,6 +72,7 @@ char	**get_lines(t_cub3d *game_data, char *map_file)
 	int		i;
 
 	i = 0;
+	printf("line: %d\n", get_num_lines(map_file));
 	fd = open(map_file, O_RDONLY);
 	if (fd == -1)
 		return (NULL);
@@ -81,8 +82,13 @@ char	**get_lines(t_cub3d *game_data, char *map_file)
 	line = get_next_line(fd);
 	while (line)
 	{
+		printf("line-> %s", line);
 		lines[i] = ft_strdup(line);
-		ft_strchr(lines[i], '\n')[0] = '\0';
+		if (!lines[i])
+			return (NULL);
+		printf("line[]: %s", lines[i]);
+		if (ft_strchr(lines[i], '\n'))
+			ft_strchr(lines[i], '\n')[0] = 0;
 		free(line);
 		line = get_next_line(fd);
 		i++;
@@ -91,7 +97,6 @@ char	**get_lines(t_cub3d *game_data, char *map_file)
 	close(fd);
 	return (lines);
 }
-
 
 int	get_split_len(char **split)
 {
@@ -156,7 +161,7 @@ void	parse_rgb_aux(t_cub3d *game_data, char *rgb, char asset)
 		{
 			if (asset == 'F')
 				game_data->scene->floor_rgb[i] = result;
-			else
+			else if (asset == 'C')
 				game_data->scene->ceil_rgb[i] = result;
 		}
 	}
@@ -168,6 +173,8 @@ int	parse_rgb(t_cub3d *game_data, char *line)
 	char	**split_line;
 	int		result;
 
+	if (line && line[0] == '\0')
+		return (1);
 	split_line = ft_split(line, ' ');
 	if (!split_line || get_split_len(split_line) != 2)
 	{
@@ -185,35 +192,15 @@ int	parse_rgb(t_cub3d *game_data, char *line)
 	return (result);
 }
 
-int	get_scene_data(t_cub3d *game_data, char *map_file)
-{
-	int		i;
-	t_scene	*scene;
 
-	scene = game_data->scene;
-	scene->num_lines = get_num_lines(map_file);
-	if (scene->num_lines <= 0)
-		return (0);
-	scene->lines = get_lines(game_data, map_file);
-	if (!scene->lines)
-		return (0);
-	i = 0;
-	while (scene->lines[++i])
-	{
-		printf("%s\n", scene->lines[i]);
-		if (scene->lines[i][0] == '\0')
-			continue ;
-		if (/* !(parse_textures(game_data, scene->lines[i]) || */ parse_rgb(game_data, scene->lines[i]))
-			return (0);
-		if (textures_are_loaded(game_data))
-			break ;
-	}
-	if (!textures_are_loaded(game_data))
-		return (0);
-    for (i = 0; i < scene->num_lines; i++)
-    {
-        if (ft_isdigit(scene->lines[i][0]))
-            break;
-    }
-	return (1);
-}
+//data
+//
+// 11111111
+// 11111111
+// 11111111111111
+// 1111111111111
+
+// char *str = ola;
+// str = str + 1;
+// char **maps;
+// gama_data->map = lines + offset;

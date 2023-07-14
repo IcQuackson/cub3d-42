@@ -66,8 +66,6 @@ char	*ft_strjoinz(char *line, char *buff)
 	j = 0;
 	while (buff && buff[j])
 	{
-		if (buff[j] == '\r')  // Stop appending characters when '\r' is encountered
-			break;
 		str[i] = buff[j++];
 		if (str[i++] == '\n')
 			break ;
@@ -89,6 +87,7 @@ char	*get_next_line(int fd)
 	{
 		if (ft_strchrz('\n', stash))
 		{
+			line = ft_strjoinz(line, "\n");
 			clean(stash);
 			break ;
 		}

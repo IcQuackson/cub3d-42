@@ -45,12 +45,13 @@ int	fill_map(t_cub3d *cubed, int i)
 		line = get_next_line(cubed->map_data.fd);
 	}
 	cubed->map_data.grid[row] = NULL;
-	printf("%s\n", cubed->map_data.grid[0]);
-	printf("%s\n", cubed->map_data.grid[1]);
-	printf("%s\n", cubed->map_data.grid[2]);
-	printf("%s\n", cubed->map_data.grid[3]);
 	return (1);
 }
+
+// grid
+// NO
+// rgb
+// mapa
 
 int	parse_data(t_cub3d *cubed, char *file)
 {
@@ -59,7 +60,8 @@ int	parse_data(t_cub3d *cubed, char *file)
 	i = 0;
 	cubed->map_data.path = file;
 	cubed->map_data.line_nbr = get_num_lines(file);
-	cubed->map_data.grid = ft_calloc(sizeof(char *), cubed->map_data.line_count + 1);
+	cubed->map_data.grid = ft_calloc(sizeof(char *),
+			cubed->map_data.line_count + 1);
 	if (!(cubed->map_data.grid))
 		return (0);
 	cubed->map_data.fd = open(file, O_RDONLY);

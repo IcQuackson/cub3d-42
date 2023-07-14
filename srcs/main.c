@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:31:02 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/14 18:15:16 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/14 23:45:47 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,16 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	game_data = init_data();
-	if (!is_valid_file(game_data, argv[1]))
+	if (!is_valid_file(argv[1]))
 	{
 		printf("Error\n");
+		free_resources(game_data);
+		return (0);
+	}
+	if (!get_file_data(game_data, argv[1]))
+	{
+		printf("Error\n");
+		free_resources(game_data);
 		return (0);
 	}
 	else
@@ -35,5 +42,5 @@ int	main(int argc, char **argv)
 	//		800, 600, "Hello world!");
 	//register_hooks(game_data);
 	//mlx_loop(game_data->mlx);
-	//free_resources(game_data);
+	free_resources(game_data);
 }
