@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/14 17:32:22 by quackson         ###   ########.fr       */
+/*   Updated: 2023/07/14 19:52:53 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,5 @@ void	check_map_validity(int x, int y);
 int		get_scene_data(t_cub3d *game_data, char *map_file);
 int		get_num_lines(char *map_file);
 int		parse_data(t_cub3d *cubed, char *file);
+int	get_file_data(t_cub3d *cubed, char **map);
 #endif

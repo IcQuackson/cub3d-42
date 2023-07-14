@@ -1,4 +1,3 @@
-
 #include "../includes/cub3d.h"
 
 void	register_hooks(t_cub3d *game_data)

@@ -1,46 +1,98 @@
 #include "../includes/cub3d.h"
 
-int	file_exists(char *file_path)
+char	*get_path(char *line, int j)
 {
-	int	fd;
+	int		len;
+	int		i;
+	char	*path;
 
-	fd = open(file_path, O_RDONLY);
-	if (fd == -1)
+	i = 0;
+	while (line[j] && (line[j] == ' '))
+		j++;
+	len = j;
+	while (line[len] && (line[len] != ' '))
+		len++;
+	path = malloc(sizeof(char) * (len - j + 1));
+	if (!path)
+		return (NULL);
+	while (line[j] && (line[j] != ' ' && line[j] != '\n'))
+		path[i++] = line[j++];
+	path[i] = '\0';
+	while (line[j] && (line[j] == ' '))
+		j++;
+	if (line[j] && line[j] != '\n')
 	{
-		perror("File not found");
-		return (0);
+		free(path);
+		path = NULL;
 	}
-	close(fd);
+	return (path);
+}
+
+int	parse_textures(t_cub3d *cubed, char *line, int j)
+{
+	if (line[j + 2] && ft_isprint(line[j + 2]))
+		return (0);
+	if (line[j] == 'N' && line[j + 1] == 'O' && !(cubed->scene->north_texture_path))
+		cubed->scene->north_texture_path = get_path(line, j + 2);
+	else if (line[j] == 'S' && line[j + 1] == 'O' && !(cubed->scene->south_texture_path))
+		cubed->scene->south_texture_path = get_path(line, j + 2);
+	else if (line[j] == 'W' && line[j + 1] == 'E' && !(cubed->scene->west_texture_path))
+		cubed->scene->west_texture_path = get_path(line, j + 2);
+	else if (line[j] == 'E' && line[j + 1] == 'A' && !(cubed->scene->east_texture_path))
+		cubed->scene->east_texture_path = get_path(line, j + 2);
+	else
+		return (0);
 	return (1);
 }
 
-int	is_file_type(int type, char *file_path)
+int store_file_info(t_cub3d *cubed, char **map, int i, int j)
 {
-	char	*filename;
-
-	filename = ft_strrchr(file_path, '/');
-	if (filename)
-		filename++;
-	else
-		filename = file_path;
-	if (ft_strlen(filename) < 5)
-		return (0);
-	if (type == CUB)
-		return (ft_strcmp(ft_strchr(filename, '.'), ".cub") == 0);
-	if (type == XPM)
-		return (ft_strcmp(ft_strchr(filename, '.'), ".xpm") == 0);
-	else
-		return (0);
+	if (ft_isprint(map[i][j]) && !ft_isdigit(map[i][j]))
+	{
+		if (map[i][j + 1] && ft_isprint(map[i][j + 1]) && !ft_isdigit(map[i][j]))
+		{
+			if (!parse_textures(cubed, map[i], j))
+				return (0);
+			return (2);
+		}	
+		/* else
+		{
+			if (!parse_rgb(cubed, &cubed->texinfo, map[i], j))
+				return (0);
+			return (2);
+		}	 */
+	}
+	/* else if (ft_isdigit(map[i][j]))
+	{
+		if (create_map())
+			return (0);
+		return (1);
+	} */
+	return (3);
 }
 
-int	is_valid_file(t_cub3d *cubed, char *file)
+int	get_file_data(t_cub3d *cubed, char **map)
 {
-	(void) cubed;
-	if (!file_exists(file))
-		return (0);
-	if (!is_file_type(CUB, file))
-		return (0);
-	/* if (!parse_data(cubed, file))
-		return (0); */
+	int	i;
+	int	j;
+	int	flag;
+
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			flag = store_file_info(cubed, map, i, j);
+			if (flag == 2)
+				break ;
+			else if (flag == 0)
+				return (0);
+			else if (flag == 1)
+				return (1);
+			j++;
+		}
+		i++;
+	}
 	return (1);
 }

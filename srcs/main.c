@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:31:02 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/14 17:49:46 by quackson         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:15:16 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
 
-int	main(int ac, char **argv)
+int	main(int argc, char **argv)
 {
 	t_cub3d	*game_data;
 
-	if (ac != 2)
+	if (argc != 2)
 	{
-		printf("Error: Invalid number of arguments\n");
+		printf("Error\n");
 		return (0);
 	}
 	game_data = init_data();
