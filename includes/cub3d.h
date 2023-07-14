@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/14 17:32:22 by quackson         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:55:32 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int		file_exists(char *filename);
 int		is_file_type(int type, char *filename);
 int		is_valid_file(t_cub3d *cubed, char *file);
 
+void	run_game(t_cub3d *game_data);
 t_cub3d	*init_data(void);
 void	register_hooks(t_cub3d *game_data);
 int		get_split_len(char **split);

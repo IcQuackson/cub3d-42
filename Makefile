@@ -1,4 +1,4 @@
-SRC	= srcs/main.c srcs/map_parser.c srcs/hooks.c srcs/textures_parser.c gnl/get_next_line.c srcs/data_parser.c
+SRC	= srcs/main.c srcs/map_parser.c srcs/hooks.c srcs/textures_parser.c gnl/get_next_line.c srcs/data_parser.c srcs/run_game.c
 BIN	= bin
 DEBUGBIN = dbin
 INCS	= includes/
@@ -17,7 +17,7 @@ OBJS	= ${SRC:srcs/%c=${BIN}/%o}
 DOBJS = ${SRC:srcs/%c=${DEBUGBIN}/%o}
 VALGRIN_DFLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose
 VALGRIND_OUTFILE = valgrind-out.txt
-ARGS = ./maps/b.cub/
+ARGS = ./maps/a.cub
 
 ifeq ($(UNAME), Darwin)
 	CC = gcc
