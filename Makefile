@@ -17,6 +17,7 @@ OBJS	= ${SRC:srcs/%c=${BIN}/%o}
 DOBJS = ${SRC:srcs/%c=${DEBUGBIN}/%o}
 VALGRIN_DFLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose
 VALGRIND_OUTFILE = valgrind-out.txt
+ARGS = ./maps/b.cub/
 
 ifeq ($(UNAME), Darwin)
 	CC = gcc
@@ -60,10 +61,10 @@ fclean: clean
 		${RM} ${NAME} ${DNAME}
 
 run: all
-	 ./$(NAME)
+	 ./$(NAME) ${ARGS}
 
 gdb:	all
-		gdb $(NAME)
+		gdb --args ./$(NAME) ${ARGS}
 
 valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)

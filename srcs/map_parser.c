@@ -1,63 +1,46 @@
 #include "../includes/cub3d.h"
 
-int check_folder(char *av)
-{
-	int i;
-
-	i = 0;
-	while (av[i] != '\0')
-		i++;
-	if (av[i - 1] == '/' || av[i - 1] == '.')
-		return (1);
-	return (0);
-}
-
-int check_cub(char *av)
-{
-	int i;
-
-	i = 0;
-	while (av[i] != '\0')
-		i++;
-	if (av[i - 1] != 'b' || av[i - 2] != 'u' || av[i - 3] != 'c' || av[i - 4] != '.')
-		return (0);
-	return (1);
-}
-
-int check_xpm(char *av)
-{
-	int i;
-
-	i = 0;
-	while (av[i] != '\0')
-		i++;
-	if (av[i - 1] != 'm' || av[i - 2] != 'p' || av[i - 3] != 'x' || av[i - 4] != '.')
-		return (0);
-	return (1);
-}
-
-int	check_file(char *av, int flag)
+int	file_exists(char *file_path)
 {
 	int	fd;
 
-	if (check_folder(av))
-		return (0);
-	fd = open(av, O_RDONLY);
+	fd = open(file_path, O_RDONLY);
 	if (fd == -1)
+	{
+		perror("File not found");
 		return (0);
+	}
 	close(fd);
-	if (flag && !check_cub(av))
-		return (0);
-	if (!flag && !check_xpm(av))
-		return (0);
 	return (1);
 }
 
-int parse_av(t_cub3d *cubed, char **av)
+int	is_file_type(int type, char *file_path)
 {
-	if (!check_file(av[1], 1))
+	char	*filename;
+
+	filename = ft_strrchr(file_path, '/');
+	if (filename)
+		filename++;
+	else
+		filename = file_path;
+	if (ft_strlen(filename) < 5)
 		return (0);
-	if (parse_data(cubed, av) == 0)
+	if (type == CUB)
+		return (ft_strcmp(ft_strchr(filename, '.'), ".cub") == 0);
+	if (type == XPM)
+		return (ft_strcmp(ft_strchr(filename, '.'), ".xpm") == 0);
+	else
 		return (0);
+}
+
+int	is_valid_file(t_cub3d *cubed, char *file)
+{
+	(void) cubed;
+	if (!file_exists(file))
+		return (0);
+	if (!is_file_type(CUB, file))
+		return (0);
+	/* if (!parse_data(cubed, file))
+		return (0); */
 	return (1);
 }

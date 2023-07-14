@@ -52,17 +52,17 @@ int	fill_map(t_cub3d *cubed, int i)
 	return (1);
 }
 
-int	parse_data(t_cub3d *cubed, char **av)
+int	parse_data(t_cub3d *cubed, char *file)
 {
 	int	i;
 
 	i = 0;
-	cubed->map_data.path = av[1];
-	cubed->map_data.line_nbr = get_num_lines(av[1]);
+	cubed->map_data.path = file;
+	cubed->map_data.line_nbr = get_num_lines(file);
 	cubed->map_data.grid = ft_calloc(sizeof(char *), cubed->map_data.line_count + 1);
 	if (!(cubed->map_data.grid))
 		return (0);
-	cubed->map_data.fd = open(av[1], O_RDONLY);
+	cubed->map_data.fd = open(file, O_RDONLY);
 	if (cubed->map_data.fd < 0)
 		return (0);
 	fill_map(cubed, i);
