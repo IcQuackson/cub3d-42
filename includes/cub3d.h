@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/14 23:36:10 by quackson         ###   ########.fr       */
+/*   Updated: 2023/07/15 00:43:55 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ typedef struct s_map
 {
 	char	**grid;
 	char	*path;
+	int		height;
 	int		width;
 	int		fd;
 	int		line_nbr;
 	int		line_count;
-	int		height;
 	int		player_x;
 	int		player_y;
 	char	player_orientation;
@@ -88,5 +88,6 @@ int		get_file_data(t_cub3d *game_data, char *map_file);
 int		textures_are_loaded(t_cub3d *game_data);
 int		parse_rgb(t_cub3d *game_data, char *line);
 char	**get_lines(t_cub3d *game_data, char *map_file);
+int		check_map_validity(t_cub3d *cubed, char **map_tab);
 
 #endif
