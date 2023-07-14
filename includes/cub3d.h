@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/12 18:47:37 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:55:10 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@
 typedef struct s_map
 {
 	char	**grid;
+	char	*path;
 	int		width;
+	int		fd;
+	int		line_nbr;
 	int 	line_count;
 	int		height;
 	int		player_x;
@@ -59,7 +62,7 @@ typedef struct s_cub3d
 	void	*mlx_win;
 	char	**map;
 	t_scene	*scene;
-	t_map	*map_data;
+	t_map	map_data;
 }	t_cub3d;
 
 
@@ -68,8 +71,9 @@ int		check_file(char *av, int flag);
 int 	check_xpm(char *av);
 int 	check_cub(char *av);
 int 	check_folder(char *av);
-void	parse_av(t_cub3d *cubed, char **av);
+int		parse_av(t_cub3d *cubed, char **av);
 
+t_cub3d	*init_data(void);
 void	register_hooks(t_cub3d *game_data);
 int		get_split_len(char **split);
 void	free_char_doub_ptr(char **pointer);
@@ -79,5 +83,6 @@ char	*get_next_line(int fd);
 void	check_map_dimensions(int x, int oldx, int y);
 void	check_map_validity(int x, int y);
 int		get_scene_data(t_cub3d *game_data, char *map_file);
-t_cub3d	*init_data(void);
+int		get_num_lines(char *map_file);
+int		parse_data(t_cub3d *cubed, char **av);
 #endif

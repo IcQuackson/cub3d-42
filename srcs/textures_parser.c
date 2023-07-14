@@ -53,9 +53,9 @@ t_cub3d	*init_data(void)
 	game_data = malloc(sizeof(t_cub3d));
 	if (!game_data)
 		return (NULL);
-	game_data->map_data = malloc(sizeof(t_map));
+	/* game_data->map_data = malloc(sizeof(t_map));
 	if (!game_data->map_data)
-		return (NULL);
+		return (NULL); */
 	game_data->scene = malloc(sizeof(t_scene));
 	if (!game_data->scene)
 		return (NULL);
@@ -85,32 +85,10 @@ void	free_resources(t_cub3d *game_data)
 	free(game_data->scene->east_texture_path);
 	//free_char_doub_ptr(game_data->scene->lines);
 	//free_char_doub_ptr(game_data->map);
-	free(game_data->map_data);
+	//free(game_data->map_data);
 	free(game_data->scene);
 	free(game_data);
 	exit(0);
-}
-
-int	get_num_lines(char *map_file)
-{
-	int		fd;
-	char	*line;
-	int		num_lines;
-
-	num_lines = 0;
-	fd = open(map_file, O_RDONLY);
-	if (fd == -1)
-		return (-1);
-	line = get_next_line(fd);
-	while (line)
-	{
-		//printf("%s\n", line);
-		num_lines++;
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-	return (num_lines);
 }
 
 char	**get_lines(t_cub3d *game_data, char *map_file)

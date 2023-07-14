@@ -53,9 +53,11 @@ int	check_file(char *av, int flag)
 	return (1);
 }
 
-void parse_av(t_cub3d *cubed, char **av)
+int parse_av(t_cub3d *cubed, char **av)
 {
-	(void)cubed;
 	if (!check_file(av[1], 1))
-		return ;
+		return (0);
+	if (parse_data(cubed, av) == 0)
+		return (0);
+	return (1);
 }
