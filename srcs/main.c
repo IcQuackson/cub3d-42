@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:31:02 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/15 00:40:53 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/15 01:04:58 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,6 @@ int	main(int argc, char **argv)
 	if (!get_file_data(game_data, argv[1]))
 	{
 		printf("Error\n");
-		free_resources(game_data);
-		return (0);
-	}
-	if(!check_map_validity(game_data))
-	{
-		printf("Invalid Map\n");
 		free_resources(game_data);
 		return (0);
 	}

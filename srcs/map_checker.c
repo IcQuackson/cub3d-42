@@ -55,6 +55,36 @@ int	check_sides(t_map *map, char **map_tab)
 	return (1);
 }
 
+int	check_characters(t_cub3d *cubed, char **map_tab)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	cubed->map_data.player_orientation = '0';
+	while (map_tab[i])
+	{
+		j = 0;
+		while (map_tab[i][j])
+		{
+			while (map_tab == ' ')
+				j++;
+			if (!(ft_strchr("10NSEW", map_tab[i][j])))
+				return (0);
+			if (ft_strchr("NSEW", map_tab[i][j]) && cubed->map_data.player_orientation != '0')
+			{
+				printf("More than 1 player\n");
+				return (0);
+			}
+			if (ft_strchr("NSEW", map_tab[i][j]) && cubed->map_data.player_orientation == '0')
+				cubed->map_data.player_orientation = map_tab[i][j];
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
 int	check_map_validity(t_cub3d *cubed, char **map_tab)
 {
 	if (!cubed->map)
@@ -62,6 +92,8 @@ int	check_map_validity(t_cub3d *cubed, char **map_tab)
 	if (!check_sides(&cubed->map_data, map_tab))
 		return (0);
 	if (cubed->map_data.height < 3)
+		return (0);
+	if(!check_characters(cubed, map_tab))
 		return (0);
 	return (1);
 }
