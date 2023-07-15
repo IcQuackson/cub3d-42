@@ -21,11 +21,11 @@ void check_map_dimensions(int x, int oldx, int y)
 	}
 }
 
-void check_map_validity(int x, int y)
+/* void check_map_validity(int x, int y)
 {
 	if (y == 0 || x == 0)
 	{
 		printf("Map is not correct or not well formatted\n");
 		exit(1);
 	}
-}
+} */

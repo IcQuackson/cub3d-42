@@ -72,7 +72,6 @@ char	**get_lines(t_cub3d *game_data, char *map_file)
 	int		i;
 
 	i = 0;
-	printf("line: %d\n", get_num_lines(map_file));
 	fd = open(map_file, O_RDONLY);
 	if (fd == -1)
 		return (NULL);
@@ -82,11 +81,9 @@ char	**get_lines(t_cub3d *game_data, char *map_file)
 	line = get_next_line(fd);
 	while (line)
 	{
-		printf("line-> %s", line);
 		lines[i] = ft_strdup(line);
 		if (!lines[i])
 			return (NULL);
-		printf("line[]: %s", lines[i]);
 		if (ft_strchr(lines[i], '\n'))
 			ft_strchr(lines[i], '\n')[0] = 0;
 		free(line);

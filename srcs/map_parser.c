@@ -42,9 +42,23 @@ int	parse_textures(t_cub3d *cubed, char *line)
 // split(line) = [NO, ./textures/north.xpm] check if file exists && check if file type .xpm
 // a\0
 
+int	store_map(t_cub3d *game_data, char **lines)
+{
+	while (*lines)
+	{
+		if (ft_strcmp(*lines, ""))
+			break ;
+		lines++;
+	}
+	if (!*lines)
+		return (0);
+	game_data->map = lines;
+	game_data->map_data.height = get_split_len(lines);
+	return (1);
+}
+
 int	get_file_data(t_cub3d *game_data, char *map_file)
 {
-	int		result;
 	int		i;
 	t_scene	*scene;
 
@@ -53,9 +67,6 @@ int	get_file_data(t_cub3d *game_data, char *map_file)
 	scene->lines = get_lines(game_data, map_file);
 	if (!scene->lines)
 		return (0);
-	for (int j = 0; j < scene->num_lines; j++)
-		printf("%s\n", scene->lines[j]);
-	result = 1;
 	i = 0;
 	while (i != -1 && scene->lines[i])
 	{
@@ -71,7 +82,6 @@ int	get_file_data(t_cub3d *game_data, char *map_file)
 	}
 	if (!textures_are_loaded(game_data))
 		return (0);
-	//printf("result = %d\n", result);
 	printf("%s\n", scene->north_texture_path);
 	printf("%s\n", scene->south_texture_path);
 	printf("%s\n", scene->west_texture_path);
@@ -82,5 +92,5 @@ int	get_file_data(t_cub3d *game_data, char *map_file)
 	printf("%d\n", scene->floor_rgb[0]);
 	printf("%d\n", scene->floor_rgb[1]);
 	printf("%d\n", scene->floor_rgb[2]);
-	return (result);
+	return (store_map(game_data, scene->lines + i));
 }
