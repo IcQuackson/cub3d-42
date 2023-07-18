@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/18 18:54:32 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/18 21:08:43 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,15 @@ typedef struct s_scene
 	t_map	*map;
 }	t_scene;
 
+typedef struct s_player
+{
+	float	x;
+	float	y;
+	float	rotation_angle;
+	float	walk_speed;
+	float	turn_speed;
+}	t_player;
+
 typedef struct s_cub3d
 {
 	void	*mlx;
@@ -90,5 +99,8 @@ int		parse_rgb(t_cub3d *game_data, char *line);
 char	**get_lines(t_cub3d *game_data, char *map_file);
 int		check_map_validity(t_cub3d *cubed, char **map_tab);
 int		showerror(t_cub3d *cubed, char *str);
+int		check_textures_validity(t_scene *textures);
+int		is_order_valid(char **lines);
+int		is_texture(char *line);
 
 #endif

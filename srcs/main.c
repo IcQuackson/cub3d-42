@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:31:02 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/18 17:24:26 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/18 21:06:05 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (showerror(NULL, "Invalid number of arguments"));
 	game_data = init_data();
-	if (!is_valid_file(argv[1]))
+	if (!is_valid_file(argv[1], CUB))
 	{
 		free_resources(game_data);
 		return (0);
