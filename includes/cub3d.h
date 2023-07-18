@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/15 17:24:17 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/07/18 17:37:01 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ int		textures_are_loaded(t_cub3d *game_data);
 int		parse_rgb(t_cub3d *game_data, char *line);
 char	**get_lines(t_cub3d *game_data, char *map_file);
 int		check_map_validity(t_cub3d *cubed, char **map_tab);
+int		showerror(t_cub3d *cubed, char *str);
 
 #endif

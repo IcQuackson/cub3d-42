@@ -1,4 +1,4 @@
-SRC	= srcs/main.c srcs/map_parser.c srcs/hooks.c srcs/textures_parser.c gnl/get_next_line.c srcs/data_parser.c srcs/file_parser.c
+SRC	= srcs/main.c srcs/map_parser.c srcs/hooks.c srcs/textures_parser.c gnl/get_next_line.c srcs/data_parser.c srcs/file_parser.c srcs/utils.c
 BIN	= bin
 DEBUGBIN = dbin
 INCS	= includes/

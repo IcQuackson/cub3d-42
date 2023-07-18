@@ -85,15 +85,26 @@ int	check_characters(t_cub3d *cubed, char **map_tab)
 	return (1);
 }
 
+int	check_player_position(t_cub3d *cubed, char **map_tab)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	if (cubed->player.dir == '0')
+		return (0);
+	return (1);
+}
+
 int	check_map_validity(t_cub3d *cubed, char **map_tab)
 {
 	if (!cubed->map)
-		return (0);
+		return (showerror(cubed, "No map found"));
 	if (!check_sides(&cubed->map_data, map_tab))
-		return (0);
+		return (showerror(cubed, "Map is not closed"));
 	if (cubed->map_data.height < 3)
-		return (0);
+		return (showerror(cubed, "Map is too small"));
 	if(!check_characters(cubed, map_tab))
-		return (0);
+		return (showerror(cubed, "Map contains invalid characters"));
 	return (1);
 }
