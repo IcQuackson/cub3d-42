@@ -57,6 +57,43 @@ int	store_map(t_cub3d *game_data, char **lines)
 	return (1);
 }
 
+int	is_texture(char *line)
+{
+	if (!line)
+		return (0);
+	if (!ft_strncmp(line, "NO", 2) || !ft_strncmp(line, "SO", 2)
+		|| !ft_strncmp(line, "WE", 2) || !ft_strncmp(line, "EA", 2))
+		return (1);
+	return (0);
+}
+
+int	is_order_valid(char **lines)
+{
+	int	num_textures;
+	int	num_rgb;
+	int	i;
+
+	num_textures = 4;
+	num_rgb = 2;
+	i = -1;
+	while (lines[++i])
+	{
+		if (is_texture(lines[i]))
+		{
+			if (num_rgb != 0 && num_rgb != 2)
+				return (0);
+			num_textures--;
+		}
+		else if (!ft_strncmp(lines[i], "F", 1) || !ft_strncmp(lines[i], "C", 1))
+		{
+			if (num_textures != 0 && num_textures != 4)
+				return (0);
+			num_rgb--;
+		}
+	}
+	return (1);
+}
+
 int	get_file_data(t_cub3d *game_data, char *map_file)
 {
 	int		i;
@@ -68,29 +105,29 @@ int	get_file_data(t_cub3d *game_data, char *map_file)
 	if (!scene->lines)
 		return (0);
 	i = 0;
+	if (!is_order_valid(scene->lines))
+		return (0);
 	while (i != -1 && scene->lines[i])
 	{
-		if (!parse_textures(game_data, scene->lines[i]))
+		if (parse_textures(game_data, scene->lines[i]))
+			(void) 0;
+		else if (parse_rgb(game_data, scene->lines[i]))
+			(void) 0;
+		else
 			break ;
 		i++;
 	}
-	while (i != -1 && scene->lines[i])
-	{
-		if (!parse_rgb(game_data, scene->lines[i]))
-			break ;
-		i++;
-	}
+	printf("n: %s\n", scene->north_texture_path);
+	printf("s: %s\n", scene->south_texture_path);
+	printf("w: %s\n", scene->west_texture_path);
+	printf("e: %s\n", scene->east_texture_path);
+	printf("c0: %d\n", scene->ceil_rgb[0]);
+	printf("c1: %d\n", scene->ceil_rgb[1]);
+	printf("c2: %d\n", scene->ceil_rgb[2]);
+	printf("f0: %d\n", scene->floor_rgb[0]);
+	printf("f1: %d\n", scene->floor_rgb[1]);
+	printf("f2: %d\n", scene->floor_rgb[2]);
 	if (!textures_are_loaded(game_data))
 		return (0);
-	printf("%s\n", scene->north_texture_path);
-	printf("%s\n", scene->south_texture_path);
-	printf("%s\n", scene->west_texture_path);
-	printf("%s\n", scene->east_texture_path);
-	printf("%d\n", scene->ceil_rgb[0]);
-	printf("%d\n", scene->ceil_rgb[1]);
-	printf("%d\n", scene->ceil_rgb[2]);
-	printf("%d\n", scene->floor_rgb[0]);
-	printf("%d\n", scene->floor_rgb[1]);
-	printf("%d\n", scene->floor_rgb[2]);
 	return (store_map(game_data, scene->lines + i));
 }
