@@ -46,11 +46,13 @@ int	is_file_type(int type, char *file_path)
 		return (0);
 }
 
-int	is_valid_file(char *file)
+int	is_valid_file(char *file, int type)
 {
 	if (!file_exists(file))
 		return (showerror(NULL, "File does not exist"));
-	if (!is_file_type(CUB, file))
+	if(type == CUB && !is_file_type(CUB, file))
 		return (showerror(NULL, "File is not a .cub file"));
+	if(type == XPM && !is_file_type(XPM, file))
+		return (showerror(NULL, "File is not a .xpm file"));
 	return (1);
 }

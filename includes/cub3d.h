@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/18 17:37:01 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/18 18:54:32 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_cub3d
 /*				Check Map				*/
 int		file_exists(char *filename);
 int		is_file_type(int type, char *filename);
-int		is_valid_file(char *file);
+int		is_valid_file(char *file, int type);
 
 t_cub3d	*init_data(void);
 void	register_hooks(t_cub3d *game_data);
