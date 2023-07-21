@@ -16,6 +16,7 @@
 int	main(int ac, char **argv)
 {
 	t_cub3d	*game_data;
+	(void) argv;
 
 	if (ac != 2)
 	{
@@ -23,16 +24,16 @@ int	main(int ac, char **argv)
 		return (0);
 	}
 	game_data = init_data();
-	if (!is_valid_file(game_data, argv[1]))
+	/* if (!is_valid_file(game_data, argv[1]))
 	{
 		printf("Error\n");
 		return (0);
 	}
 	else
-		printf("Valid Map\n");
+		printf("Valid Map\n"); */
 	game_data->mlx = mlx_init();
 	game_data->mlx_win = mlx_new_window(game_data->mlx,
-			800, 600, "Hello world!");
+			WIDTH, HEIGHT, "Hello world!");
 	register_hooks(game_data);
 	run_game(game_data);
 	free_resources(game_data);

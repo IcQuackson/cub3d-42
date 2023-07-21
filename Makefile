@@ -63,11 +63,14 @@ fclean: clean
 run: all
 	 ./$(NAME) ${ARGS}
 
+rerun: re
+	   ./$(NAME) ${ARGS}
+
 gdb:	all
 		gdb --args ./$(NAME) ${ARGS}
 
 valgrind: 	all
-			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
+			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) ${ARGS}
 
 ${LIBFT}:
 	@make all -C ${LIBFT} --no-print-directory

@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/14 18:55:32 by quackson         ###   ########.fr       */
+/*   Updated: 2023/07/21 10:40:22 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # define CUB 1
 # define XPM 2
 # define MAX_LINE_LENGTH 1000
-# define WIDTH 640
-# define HEIGHT 480
+# define WIDTH 1024
+# define HEIGHT 768
 # define TILE_SIZE 30
 # define ESC 65307
 # define KEY_PRESS_EVENT 2 
@@ -63,6 +63,8 @@ typedef struct s_cub3d
 	void	*mlx;
 	void	*mlx_win;
 	char	**map;
+	int		tile_size;
+	float	player_angle;
 	t_scene	*scene;
 	t_map	map_data;
 }	t_cub3d;

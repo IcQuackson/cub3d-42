@@ -79,10 +79,10 @@ void	free_resources(t_cub3d *game_data)
 {
 	if (game_data->mlx_win && game_data->mlx)
 		mlx_destroy_window(game_data->mlx, game_data->mlx_win);
-	free(game_data->scene->north_texture_path);
-	free(game_data->scene->south_texture_path);
-	free(game_data->scene->west_texture_path);
-	free(game_data->scene->east_texture_path);
+	//free(game_data->scene->north_texture_path);
+	//free(game_data->scene->south_texture_path);
+	//free(game_data->scene->west_texture_path);
+	//free(game_data->scene->east_texture_path);
 	//free_char_doub_ptr(game_data->scene->lines);
 	//free_char_doub_ptr(game_data->map);
 	//free(game_data->map_data);
