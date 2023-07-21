@@ -96,8 +96,8 @@ int	is_wall(int x, int y, int minimap_offset, t_cub3d *game_data)
         {'1', '1', '1', '0', '1', '0', '1', '1', '1', '1'},
         {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}
     };
-	printf("x: %d\n", x);
-	printf("y: %d\n", y);
+	//printf("x: %d\n", x);
+	//printf("y: %d\n", y);
 	if (x < 0 || x >= 15 * game_data->tile_size || y < 0 || y >= 10 * game_data->tile_size)
 		return (0);
 	return (map[x / game_data->tile_size][y / game_data->tile_size] == '1');
@@ -105,8 +105,8 @@ int	is_wall(int x, int y, int minimap_offset, t_cub3d *game_data)
 
 void draw_line(t_cub3d *game_data, int x0, int y0, int distance, float angle, int color)
 {
-	int x1 = x0 + (float) (distance * cos(angle)); // Calculate the ending point (x-coordinate)
-	int y1 = y0 + (float) (distance * sin(angle)); // Calculate the ending point (y-coordinate)
+	int x1 = x0 + distance * cos(angle); // Calculate the ending point (x-coordinate)
+    int y1 = y0 + distance * sin(angle); // Calculate the ending point (y-coordinate)
 
 	int dx = x1 - x0;
 	int dy = y1 - y0;
@@ -158,15 +158,15 @@ void	cast_fov_rays(t_cub3d *game_data, int color)
 {
 	int i;
 
-	i = -30;
-	while (i <= 30)
+	i = 0;
+	while (i <= 60)
 	{
-		if (color != 0x000000 && i == 0)
-			draw_line(game_data, game_data->map_data.player_y, game_data->map_data.player_x, 100, game_data->player_angle + degToRad(i), 0xFF0000);
+		if (color != 0x000000 && i == 30)
+			draw_line(game_data, game_data->map_data.player_y, game_data->map_data.player_x, 100, game_data->player_angle - degToRad(30) + degToRad(i), 0xFF0000);
 		else
-			draw_line(game_data, game_data->map_data.player_y, game_data->map_data.player_x, 100, game_data->player_angle + degToRad(i), color);
+			draw_line(game_data, game_data->map_data.player_y, game_data->map_data.player_x, 100, game_data->player_angle - degToRad(30) + degToRad(i), color);
 		//game_data->player_angle += degToRad(1);
-		i++;
+		i += 2;
 	}
 }
 
@@ -295,27 +295,23 @@ void	get_player_coord(t_cub3d *game_data)
 
 void move_up(t_cub3d *game_data, int distance)
 {
-	int		 x0 = game_data->map_data.player_x;
-	int		 y0 = game_data->map_data.player_y;
+
 	float	angle = game_data->player_angle;
-	
-	/* printf("x0: %d\n", x0);
-	printf("y0: %d\n", y0);
-	printf("angle: %f\n", angle); */
+	float	x_increment = cos(angle);
+	float	y_increment = sin(angle);
+	float	x = game_data->map_data.player_x;
+	float	y = game_data->map_data.player_y;
 
-	int x1 = x0 + (float) distance * cos(angle); // Calculate the ending point (x-coordinate)
-    int y1 = y0 + (float) distance * sin(angle); // Calculate the ending point (y-coordinate)
-
-	/* printf("x1: %d\n", x1);
-	printf("y1: %d\n", y1); */
-
-	if (is_wall(x1, y1, 0, game_data))
+    int i;
+    for (i = 0; i <= distance; i++) {
+        x += x_increment;
+        y += y_increment;
+    }
+	if (is_wall(x, y, 0, game_data))
 		return ;
 	erase_player(game_data);
-	game_data->map_data.player_x = x1;
-	game_data->map_data.player_y = y1;
-	//printf("after x: %d\n", game_data->map_data.player_x);
-	//printf("after y: %d\n", game_data->map_data.player_y);
+	game_data->map_data.player_x = x;
+	game_data->map_data.player_y = y;
 	draw_player(game_data);
 }
 
@@ -325,8 +321,8 @@ void move_down(t_cub3d *game_data, int distance)
 	int		 y0 = game_data->map_data.player_y;
 	float	angle = game_data->player_angle;
 	
-	int x1 = x0 - (float) distance * cos(angle); // Calculate the ending point (x-coordinate)
-	int y1 = y0 - (float) distance * sin(angle); // Calculate the ending point (y-coordinate)
+	int x1 = x0 - distance * cos(angle); // Calculate the ending point (x-coordinate)
+	int y1 = y0 - distance * sin(angle); // Calculate the ending point (y-coordinate)
 
 	if (is_wall(x1, y1, 0, game_data))
 		return ;
@@ -339,14 +335,14 @@ void move_down(t_cub3d *game_data, int distance)
 void	move_left(t_cub3d *game_data)
 {
 	erase_player(game_data);
-	game_data->player_angle += degToRad(3);
+	game_data->player_angle -= degToRad(2);
 	draw_player(game_data);
 }
 
 void	move_right(t_cub3d *game_data)
 {
 	erase_player(game_data);
-	game_data->player_angle -= degToRad(3);
+	game_data->player_angle += degToRad(2);
 	draw_player(game_data);
 }
 
@@ -381,6 +377,7 @@ int	key_up_hook(int keycode, t_cub3d *game_data)
 int	loop_hook(t_cub3d *game_data)
 {
 	drawMap2D(0 , game_data);
+	printf("angle: %frad %ddeg\n", game_data->player_angle, (int) (game_data->player_angle * 180 / PI));
 	//draw_player(game_data);
 	return (0);
 }
