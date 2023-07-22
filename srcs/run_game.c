@@ -12,6 +12,8 @@
 #define PI 3.1415926535
 
 
+void	convert_to_3d(t_cub3d *game_data, float fov_angle, float dist);
+
 double posX = 22, posY = 12;  //x and y start position
 double dirX = -1, dirY = 0; //initial direction vector
 double planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
@@ -103,7 +105,7 @@ int	is_wall(int x, int y, int minimap_offset, t_cub3d *game_data)
 	return (map[x / game_data->tile_size][y / game_data->tile_size] == '1');
 }
 
-void draw_line(t_cub3d *game_data, int x0, int y0, int distance, float angle, int color)
+float draw_line(t_cub3d *game_data, int x0, int y0, int distance, float angle, int color)
 {
 	int x1 = x0 + distance * cos(angle); // Calculate the ending point (x-coordinate)
     int y1 = y0 + distance * sin(angle); // Calculate the ending point (y-coordinate)
@@ -118,19 +120,20 @@ void draw_line(t_cub3d *game_data, int x0, int y0, int distance, float angle, in
 	float x = x0;
 	float y = y0;
 
-	//printf("x0: %d\n", x0);
-	//printf("y0: %d\n", y0);
-	//printf("x1: %d\n", x1);
-	//printf("y1: %d\n", y1);
-
 	for (int i = 0; i <= steps && !is_wall(y, x, 0, game_data); i++) {
 		put_pixel(game_data, (int)x, (int)y, color); // Set the pixel color to white (you can change this)
 		x += xIncrement;
 		y += yIncrement;
 	}
+	if (is_wall(y, x, 0, game_data))
+	{
+		x += xIncrement;
+		y += yIncrement;
+	}
+	return (sqrt(pow(x - x0, 2) + pow(y - y0, 2)));
 }
 
-float	degToRad(int a)
+float	degToRad(float a)
 {
 	return (a * PI / 180.0);
 }
@@ -156,17 +159,23 @@ int	is_player_coord(int x, int y, t_cub3d *game_data)
 
 void	cast_fov_rays(t_cub3d *game_data, int color)
 {
-	int i;
+	float	i;
+	//int		j;
+	float dist;
 
+	dist = 0;
+	//j = 0;
 	i = 0;
 	while (i <= 60)
 	{
 		if (color != 0x000000 && i == 30)
-			draw_line(game_data, game_data->map_data.player_y, game_data->map_data.player_x, 100, game_data->player_angle - degToRad(30) + degToRad(i), 0xFF0000);
+			dist = draw_line(game_data, game_data->map_data.player_y, game_data->map_data.player_x, 2000, game_data->player_angle - degToRad(30) + degToRad(i), 0xFF0000);
 		else
-			draw_line(game_data, game_data->map_data.player_y, game_data->map_data.player_x, 100, game_data->player_angle - degToRad(30) + degToRad(i), color);
-		//game_data->player_angle += degToRad(1);
-		i += 2;
+			dist = draw_line(game_data, game_data->map_data.player_y, game_data->map_data.player_x, 2000, game_data->player_angle - degToRad(30) + degToRad(i), color);
+		//if (j % 2 != 0)
+		convert_to_3d(game_data, i, dist);
+		i += 0.5;
+		//j++;
 	}
 }
 
@@ -296,33 +305,29 @@ void	get_player_coord(t_cub3d *game_data)
 void move_up(t_cub3d *game_data, int distance)
 {
 
-	float	angle = game_data->player_angle;
-	float	x_increment = cos(angle);
-	float	y_increment = sin(angle);
-	float	x = game_data->map_data.player_x;
-	float	y = game_data->map_data.player_y;
+	int x0 = game_data->map_data.player_x;
+	int y0 = game_data->map_data.player_y;
+	float angle = game_data->player_angle;
 
-    int i;
-    for (i = 0; i <= distance; i++) {
-        x += x_increment;
-        y += y_increment;
-    }
-	if (is_wall(x, y, 0, game_data))
+	int x1 = x0 + distance * sin(angle); // Calculate the ending point (x-coordinate)
+    int y1 = y0 + distance * cos(angle); // Calculate the ending point (y-coordinate)
+
+	if (is_wall(x1, y1, 0, game_data))
 		return ;
 	erase_player(game_data);
-	game_data->map_data.player_x = x;
-	game_data->map_data.player_y = y;
+	game_data->map_data.player_x = x1;
+	game_data->map_data.player_y = y1;
 	draw_player(game_data);
 }
 
 void move_down(t_cub3d *game_data, int distance)
 {
-	int		 x0 = game_data->map_data.player_x;
-	int		 y0 = game_data->map_data.player_y;
-	float	angle = game_data->player_angle;
-	
-	int x1 = x0 - distance * cos(angle); // Calculate the ending point (x-coordinate)
-	int y1 = y0 - distance * sin(angle); // Calculate the ending point (y-coordinate)
+	int x0 = game_data->map_data.player_x;
+	int y0 = game_data->map_data.player_y;
+	float angle = game_data->player_angle;
+
+	int x1 = x0 - distance * sin(angle); // Calculate the ending point (x-coordinate)
+    int y1 = y0 - distance * cos(angle); // Calculate the ending point (y-coordinate)
 
 	if (is_wall(x1, y1, 0, game_data))
 		return ;
@@ -380,6 +385,86 @@ int	loop_hook(t_cub3d *game_data)
 	printf("angle: %frad %ddeg\n", game_data->player_angle, (int) (game_data->player_angle * 180 / PI));
 	//draw_player(game_data);
 	return (0);
+}
+
+void draw_symmetrical_rectangle(t_cub3d *game_data, int x, int y, int width, int height, int color)
+{
+	int x_start = x - (width / 2);
+	int y_start = y - (height / 2);
+	int	i;
+	int	j;
+
+	printf("x_start: %d\n", x_start);
+	printf("y_start: %d\n", y_start);
+	printf("width: %d\n", width);
+	printf("height: %d\n", height);
+	i = 0;
+	j = 0;
+	while (i < width)
+	{
+		j = 0;
+		while (j < height)
+		{
+			put_pixel(game_data, x_start + i, y_start + j, color);
+			j++;
+		}
+		i++;
+	}
+}
+
+void	draw_rectangle(t_cub3d *game_data, int x, int y, int color, int rectangle_width, int rectangle_height)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < rectangle_width)
+	{
+		j = 0;
+		while (j < rectangle_height)
+		{
+			put_pixel(game_data, x + i, y + j, color);
+			j++;
+		}
+		i++;
+	}
+}
+
+int FixAng(int a)
+{
+	if (a>359)
+	{
+		a-=360;
+	}
+	if(a<0)
+	{
+		a += 360;
+	}
+	return a;
+}
+
+void	convert_to_3d(t_cub3d *game_data, float fov_angle, float dist)
+{
+	int	offset;
+	int	screen_width;
+	int	rectangle_width;
+	int	ray_num = fov_angle / 0.5;
+
+	offset = 15 * game_data->tile_size + 20;
+	screen_width = WIDTH - offset;
+	rectangle_width = screen_width / (60 / 0.5);
+	printf("rectangle_width: %d\n", rectangle_width);
+	printf("x: %d\n", HEIGHT / 2);
+	printf("y: %d\n", offset + ray_num * rectangle_width);
+	printf("dist: %f\n", dist);
+
+	//draw_rectangle(game_data, offset + ray_num * rectangle_width, HEIGHT / 2, 0x000000, rectangle_width, HEIGHT);
+
+	dist = dist * cos(degToRad(90 - 60 + fov_angle));
+
+	draw_symmetrical_rectangle(game_data, offset + ray_num * rectangle_width, HEIGHT / 2, rectangle_width, HEIGHT, 0x000000);
+	draw_symmetrical_rectangle(game_data, offset + ray_num * rectangle_width, HEIGHT / 2, rectangle_width, HEIGHT - (dist * 2), 0xFFC0CB);
+	//draw_rectangle(game_data, offset + ray_num * rectangle_width, HEIGHT / 4 - dist, 0xFFC0CB, rectangle_width, (HEIGHT - dist) / 2);
 }
 
 void	run_game(t_cub3d *game_data)
