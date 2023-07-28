@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/18 21:08:43 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/28 18:06:07 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,6 @@ int		showerror(t_cub3d *cubed, char *str);
 int		check_textures_validity(t_scene *textures);
 int		is_order_valid(char **lines);
 int		is_texture(char *line);
+int check_args(t_cub3d *cubed, char **av);
 
 #endif

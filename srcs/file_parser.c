@@ -2,13 +2,15 @@
 
 int is_folder(char *arg) 
 {
-	int fd;
+	int	fd;
 
 	fd = open(arg, O_DIRECTORY);
-	if (fd == -1)
-		return (0);
-	close(fd);
-	return (1);
+	if (fd >= 0)
+	{
+		close (fd);
+		return (1);
+	}
+	return (0);
 }
 
 int	file_exists(char *file_path)
@@ -27,7 +29,7 @@ int	file_exists(char *file_path)
 	return (1);
 }
 
-int	is_file_type(int type, char *file_path)
+int	is_cub_type(char *file_path)
 {
 	char	*filename;
 
@@ -38,21 +40,43 @@ int	is_file_type(int type, char *file_path)
 		filename = file_path;
 	if (ft_strlen(filename) < 5)
 		return (0);
-	if (type == CUB)
-		return (ft_strcmp(ft_strchr(filename, '.'), ".cub") == 0);
-	if (type == XPM)
-		return (ft_strcmp(ft_strchr(filename, '.'), ".xpm") == 0);
+	return (ft_strcmp(ft_strchr(filename, '.'), ".cub") == 0);
+}
+
+int	is_xpm_type(char *file_path)
+{
+	char	*filename;
+
+	filename = ft_strrchr(file_path, '/');
+	if (filename)
+		filename++;
 	else
+		filename = file_path;
+	if (ft_strlen(filename) < 5)
 		return (0);
+	return (ft_strcmp(ft_strchr(filename, '.'), ".xpm") == 0);
 }
 
 int	is_valid_file(char *file, int type)
 {
+	if (is_dir(file))
+		return (showerror(NULL, "File is a directory"));
+	fd = open(arg, O_RDONLY);
+	if (fd == -1)
+		return (showerror(NULL, "File not found"));
+	close(fd);
 	if (!file_exists(file))
 		return (showerror(NULL, "File does not exist"));
-	if(type == CUB && !is_file_type(CUB, file))
+	if(type == CUB && !is_cub_type(CUB, file))
 		return (showerror(NULL, "File is not a .cub file"));
-	if(type == XPM && !is_file_type(XPM, file))
+	if(type == XPM && !is_xpm_type(XPM, file))
 		return (showerror(NULL, "File is not a .xpm file"));
+	return (1);
+}
+
+int check_args(t_cub3d *cubed, char **av)
+{
+	if (!is_valid_file(file, CUB))
+		return (0);
 	return (1);
 }
