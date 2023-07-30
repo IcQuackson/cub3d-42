@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/28 18:06:07 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/30 16:56:16 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,25 @@ typedef struct s_scene
 	int		floor_rgb[3];
 	t_map	*map;
 }	t_scene;
+
+typedef struct s_fileinfo
+{
+	char			*north;
+	char			*south;
+	char			*east;
+	char			*west;
+	int				*floor;
+	int				*ceiling;
+	int				size;
+	int				index;
+	double			step;
+	double			pos;
+	int				x;
+	int				y;
+	unsigned long	hex_ceiling;
+	unsigned long	hex_floor;
+}	t_fileinfo;
+
 
 typedef struct s_player
 {

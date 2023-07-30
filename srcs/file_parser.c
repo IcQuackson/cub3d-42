@@ -78,5 +78,8 @@ int check_args(t_cub3d *cubed, char **av)
 {
 	if (!is_valid_file(file, CUB))
 		return (0);
+	get_map_data(cubed, av[1]);
+	if (get_file_cubed(cubed, cubed->mapinfo.file) == 1)
+		return (1);
 	return (1);
 }

@@ -1,25 +1,27 @@
 #include "../includes/cub3d.h"
 
-int	get_num_lines(char *map_file)
+int	get_num_lines(char *path)
 {
 	int		fd;
 	char	*line;
-	int		num_lines;
+	int		line_count;
 
-	num_lines = 0;
-	fd = open(map_file, O_RDONLY);
-	if (fd == -1)
-		return (-1);
-	line = get_next_line(fd);
-	while (line)
+	line_count = 0;
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		return (line_count);
+	else
 	{
-		//printf("%s\n", line);
-		num_lines++;
-		free(line);
 		line = get_next_line(fd);
+		while (line != NULL)
+		{
+			line_count++;
+			free(line);
+			line = get_next_line(fd);
+		}
+		close(fd);
 	}
-	close(fd);
-	return (num_lines);
+	return (line_count);
 }
 
 int	fill_map(t_cub3d *cubed, int i)
@@ -48,12 +50,7 @@ int	fill_map(t_cub3d *cubed, int i)
 	return (1);
 }
 
-// grid
-// NO
-// rgb
-// mapa
-
-int	parse_data(t_cub3d *cubed, char *file)
+int	get_map_data(t_cub3d *cubed, char *file)
 {
 	int	i;
 

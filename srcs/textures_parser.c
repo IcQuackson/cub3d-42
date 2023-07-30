@@ -1,7 +1,4 @@
-
 #include "../includes/cub3d.h"
-
-
 
 void	free_char_doub_ptr(char **pointer)
 {
