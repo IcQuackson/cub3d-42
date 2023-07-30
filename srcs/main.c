@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:31:02 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/30 17:48:54 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/31 00:24:03 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	main(int argc, char **argv)
 	game_data = init_data();
 	if (!check_args(game_data, argv))
 		return (0);
+	init_mlx(game_data);
+	init_textures(game_data);
 	print_double_char(game_data->map);
 	printf("height: %d\n", game_data->map_data.height);
 	printf("Valid Map\n");
