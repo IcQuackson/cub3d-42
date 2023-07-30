@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/30 16:56:16 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/07/30 18:10:42 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ typedef struct s_fileinfo
 
 typedef struct s_player
 {
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 	float	rotation_angle;
 	float	walk_speed;
 	float	turn_speed;

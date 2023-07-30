@@ -79,7 +79,13 @@ int check_args(t_cub3d *cubed, char **av)
 	if (!is_valid_file(file, CUB))
 		return (0);
 	get_map_data(cubed, av[1]);
-	if (get_file_cubed(cubed, cubed->mapinfo.file) == 1)
-		return (1);
+	if (!get_file_data(cubed, cubed->mapinfo.file))
+		return (0);
+	if (!check_map(cub3d, cub3d->map))
+		return (0);
+	if (!check_textures(cub3d, cub3d->map))
+		return (0);
+	if(!get_player_data(cub3d->player))
+		return (0);
 	return (1);
 }

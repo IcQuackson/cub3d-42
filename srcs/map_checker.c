@@ -96,7 +96,7 @@ int	check_player_position(t_cub3d *cubed, char **map_tab)
 	return (1);
 }
 
-int	check_map_validity(t_cub3d *cubed, char **map_tab)
+int	check_map(t_cub3d *cubed, char **map_tab)
 {
 	if (!cubed->map)
 		return (showerror(cubed, "No map found"));
