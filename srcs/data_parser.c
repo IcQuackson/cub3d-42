@@ -1,5 +1,22 @@
 #include "../includes/cub3d.h"
 
+void	free_tab(void **tab)
+{
+	size_t	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	if (tab)
+	{
+		free(tab);
+		tab = NULL;
+	}
+}
+
 int	get_num_lines(char *path)
 {
 	int		fd;
@@ -22,22 +39,6 @@ int	get_num_lines(char *path)
 		close(fd);
 	}
 	return (line_count);
-}
-void	free_tab(void **tab)
-{
-	size_t	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	if (tab)
-	{
-		free(tab);
-		tab = NULL;
-	}
 }
 
 void	store_map(int row, int column, int i, t_cub3d *cubed)

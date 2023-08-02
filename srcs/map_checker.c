@@ -1,6 +1,6 @@
 #include "../includes/cub3d.h"
 
-static int	check_top_or_bottom(char **map_tab, int i, int j)
+int	check_top_or_bottom(char **map_tab, int i, int j)
 {
 	if (!map_tab || !map_tab[i] || !map_tab[i][j])
 		return (1);
@@ -37,28 +37,27 @@ int	check_map_sides(t_mapinfo *map, char **map_tab)
 
 int	is_a_white_space(char c)
 {
-	if (c != ' ' && c != '\t' && c != '\r'
-		&& c != '\n' && c != '\v' && c != '\f')
+	if (c != ' ' && c != '\t' && c != '\n')
 		return (1);
 	else
 		return (0);
 }
 
-size_t	find_biggest_len(t_mapinfo *map, int i)
+size_t	find_biggest_wall(t_mapinfo *map, int i)
 {
-	size_t	biggest_len;
+	size_t	size;
 
-	biggest_len = ft_strlen(map->file[i]);
+	size = ft_strlen(map->file[i]);
 	while (map->file[i])
 	{
-		if (ft_strlen(map->file[i]) > biggest_len)
-			biggest_len = ft_strlen(map->file[i]);
+		if (ft_strlen(map->file[i]) > size)
+			size = ft_strlen(map->file[i]);
 		i++;
 	}
-	return (biggest_len);
+	return (size);
 }
 
-int	check_map_elements(t_cub3d *cubed, char **map_tab)
+int	check_chars(t_cub3d *cubed, char **map_tab)
 {
 	int	i;
 	int	j;
@@ -85,7 +84,7 @@ int	check_map_elements(t_cub3d *cubed, char **map_tab)
 	return (0);
 }
 
-int	check_position_is_valid(t_cub3d *cubed, char **map_tab)
+int	check_pos_is_valid(t_cub3d *cubed, char **map_tab)
 {
 	int	i;
 	int	j;
@@ -102,7 +101,7 @@ int	check_position_is_valid(t_cub3d *cubed, char **map_tab)
 	return (0);
 }
 
-int	check_player_position(t_cub3d *cubed, char **map_tab)
+int	check_pos(t_cub3d *cubed, char **map_tab)
 {
 	int	i;
 	int	j;
@@ -125,12 +124,12 @@ int	check_player_position(t_cub3d *cubed, char **map_tab)
 		}
 		i++;
 	}
-	if (check_position_is_valid(cubed, map_tab) == 1)
+	if (check_pos_is_valid(cubed, map_tab) == 1)
 		return (showerror(cubed, "Invalid player position"));
 	return (0);
 }
 
-int	check_map_is_at_the_end(t_mapinfo *map)
+int	check_end_of_map(t_mapinfo *map)
 {
 	int	i;
 	int	j;
@@ -156,11 +155,11 @@ int	check_map_validity(t_cub3d *cubed, char **map_tab)
 		return (showerror(cubed, "No Walls found"));
 	if (cubed->mapinfo.height < 3)
 		return (showerror(cubed, "Map is too small"));
-	if (check_map_elements(cubed, map_tab))
+	if (check_chars(cubed, map_tab))
 		return (1);
-	if (check_player_position(cubed, map_tab))
+	if (check_pos(cubed, map_tab))
 		return (1);
-	if (check_map_is_at_the_end(&cubed->mapinfo))
+	if (check_end_of_map(&cubed->mapinfo))
 		return (showerror(cubed, "Map is not at the end"));
 	return (0);
 }

@@ -30,7 +30,7 @@ void	init_texture_pixels(t_cub3d *cubed)
 	}
 }
 
-static void	get_texture_index(t_cub3d *cubed, t_rc *rc)
+void	get_texture_index(t_cub3d *cubed, t_rc *rc)
 {
 	if (rc->side == 0)
 	{
@@ -220,7 +220,7 @@ void	set_image_pixel(t_image *image, int x, int y, int color)
 	image->addr[pixel] = color;
 }
 
-void	set_frame_image_pixel(t_cub3d *cubed, t_image *image, int x, int y)
+void	set_frame(t_cub3d *cubed, t_image *image, int x, int y)
 {
 	if (cubed->texture_pixels[y][x] > 0)
 		set_image_pixel(image, x, y, cubed->texture_pixels[y][x]);
@@ -243,7 +243,7 @@ void	render_frame(t_cub3d *cubed)
 	{
 		x = -1;
 		while (++x < WIN_WIDTH)
-			set_frame_image_pixel(cubed, &image, x, y);
+			set_frame(cubed, &image, x, y);
 	}
 	mlx_put_image_to_window(cubed->mlx, cubed->win, image.img, 0, 0);
 	mlx_destroy_image(cubed->mlx, image.img);

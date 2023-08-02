@@ -1,6 +1,6 @@
 #include "../includes/cub3d.h"
 
-static int	count_map_lines(t_cub3d *cubed, char **file, int i)
+int	count_map_lines(t_cub3d *cubed, char **file, int i)
 {
 	int	index_value;
 	int	j;
@@ -9,8 +9,7 @@ static int	count_map_lines(t_cub3d *cubed, char **file, int i)
 	while (file[i])
 	{
 		j = 0;
-		while (file[i][j] == ' ' || file[i][j] == '\t' || file[i][j] == '\r'
-		|| file[i][j] == '\v' || file[i][j] == '\f')
+		while (file[i][j] == ' ')
 			j++;
 		if (file[i][j] != '1')
 			break ;
@@ -20,12 +19,12 @@ static int	count_map_lines(t_cub3d *cubed, char **file, int i)
 	return (i - index_value);
 }
 
-static int	fill_map_tab(t_mapinfo *mapinfo, char **map_tab, int index)
+int	fill_map(t_mapinfo *mapinfo, char **map_tab, int index)
 {
 	int		i;
 	int		j;
 
-	mapinfo->width = find_biggest_len(mapinfo, index);
+	mapinfo->width = find_biggest_wall(mapinfo, index);
 	i = 0;
 	while (i < mapinfo->height)
 	{
@@ -47,18 +46,18 @@ static int	fill_map_tab(t_mapinfo *mapinfo, char **map_tab, int index)
 	return (0);
 }
 
-static int	get_map_info(t_cub3d *cubed, char **file, int i)
+int	get_map_info(t_cub3d *cubed, char **file, int i)
 {
 	cubed->mapinfo.height = count_map_lines(cubed, file, i);
 	cubed->map = malloc(sizeof(char *) * (cubed->mapinfo.height + 1));
 	if (!cubed->map)
 		return (0);
-	if (fill_map_tab(&cubed->mapinfo, cubed->map, i) == 1)
+	if (fill_map(&cubed->mapinfo, cubed->map, i) == 1)
 		return (1);
 	return (0);
 }
 
-static void	change_space_into_wall(t_cub3d *cubed)
+void	space_to_wall(t_cub3d *cubed)
 { 
 	int	i;
 	int	j;
@@ -67,9 +66,7 @@ static void	change_space_into_wall(t_cub3d *cubed)
 	while (cubed->map[i])
 	{
 		j = 0;
-		while (cubed->map[i][j] == ' ' || cubed->map[i][j] == '\t'
-		|| cubed->map[i][j] == '\r'
-		|| cubed->map[i][j] == '\v' || cubed->map[i][j] == '\f')
+		while (cubed->map[i][j] == ' ')
 			j++;
 		while (cubed->map[i][++j])
 		{
@@ -85,6 +82,6 @@ int	create_map(t_cub3d *cubed, char **file, int i)
 {
 	if (get_map_info(cubed, file, i) == 1)
 		return (1);
-	change_space_into_wall(cubed);
+	space_to_wall(cubed);
 	return (0);
 }

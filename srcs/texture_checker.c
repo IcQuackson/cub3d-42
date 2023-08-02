@@ -14,19 +14,17 @@ int	check_rgb_values(int *rgb)
 	return (0);
 }
 
-unsigned long	convert_rgb_to_hex(int *rgb_tab)
+unsigned long convert_rgb(int *rgb_tab)
 {
-	unsigned long	result;
-	int				r;
-	int				g;
-	int				b;
+    unsigned long hex = 0;
 
-	r = rgb_tab[0];
-	g = rgb_tab[1];
-	b = rgb_tab[2];
-	result = ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
-	return (result);
+    hex |= rgb_tab[0] << 16;  // Red value
+    hex |= rgb_tab[1] << 8;   // Green value
+    hex |= rgb_tab[2];        // Blue value
+
+    return (hex);
 }
+
 
 int	check_textures_validity(t_cub3d *cubed, t_fileinfo *textures)
 {
@@ -42,7 +40,7 @@ int	check_textures_validity(t_cub3d *cubed, t_fileinfo *textures)
 		|| check_rgb_values(textures->floor)
 		|| check_rgb_values(textures->ceiling))
 		return (1);
-	textures->hex_floor = convert_rgb_to_hex(textures->floor);
-	textures->hex_ceiling = convert_rgb_to_hex(textures->ceiling);
+	textures->hex_floor = convert_rgb(textures->floor);
+	textures->hex_ceiling = convert_rgb(textures->ceiling);
 	return (0);
 }

@@ -51,3 +51,18 @@ int	check_file(char *arg, int type)
 		return (showerror(NULL, "File is not a .xpm file"));
 	return (0);
 }
+
+int	parse_args(t_cub3d *cubed, char **av)
+{
+	if (check_file(av[1], 1) == 1)
+		return (0);
+	parse_data(av[1], cubed);
+	if (get_file_data(cubed, cubed->mapinfo.file) == 1)
+		return (0);
+	if (check_map_validity(cubed, cubed->map) == 1)
+		return (0);
+	if (check_textures_validity(cubed, &cubed->fileinfo) == 1)
+		return (0);
+	init_direction(&cubed->player);
+	return (1);
+}

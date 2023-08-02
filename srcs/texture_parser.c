@@ -43,7 +43,7 @@ int	fill_direction_textures(t_fileinfo *textures, char *line, int j)
 	return (0);
 }
 
-int	ignore_whitespaces_get_info(t_cub3d *cubed, char **map, int i, int j)
+int	fill_dir_and_text(t_cub3d *cubed, char **map, int i, int j)
 {
 	while (map[i][j] == ' ' || map[i][j] == '\n')
 		j++;
@@ -83,7 +83,7 @@ int	get_file_data(t_cub3d *cubed, char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			flag = ignore_whitespaces_get_info(cubed, map, i, j);
+			flag = fill_dir_and_text(cubed, map, i, j);
 			if (flag == 3)
 				break ;
 			else if (flag == 1)

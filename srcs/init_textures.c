@@ -54,23 +54,24 @@ void	init_fileinfo(t_fileinfo *textures)
 	textures->hex_floor = 0x0;
 	textures->hex_ceiling = 0x0;
 }
-static int	no_digit(char *str)
+
+int	no_digit(char *str)
 {
 	int		i;
-	int	found_no_digit;
+	int	flag;
 
 	i = 0;
-	found_no_digit = 1;
+	flag = 1;
 	while (str[i])
 	{
 		if (ft_isdigit(str[i]) == 1)
-			found_no_digit = 0;
+			flag = 0;
 		i++;
 	}
-	return (found_no_digit);
+	return (flag);
 }
 
-static int	*copy_into_rgb_array(char **rgb_to_convert, int *rgb)
+int	*copy_into_rgb_array(char **rgb_to_convert, int *rgb)
 {
 	int		i;
 
@@ -89,7 +90,7 @@ static int	*copy_into_rgb_array(char **rgb_to_convert, int *rgb)
 	return (rgb);
 }
 
-static int	*set_rgb_colors(char *line)
+int	*set_rgb(char *line)
 {
 	char	**rgb_to_convert;
 	int		*rgb;
@@ -116,13 +117,13 @@ int	fill_color_textures(t_cub3d *cubed, t_fileinfo *textures, char *line, int j)
 		return (showerror(cubed, "Error\nInvalid color\n"));
 	if (!textures->ceiling && line[j] == 'C')
 	{
-		textures->ceiling = set_rgb_colors(line + j + 1);
+		textures->ceiling = set_rgb(line + j + 1);
 		if (textures->ceiling == 0)
 			return (showerror(cubed, "Error\nInvalid color\n"));
 	}
 	else if (!textures->floor && line[j] == 'F')
 	{
-		textures->floor = set_rgb_colors(line + j + 1);
+		textures->floor = set_rgb(line + j + 1);
 		if (textures->floor == 0)
 			return (showerror(cubed, "Error\nInvalid color\n"));
 	}
