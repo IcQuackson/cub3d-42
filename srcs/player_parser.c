@@ -1,27 +1,47 @@
 #include "../includes/cub3d.h"
 
-void	get_player_data(t_player *player)
+static void	init_player_north_south(t_player *player)
 {
-	if (player->dir == 'N')
+	if (player->dir == 'S')
 	{
-		player->x = 0;
-		player->y = -1;
+		player->dir_x = 0;
+		player->dir_y = 1;
+		player->plane_x = -0.66;
+		player->plane_y = 0;
 	}
-	else if (player->dir == 'S')
+	else if (player->dir == 'N')
 	{
-		player->x = 0;
-		player->y = 1;
+		player->dir_x = 0;
+		player->dir_y = -1;
+		player->plane_x = 0.66;
+		player->plane_y = 0;
 	}
-	else if (player->dir == 'W')
+	else
+		return ;
+}
+
+static void	init_player_east_west(t_player *player)
+{
+	if (player->dir == 'W')
 	{
-		player->x = -1;
-		player->y = 0;
+		player->dir_x = -1;
+		player->dir_y = 0;
+		player->plane_x = 0;
+		player->plane_y = -0.66;
 	}
 	else if (player->dir == 'E')
 	{
-		player->x = 1;
-		player->y = 0;
+		player->dir_x = 1;
+		player->dir_y = 0;
+		player->plane_x = 0;
+		player->plane_y = 0.66;
 	}
 	else
-		return (0);
+		return ;
+}
+
+void	init_player_direction(t_cub3d *cubed)
+{
+	init_player_north_south(&cubed->player);
+	init_player_east_west(&cubed->player);
 }

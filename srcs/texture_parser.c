@@ -28,22 +28,22 @@ char	*get_texture_path(char *line, int j)
 	return (path);
 }
 
-int	get_textures(t_fileinfo *file, char *line, int j)
+int	fill_direction_textures(t_fileinfo *textures, char *line, int j)
 {
-	if(ft_strncmp(line, "NO", 2) == 0 && !(file->north))
-		file->north = get_path(line, j + 2);
-	else if (ft_strncmp(line, "SO", 2) == 0 && !(file->south))
-		file->south = get_path(line, j + 2);
-	else if (ft_strncmp(line, "EA", 2) == 0 && !(file->east))
-		file->east = get_path(line, j + 2);
-	else if (ft_strncmp(line, "WE", 2) == 0 && !(file->west))
-		file->west = get_path(line, j + 2);
+	if(ft_strncmp(line, "NO", 2) == 0 && !(textures->north))
+		textures->north = get_texture_path(line, j + 2);
+	else if (ft_strncmp(line, "SO", 2) == 0 && !(textures->south))
+		textures->south = get_texture_path(line, j + 2);
+	else if (ft_strncmp(line, "WE", 2) == 0 && !(textures->west))
+		textures->west = get_texture_path(line, j + 2);
+	else if (ft_strncmp(line, "EA", 2) == 0 && !(textures->east))
+		textures->east = get_texture_path(line, j + 2);
 	else
 		return (2);
 	return (0);
 }
 
-int	get_text_and_color(t_cub3d *cubed, char **map, int i, int j)
+int	ignore_whitespaces_get_info(t_cub3d *cubed, char **map, int i, int j)
 {
 	while (map[i][j] == ' ' || map[i][j] == '\n')
 		j++;
@@ -51,13 +51,13 @@ int	get_text_and_color(t_cub3d *cubed, char **map, int i, int j)
 	{
 		if (map[i][j + 1] && ft_isprint(map[i][j + 1]) && !ft_isdigit(map[i][j]))
 		{
-			if (get_textures(&cubed->fileinfo, map[i], j) == 2)
+			if (fill_direction_textures(&cubed->fileinfo, map[i], j) == 2)
 				return (1);
 			return (3);
 		}	
 		else
 		{
-			if (get_colors(cubed, &cubed->fileinfo, map[i], j) == 2)
+			if (fill_color_textures(cubed, &cubed->fileinfo, map[i], j) == 2)
 				return (1);
 			return (3);
 		}	
@@ -83,7 +83,7 @@ int	get_file_data(t_cub3d *cubed, char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			flag = get_text_and_color(cubed, map, i, j);
+			flag = ignore_whitespaces_get_info(cubed, map, i, j);
 			if (flag == 3)
 				break ;
 			else if (flag == 1)
@@ -96,4 +96,3 @@ int	get_file_data(t_cub3d *cubed, char **map)
 	}
 	return (0);
 }
-

@@ -1,72 +1,69 @@
 #include "../includes/cub3d.h"
 
-void	init_img(t_cub3d *cubed, t_image *image, char *path)
+void	init_img_clean(t_image *image)
 {
+	image->img = NULL;
+	image->addr = NULL;
 	image->pixel_bits = 0;
 	image->size_line = 0;
 	image->endian = 0;
-	image->img = mlx_xpm_file_to_image(data->mlx, path, &data->texinfo.size, &data->texinfo.size);
-	image->address = (int *)mlx_get_data_addr(image->img, &image->pixel_bits, &image->size_line, &image->endian);
 }
 
-int	*xpm_to_img(t_cub3d *cubed, char *path)
+void	init_rc(t_rc *rc)
 {
-	t_image	image;
-	int		x;
-	int		y;
-	int		*buffer;
-
-	init_img(cubed, &image, path);
-	buffer = ft_calloc(1, (sizeof(int *) * cubed->fileinfo.size * cubed->fileinfo.size));
-	if (!buffer)
-		return (0);
-	y = -1;
-	while (++y < cubed->fileinfo.size)
-	{
-		x = -1;
-		while (++x < cubed->fileinfo.size)
-			buffer[y * cubed->fileinfo.size + x] = image.addr[y * cubed->fileinfo.size + x];
-	}
-	mlx_destroy_image(cubed->mlx, image.img);
-	return (buffer);
+	rc->camera_x = 0;
+	rc->dir_x = 0;
+	rc->dir_y = 0;
+	rc->map_x = 0;
+	rc->map_y = 0;
+	rc->step_x = 0;
+	rc->step_y = 0;
+	rc->sidedist_x = 0;
+	rc->sidedist_y = 0;
+	rc->deltadist_x = 0;
+	rc->deltadist_y = 0;
+	rc->wall_dist = 0;
+	rc->wall_x = 0;
+	rc->side = 0;
+	rc->line_height = 0;
+	rc->draw_start = 0;
+	rc->draw_end = 0;
 }
 
-void	init_textures(t_cub3d *cubed)
+void	init_mapinfo(t_mapinfo *mapinfo)
 {
-	cubed->textures = ft_calloc(5, sizeof * cubed->textures);
-	if (!cubed->textures)
-		return (0);
-	cubed->textures[0] = xpm_to_img(cubed, cubed->fileinfo.north);
-	cubed->textures[1] = xpm_to_img(cubed, cubed->fileinfo.south);
-	cubed->textures[2] = xpm_to_img(cubed, cubed->fileinfo.east);
-	cubed->textures[3] = xpm_to_img(cubed, cubed->fileinfo.west);
+	mapinfo->path = NULL;
+	mapinfo->file = NULL;
+	mapinfo->fd = 0;
+	mapinfo->line_count = 0;
+	mapinfo->height = 0;
+	mapinfo->width = 0;
+	mapinfo->index_end_of_map = 0;
 }
 
-void	init_fileinfo(t_fileinfo *file)
+void	init_player(t_player *player)
 {
-	file->north = NULL;
-	file->south = NULL;
-	file->west = NULL;
-	file->east = NULL;
-	file->x = 0;
-	file->y = 0;
-	file->floor = 0;
-	file->ceiling = 0;
-	file->size = 64;
-	file->step = 0.0;
-	file->pos = 0.0;
-	file->hex_floor = 0x0;
-	file->hex_ceiling = 0x0;
+	player->dir = '\0';
+	player->pos_x = 0.0;
+	player->pos_y = 0.0;
+	player->dir_x = 0.0;
+	player->dir_y = 0.0;
+	player->plane_x = 0.0;
+	player->plane_y = 0.0;
+	player->has_moved = 0;
+	player->move_x = 0;
+	player->move_y = 0;
+	player->rotate = 0;
 }
 
-int	init_mlx(t_cub3d cubed)
+void	init_structs(t_cub3d *cubed)
 {
-	cubed->mlx = mlx_init();
-	if (!cubed->mlx)
-		return (0);
-	cubed->win = mlx_new_window(cubed->mlx, WIDTH, HEIGHT, "Cub3D by Sussy Bakas");
-	if (!cubed->win)
-		return (0);
-	init_textures(cubed);
-	return (1);
+	cubed->mlx = NULL;
+	cubed->win = NULL;
+	cubed->map = NULL;
+	cubed->texture_pixels = NULL;
+	cubed->textures = NULL;
+	init_player(&cubed->player);
+	init_fileinfo(&cubed->fileinfo);
+	init_mapinfo(&cubed->mapinfo);
 }

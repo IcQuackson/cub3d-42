@@ -6,39 +6,40 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:31:02 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/31 00:24:03 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/01 23:19:02 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	print_double_char(char **ptr)
+int	parse_args(t_cub3d *cubed, char **av)
 {
-	while (*ptr)
-	{
-		printf("%s\n", *ptr);
-		ptr++;
-	}
+	if (check_file(av[1], 1) == 1)
+		return (0);
+	parse_data(av[1], cubed);
+	if (get_file_data(cubed, cubed->mapinfo.file) == 1)
+		return (0);
+	if (check_map_validity(cubed, cubed->map) == 1)
+		return (0);
+	if (check_textures_validity(cubed, &cubed->fileinfo) == 1)
+		return (0);
+	init_player_direction(cubed);
+	return (1);
 }
 
-int	main(int argc, char **argv)
+int	main(int ac, char **av)
 {
-	t_cub3d	*game_data;
+	t_cub3d	cubed;
 
-	if (argc != 2)
-		return (showerror(NULL, "Invalid number of arguments"));
-	game_data = init_data();
-	if (!check_args(game_data, argv))
+	if (ac != 2)
+		return (showerror(&cubed, "Wrong number of arguments\n"));
+	init_structs(&cubed);
+	if (!parse_args(&cubed, av))
 		return (0);
-	init_mlx(game_data);
-	init_textures(game_data);
-	print_double_char(game_data->map);
-	printf("height: %d\n", game_data->map_data.height);
-	printf("Valid Map\n");
-	//game_data->mlx = mlx_init();
-	//game_data->mlx_win = mlx_new_window(game_data->mlx,
-	//		800, 600, "Hello world!");
-	//register_hooks(game_data);
-	//mlx_loop(game_data->mlx);
-	free_resources(game_data);
+	cubed.mlx = mlx_init();
+	cubed.win = mlx_new_window(cubed.mlx, WIN_WIDTH, WIN_HEIGHT, "Sussy Cub3d");
+	init_textures(&cubed);
+	render_raycast(&cubed);
+	mlx_loop_hook(cubed.mlx, render_raycast, &cubed);
+	mlx_loop(cubed.mlx);
 }

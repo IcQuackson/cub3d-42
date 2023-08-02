@@ -9,7 +9,7 @@ int	get_num_lines(char *path)
 	line_count = 0;
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
-		return (line_count);
+		showerror(NULL, "File not found");
 	else
 	{
 		line = get_next_line(fd);
@@ -23,48 +23,61 @@ int	get_num_lines(char *path)
 	}
 	return (line_count);
 }
+void	free_tab(void **tab)
+{
+	size_t	i;
 
-int	fill_map(t_cub3d *cubed, int i)
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	if (tab)
+	{
+		free(tab);
+		tab = NULL;
+	}
+}
+
+void	store_map(int row, int column, int i, t_cub3d *cubed)
 {
 	char	*line;
-	int		row;
-	int 	column;
 
-	row = 0;
-	column = 0;
-	line = get_next_line(cubed->map_data.fd);
+	line = get_next_line(cubed->mapinfo.fd);
 	while (line != NULL)
 	{
-		cubed->map_data.grid[row] = ft_calloc(ft_strlen(line) + 1, sizeof(char));
-		if (!cubed->map_data.grid[row])
-			return (0);
-		while (line[i])
-			cubed->map_data.grid[row][column++] = line[i++];
-		cubed->map_data.grid[row++][column] = '\0';
+		cubed->mapinfo.file[row] = ft_calloc(ft_strlen(line) + 1, sizeof(char));
+		if (!cubed->mapinfo.file[row])
+			return (free_tab((void **)cubed->mapinfo.file));
+		while (line[i] != '\0')
+			cubed->mapinfo.file[row][column++] = line[i++];
+		cubed->mapinfo.file[row++][column] = '\0';
 		column = 0;
 		i = 0;
 		free(line);
-		line = get_next_line(cubed->map_data.fd);
+		line = get_next_line(cubed->mapinfo.fd);
 	}
-	cubed->map_data.grid[row] = NULL;
-	return (1);
+	cubed->mapinfo.file[row] = NULL;
 }
 
-int	get_map_data(t_cub3d *cubed, char *file)
+void	parse_data(char *path, t_cub3d *cubed)
 {
-	int	i;
+	int		row;
+	int		i;
+	int		column;
 
 	i = 0;
-	cubed->map_data.path = file;
-	cubed->map_data.line_nbr = get_num_lines(file);
-	cubed->map_data.grid = ft_calloc(sizeof(char *),
-			cubed->map_data.line_count + 1);
-	if (!(cubed->map_data.grid))
-		return (0);
-	cubed->map_data.fd = open(file, O_RDONLY);
-	if (cubed->map_data.fd < 0)
-		return (0);
-	fill_map(cubed, i);
-	close(cubed->map_data.fd);
-	return (1);
+	row = 0;
+	column = 0;
+	cubed->mapinfo.path = path;
+	cubed->mapinfo.line_count = get_num_lines(path);
+	cubed->mapinfo.file = ft_calloc(cubed->mapinfo.line_count + 1, sizeof(char *));
+	if (!(cubed->mapinfo.file))
+		return ;
+	cubed->mapinfo.fd = open(path, O_RDONLY);
+	if (cubed->mapinfo.fd < 0)
+		showerror(cubed, "Bad Open");
+	store_map(row, column, i, cubed);
+	close(cubed->mapinfo.fd);
 }
