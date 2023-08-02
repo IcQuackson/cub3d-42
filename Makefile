@@ -2,7 +2,6 @@ SRC	= srcs/main.c srcs/init.c srcs/file_parser.c srcs/init_textures.c srcs/rayca
 BIN	= bin
 DEBUGBIN = dbin
 INCS	= includes/
-#TRIGGER_HEADERS = $(INCS)/test.h
 LIBFT	= libft/# Libft folder
 LIBFT_INCS = includes/# Libft includes/ folder
 LFLAGS	= -L${LIBFT} -lft -Iminilibx-linux -Lminilibx-linux -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm
@@ -28,10 +27,23 @@ else
 	CFLAGS += -D LINUX
 endif
 
+# Colors
+
+DEFAULT = \033[0;39m
+GRAY = \033[0;90m
+RED = \033[0;91m
+GREEN = \033[0;92m
+YELLOW = \033[0;93m
+BLUE = \033[0;94m
+MAGENTA = \033[0;95m
+CYAN = \033[0;96m
+WHITE = \033[0;97m
+
 all: ${NAME}
 
 ${NAME}: ${BIN} ${OBJS} | ${LIBFT}
 	${CC} -o ${NAME} ${OBJS} ${LFLAGS}
+	@echo "$(GREEN)Cub3D compiled $(MAGENTA)UwU!$(DEFAULT)"
 
 debug: ${DNAME}
 
@@ -55,10 +67,12 @@ clean:
 	cd libft && make clean
 	cd minilibx-linux && make clean
 	${RM} ${BIN} ${DEBUGBIN}
+	@echo "$(BLUE)objects awe cweean UwU!$(DEFAULT)"
 
 fclean: clean
 		cd libft && make fclean
 		${RM} ${NAME} ${DNAME}
+		@echo "$(CYAN)Evewithing is cweean!$(DEFAULT)"
 
 run: all
 	 ./$(NAME) ${ARGS}
@@ -73,6 +87,7 @@ ${LIBFT}:
 	@make all -C ${LIBFT} --no-print-directory
 
 re: fclean all
+		@echo "$(GREEN)I cweeaned and rebuilt evewithing for u daddy UwU!$(DEFAULT)"
 
 test: debug
 	@echo "[MAKEFILE] You can setup test arguments by setting up the env FT_LS_ARGS"

@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/08/02 04:15:58 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/02 04:36:58 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # define XPM 0
 # define CUB 1
 # define MAX_LINE_LENGTH 1000
-# define WIN_WIDTH 640
-# define WIN_HEIGHT 480
+# define WIDTH 1920
+# define HEIGHT 1080
 # define TILE_SIZE 30
 # define ESC 65307
 # define KEY_PRESS_EVENT 2 
@@ -111,10 +111,6 @@ typedef struct s_player
 	double	dir_y;
 	double	plane_x;
 	double	plane_y;
-	int		has_moved;
-	int		move_x;
-	int		move_y;
-	int		rotate;
 }	t_player;
 
 typedef struct s_cubed

@@ -15,14 +15,14 @@ void	init_texture_pixels(t_cub3d *cubed)
 			cubed->texture_pixels = NULL;
 		}
 	}
-	cubed->texture_pixels = ft_calloc(WIN_HEIGHT + 1,
+	cubed->texture_pixels = ft_calloc(HEIGHT + 1,
 			sizeof * cubed->texture_pixels);
 	if (!cubed->texture_pixels)
 		return ;
 	i = 0;
-	while (i < WIN_HEIGHT)
+	while (i < HEIGHT)
 	{
-		cubed->texture_pixels[i] = ft_calloc(WIN_WIDTH + 1,
+		cubed->texture_pixels[i] = ft_calloc(WIDTH + 1,
 				sizeof * cubed->texture_pixels);
 		if (!cubed->texture_pixels[i])
 			return ;
@@ -59,7 +59,7 @@ void	update_texture_pixels(t_cub3d *cubed, t_fileinfo *tex, t_rc *rc, int x)
 		|| (rc->side == 1 && rc->dir_y > 0))
 		tex->x = tex->size - tex->x - 1;
 	tex->step = 1.0 * tex->size / rc->line_height;
-	tex->pos = (rc->draw_start - WIN_HEIGHT / 2
+	tex->pos = (rc->draw_start - HEIGHT / 2
 			+ rc->line_height / 2) * tex->step;
 	y = rc->draw_start;
 	while (y < rc->draw_end)
@@ -86,7 +86,7 @@ void	init_rc_info(int x, t_rc *rc, t_player *player)
 	init_rc(rc);
 
     // Calculate the x-coordinate in camera space
-	rc->camera_x = 2 * x / (double)WIN_WIDTH - 1;
+	rc->camera_x = 2 * x / (double)WIDTH - 1;
 
     // Calculate the direction of the rc
 	rc->dir_x = player->dir_x + player->plane_x * rc->camera_x;
@@ -175,15 +175,15 @@ void	calculate_height(t_rc *rc, t_player *player)
 		rc->wall_dist = (rc->sidedist_y - rc->deltadist_y);
 
     // Calculate the height of the line to draw on the screen
-	rc->line_height = (int)(WIN_HEIGHT / rc->wall_dist);
+	rc->line_height = (int)(HEIGHT / rc->wall_dist);
 
     // Calculate the lowest and highest pixel to fill in the current stripe
-	rc->draw_start = -(rc->line_height) / 2 + WIN_HEIGHT / 2;
+	rc->draw_start = -(rc->line_height) / 2 + HEIGHT / 2;
 	if (rc->draw_start < 0)
 		rc->draw_start = 0;
-	rc->draw_end = rc->line_height / 2 + WIN_HEIGHT / 2;
-	if (rc->draw_end >= WIN_HEIGHT)
-		rc->draw_end = WIN_HEIGHT - 1;
+	rc->draw_end = rc->line_height / 2 + HEIGHT / 2;
+	if (rc->draw_end >= HEIGHT)
+		rc->draw_end = HEIGHT - 1;
 
     // Calculate the exact position of the wall hit
 	if (rc->side == 0)
@@ -200,7 +200,7 @@ int	raycasting(t_player *player, t_cub3d *cubed)
 
 	x = 0;
 	rc = cubed->rc;
-	while (x < WIN_WIDTH)
+	while (x < WIDTH)
 	{
 		init_rc_info(x, &rc, player);
 		set_dda(&rc, player);
@@ -224,9 +224,9 @@ void	set_frame(t_cub3d *cubed, t_image *image, int x, int y)
 {
 	if (cubed->texture_pixels[y][x] > 0)
 		set_image_pixel(image, x, y, cubed->texture_pixels[y][x]);
-	else if (y < WIN_HEIGHT / 2)
+	else if (y < HEIGHT / 2)
 		set_image_pixel(image, x, y, cubed->fileinfo.hex_ceiling);
-	else if (y < WIN_HEIGHT -1)
+	else if (y < HEIGHT -1)
 		set_image_pixel(image, x, y, cubed->fileinfo.hex_floor);
 }
 
@@ -236,13 +236,13 @@ void	render_frame(t_cub3d *cubed)
 	int		x;
 	int		y;
 
-	image.img = mlx_new_image(cubed->mlx, WIN_WIDTH, WIN_HEIGHT);
+	image.img = mlx_new_image(cubed->mlx, WIDTH, HEIGHT);
 	image.addr = (int *)mlx_get_data_addr(image.img, &image.pixel_bits, &image.size_line, &image.endian);
 	y = -1;
-	while (++y < WIN_HEIGHT)
+	while (++y < HEIGHT)
 	{
 		x = -1;
-		while (++x < WIN_WIDTH)
+		while (++x < WIDTH)
 			set_frame(cubed, &image, x, y);
 	}
 	mlx_put_image_to_window(cubed->mlx, cubed->win, image.img, 0, 0);
