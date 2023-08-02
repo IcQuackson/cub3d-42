@@ -15,24 +15,32 @@ int	is_folder(char *arg)
 	return (ret);
 }
 
-int	is_cub_file(char *arg)
+int	is_cub_file(char *file_path)
 {
-	size_t	len;
+	char	*filename;
 
-	len = ft_strlen(arg);
-	if ((arg[len - 3] != 'c' || arg[len - 2] != 'u' || arg[len - 1] != 'b' || arg[len - 4] != '.'))
+	filename = ft_strrchr(file_path, '/');
+	if (filename)
+		filename++;
+	else
+		filename = file_path;
+	if (ft_strlen(filename) < 5)
 		return (0);
-	return (1);
+	return (ft_strcmp(ft_strchr(filename, '.'), ".cub") == 0);
 }
 
-int	is_xpm_file(char *arg)
+int	is_xpm_file(char *file_path)
 {
-	size_t	len;
+	char	*filename;
 
-	len = ft_strlen(arg);
-	if ((arg[len - 3] != 'x' || arg[len - 2] != 'p' || arg[len - 1] != 'm' || arg[len - 4] != '.'))
+	filename = ft_strrchr(file_path, '/');
+	if (filename)
+		filename++;
+	else
+		filename = file_path;
+	if (ft_strlen(filename) < 5)
 		return (0);
-	return (1);
+	return (ft_strcmp(ft_strchr(filename, '.'), ".xpm") == 0);
 }
 
 int	check_file(char *arg, int type)
@@ -45,16 +53,16 @@ int	check_file(char *arg, int type)
 	if (fd == -1)
 		return (showerror(NULL, "File not found"));
 	close(fd);
-	if (type && !is_cub_file(arg))
+	if (type && is_cub_file(arg))
 		return (showerror(NULL, "File is not a .cub file"));
-	if (!type && !is_xpm_file(arg))
+	if (type == 0 && !is_xpm_file(arg))
 		return (showerror(NULL, "File is not a .xpm file"));
 	return (0);
 }
 
 int	parse_args(t_cub3d *cubed, char **av)
 {
-	if (check_file(av[1], 1) == 1)
+	if (check_file(av[1], CUB))
 		return (0);
 	parse_data(av[1], cubed);
 	if (get_file_data(cubed, cubed->mapinfo.file) == 1)

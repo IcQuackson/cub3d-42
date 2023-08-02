@@ -25,21 +25,17 @@ int	fill_map(t_mapinfo *mapinfo, char **map_tab, int index)
 	int		j;
 
 	mapinfo->width = find_biggest_wall(mapinfo, index);
-	i = 0;
-	while (i < mapinfo->height)
+	i = -1;
+	while (++i < mapinfo->height)
 	{
-		j = 0;
+		j = -1;
 		map_tab[i] = malloc(sizeof(char) * (mapinfo->width + 1));
 		if (!map_tab[i])
 			return (0);
-		while (mapinfo->file[index][j] && mapinfo->file[index][j] != '\n')
-		{
+		while (mapinfo->file[index][++j] && mapinfo->file[index][j] != '\n')
 			map_tab[i][j] = mapinfo->file[index][j];
-			j++;
-		}	
 		while (j < mapinfo->width)
 			map_tab[i][j++] = '\0';
-		i++;
 		index++;
 	}
 	map_tab[i] = NULL;
@@ -62,19 +58,17 @@ void	space_to_wall(t_cub3d *cubed)
 	int	i;
 	int	j;
 
-	i = 0;
-	while (cubed->map[i])
+	i = -1;
+	while (cubed->map[++i])
 	{
 		j = 0;
 		while (cubed->map[i][j] == ' ')
 			j++;
 		while (cubed->map[i][++j])
 		{
-			if (cubed->map[i][j] == ' '
-				&& j != cubed->map[i][ft_strlen(cubed->map[i]) - 1])
+			if (cubed->map[i][j] == ' ' && j != cubed->map[i][ft_strlen(cubed->map[i]) - 1])
 				cubed->map[i][j] = '1';
 		}
-		i++;
 	}
 }
 
