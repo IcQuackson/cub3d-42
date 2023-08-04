@@ -1,12 +1,12 @@
 #include "../includes/cub3d.h"
 
-int	is_folder(char *arg)
+int	is_folder(char *filepath)
 {
 	int		fd;
 	int	ret;
 
 	ret = 0;
-	fd = open(arg, O_DIRECTORY);
+	fd = open(filepath, O_DIRECTORY);
 	if (fd >= 0)
 	{
 		close (fd);
@@ -15,47 +15,44 @@ int	is_folder(char *arg)
 	return (ret);
 }
 
-int	is_cub_file(char *file_path)
+int	is_cub_type(char *filepath)
 {
-	char	*filename;
+	size_t len;
+	const char *file_extension;
 
-	filename = ft_strrchr(file_path, '/');
-	if (filename)
-		filename++;
-	else
-		filename = file_path;
-	if (ft_strlen(filename) < 5)
+	len = ft_strlen(filepath);
+	file_extension = filepath + (len = ft_strlen(filepath)) - 4;
+	if (len < 5 || ft_strcmp(file_extension, ".cub") != 0)
 		return (0);
-	return (ft_strcmp(ft_strchr(filename, '.'), ".cub") == 0);
+	return (1);
 }
 
-int	is_xpm_file(char *file_path)
+int	is_xpm_type(char *filepath)
 {
-	char	*filename;
+	size_t len;
+	const char *file_extension;
 
-	filename = ft_strrchr(file_path, '/');
-	if (filename)
-		filename++;
-	else
-		filename = file_path;
-	if (ft_strlen(filename) < 5)
+	len = ft_strlen(filepath);
+	file_extension = filepath + (len = ft_strlen(filepath)) - 4;
+	if (len < 5 || ft_strcmp(file_extension, ".xpm") != 0)
 		return (0);
-	return (ft_strcmp(ft_strchr(filename, '.'), ".xpm") == 0);
+	return (1);
 }
 
-int	check_file(char *arg, int type)
+
+int	check_file(char *filepath, int type)
 {
 	int	fd;
 
-	if (is_folder(arg))
+	if (is_folder(filepath))
 		return (showerror(NULL, "File is a directory"));
-	fd = open(arg, O_RDONLY);
+	fd = open(filepath, O_RDONLY);
 	if (fd == -1)
 		return (showerror(NULL, "File not found"));
 	close(fd);
-	if (type && is_cub_file(arg))
+	if (type && !is_cub_type(filepath))
 		return (showerror(NULL, "File is not a .cub file"));
-	if (type == 0 && !is_xpm_file(arg))
+	if (type == 0 && !is_xpm_type(filepath))
 		return (showerror(NULL, "File is not a .xpm file"));
 	return (0);
 }

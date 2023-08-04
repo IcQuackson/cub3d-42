@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/08/02 04:36:58 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/04 09:54:24 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # define XPM 0
 # define CUB 1
 # define MAX_LINE_LENGTH 1000
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 640
+# define HEIGHT 480
 # define TILE_SIZE 30
 # define ESC 65307
 # define KEY_PRESS_EVENT 2 
@@ -143,8 +143,8 @@ int				check_map_validity(t_cub3d *cubed, char **map_tab);
 /*					File_Parser					*/
 int				parse_args(t_cub3d *cubed, char **av);
 int				check_file(char *arg, int type);
-int				is_xpm_file(char *arg);
-int				is_cub_file(char *arg);
+int				is_xpm_type(char *filepath);
+int				check_file(char *filepath, int type);
 int				is_folder(char *arg);
 
 /*					Data_Parser					*/
