@@ -1,5 +1,12 @@
 #include "../includes/cub3d.h"
 
+/**
+ * The function initializes the texture pixels array in the given cubed struct.
+ * 
+ * @param cubed The parameter "cubed" is a pointer to a structure of type "t_cub3d".
+ * 
+ * @return nothing (void).
+ */
 void	init_texture_pixels(t_cub3d *cubed)
 {
 	int	i;
@@ -50,29 +57,45 @@ void	get_texture_index(t_cub3d *cubed, t_rc *rc)
 
 void	update_texture_pixels(t_cub3d *cubed, t_fileinfo *tex, t_rc *rc, int x)
 {
-	int			y;
-	int			color;
+	int y;
+    int color;
 
-	get_texture_index(cubed, rc);
-	tex->x = (int)(rc->wall_x * tex->size);
-	if ((rc->side == 0 && rc->dir_x < 0)
-		|| (rc->side == 1 && rc->dir_y > 0))
-		tex->x = tex->size - tex->x - 1;
-	tex->step = 1.0 * tex->size / rc->line_height;
-	tex->pos = (rc->draw_start - HEIGHT / 2
-			+ rc->line_height / 2) * tex->step;
-	y = rc->draw_start;
-	while (y < rc->draw_end)
-	{
-		tex->y = (int)tex->pos & (tex->size - 1);
-		tex->pos += tex->step;
-		color = cubed->textures[tex->index][tex->size * tex->y + tex->x];
-		if (tex->index == 0 || tex->index == 2)
-			color = (color >> 1) & 8355711;
-		if (color > 0)
-			cubed->texture_pixels[y][x] = color;
-		y++;
-	}
+    // Calculate the index of the texture to be used for this wall slice
+    get_texture_index(cubed, rc);
+
+    // Calculate the x-coordinate on the texture based on the intersection point
+    tex->x = (int)(rc->wall_x * tex->size);
+
+    // Adjust the x-coordinate if the wall is being rendered from the opposite direction
+    if ((rc->side == 0 && rc->dir_x < 0) || (rc->side == 1 && rc->dir_y > 0))
+        tex->x = tex->size - tex->x - 1;
+
+    // Calculate the step and initial position for sampling the texture vertically
+    tex->step = 1.0 * tex->size / rc->line_height;
+    tex->pos = (rc->draw_start - HEIGHT / 2 + rc->line_height / 2) * tex->step;
+
+    y = rc->draw_start;
+
+    // Iterate over the vertical pixels of the wall slice
+    while (y < rc->draw_end)
+    {
+        // Calculate the y-coordinate on the texture based on the vertical position
+        tex->y = (int)tex->pos & (tex->size - 1);
+        tex->pos += tex->step;
+
+        // Retrieve the color from the texture based on texture coordinates
+        color = cubed->textures[tex->index][tex->size * tex->y + tex->x];
+
+        // Apply shading correction to the color for certain textures
+        if (tex->index == 0 || tex->index == 2)
+            color = (color >> 1) & 8355711;
+
+        // If the color is not transparent, update the pixel in the wall slice buffer
+        if (color > 0)
+            cubed->texture_pixels[y][x] = color;
+
+        y++;
+    }
 }
 
 /*
@@ -236,17 +259,28 @@ void	render_frame(t_cub3d *cubed)
 	int		x;
 	int		y;
 
-	image.img = mlx_new_image(cubed->mlx, WIDTH, HEIGHT);
-	image.addr = (int *)mlx_get_data_addr(image.img, &image.pixel_bits, &image.size_line, &image.endian);
-	y = -1;
-	while (++y < HEIGHT)
-	{
-		x = -1;
-		while (++x < WIDTH)
-			set_frame(cubed, &image, x, y);
-	}
-	mlx_put_image_to_window(cubed->mlx, cubed->win, image.img, 0, 0);
-	mlx_destroy_image(cubed->mlx, image.img);
+	// Create a new image with dimensions WIDTH x HEIGHT
+    image.img = mlx_new_image(cubed->mlx, WIDTH, HEIGHT);
+    
+    // Get image information (pixel bits, size line, endian) for manipulation
+    image.addr = (int *)mlx_get_data_addr(image.img, &image.pixel_bits, &image.size_line, &image.endian);
+    
+    y = -1;
+    // Loop through each row (vertical) of the frame
+    while (++y < HEIGHT)
+    {
+        x = -1;
+        // Loop through each pixel in the current row (horizontal)
+        while (++x < WIDTH)
+            // Call the set_frame function to determine the color of the current pixel
+            set_frame(cubed, &image, x, y);
+    }
+    
+    // Display the rendered image in the window
+    mlx_put_image_to_window(cubed->mlx, cubed->win, image.img, 0, 0);
+    
+    // Destroy the temporary image to avoid memory leaks
+    mlx_destroy_image(cubed->mlx, image.img);
 }
 
 

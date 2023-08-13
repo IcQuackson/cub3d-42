@@ -147,6 +147,10 @@ int				is_xpm_type(char *filepath);
 int				check_file(char *filepath, int type);
 int				is_folder(char *arg);
 
+/* 					Hooks							*/
+int				handle_closewindow(t_cub3d *game_data);
+int				key_down_hook(int keycode, t_cub3d *game_data);
+
 /*					Data_Parser					*/
 void			parse_data(char *path, t_cub3d *cubed);
 void			store_map(int row, int column, int i, t_cub3d *cubed);
@@ -201,6 +205,10 @@ int				count_map_lines(t_cub3d *cubed, char **file, int i);
 int				fill_map(t_mapinfo *mapinfo, char **map_tab, int index);
 int				get_map_info(t_cub3d *cubed, char **file, int i);
 int				create_map(t_cub3d *cubed, char **file, int i);
+
+/*				Movements				*/
+void			rotate_left(t_cub3d *cubed);
+void 			rotate_right(t_cub3d *cubed);
 
 /*				Utils				*/
 int				showerror(t_cub3d *cubed, char *str);
