@@ -28,10 +28,13 @@ int	key_down_hook(int keycode, t_cub3d *game_data)
 	if (keycode == 'w')
 	{
 		printf("w\n");
-		//move_up(game_data, 10);
+		move_forward(game_data);
 	}
 	else if (keycode == 's')
+	{
 		printf("s\n");
+		move_back(game_data);
+	}
 	else if (keycode == 'a')
 	{
 		printf("a\n");
@@ -46,6 +49,10 @@ int	key_down_hook(int keycode, t_cub3d *game_data)
 	{
 		printf("d\n");
 		rotate_right(game_data);
+		printf("dir_x: %f\n", game_data->player.dir_x);
+		printf("dir_y: %f\n", game_data->player.dir_y);
+		printf("plane_x: %f\n", game_data->player.plane_x);
+		printf("plane_y: %f\n", game_data->player.plane_y);
 	}
 	return (0);
 }

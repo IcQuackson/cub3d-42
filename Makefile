@@ -60,6 +60,8 @@ re:			fclean all
 run: all
 	 ./$(NAME) $(ARGS)
 
+rerun: re run
+
 gdb:	all
 		gdb --args ./$(NAME) $(ARGS)
 

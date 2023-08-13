@@ -209,6 +209,9 @@ int				create_map(t_cub3d *cubed, char **file, int i);
 /*				Movements				*/
 void			rotate_left(t_cub3d *cubed);
 void 			rotate_right(t_cub3d *cubed);
+void			move_forward(t_cub3d *cubed);
+void			move_back(t_cub3d *cubed);
+double			degree_to_rad(int degree);
 
 /*				Utils				*/
 int				showerror(t_cub3d *cubed, char *str);
