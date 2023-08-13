@@ -1,33 +1,20 @@
-SRC	= srcs/main.c srcs/init.c srcs/file_parser.c srcs/init_textures.c srcs/raycasting.c srcs/map_checker.c gnl/get_next_line.c srcs/utils.c srcs/player_parser.c srcs/texture_parser.c srcs/texture_checker.c srcs/create_map.c srcs/data_parser.c
-BIN	= bin
-DEBUGBIN = dbin
-INCS	= includes/
-LIBFT	= libft/# Libft folder
-LIBFT_INCS = includes/# Libft includes/ folder
-LFLAGS	= -L${LIBFT} -lft -Iminilibx-linux -Lminilibx-linux -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm
-CFLAGS	= -Wall -Werror -Wextra -g# -fsanitize=address
-DEBUG	=	-D DEBUG
-IFLAGS	= -I${INCS} -I${LIBFT_INCS}
-UNAME	:= ${shell uname}
-NAME	= cub3D
-DNAME = debug_test_executable
-RM	= rm -rf
-OBJS	= ${SRC:srcs/%c=${BIN}/%o}
-DOBJS = ${SRC:srcs/%c=${DEBUGBIN}/%o}
-VALGRIN_DFLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose
-VALGRIND_OUTFILE = valgrind-out.txt
-ARGS = ./maps/scene.cub
+# Compiled Files
+NAME	=	cub3d
+MLX		=	libmlx.a
 
-ifeq ($(UNAME), Darwin)
-	CC = gcc
-else ifeq ($(UNAME), FreeBSD)
-	CC = clang
-else
-	CC	= gcc
-	CFLAGS += -D LINUX
-endif
+# Compiler and flags
+CC			=	cc
+CFLAGS		=	-Wall -Werror -Wextra
+MLXFLAGS	=	-Iminilibx-linux -Lminilibx-linux -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm
 
-# Colors
+# Files
+SRCS	=	srcs/main.c srcs/init.c \
+			srcs/file_parser.c srcs/init_textures.c srcs/raycasting.c srcs/map_checker.c \
+			gnl/get_next_line.c srcs/utils.c srcs/player_parser.c srcs/texture_parser.c srcs/texture_checker.c  \
+			srcs/create_map.c srcs/data_parser.c libft/libft.a
+ARGS	= 	./maps/minecraft.cub
+
+# Colors (or Colours?)
 
 DEFAULT = \033[0;39m
 GRAY = \033[0;90m
@@ -38,69 +25,45 @@ BLUE = \033[0;94m
 MAGENTA = \033[0;95m
 CYAN = \033[0;96m
 WHITE = \033[0;97m
+CURSIVE	= \e[33;3m
 
-all: ${NAME}
 
-${NAME}: ${BIN} ${OBJS} | ${LIBFT}
-	${CC} -o ${NAME} ${OBJS} ${LFLAGS}
-	@echo "$(GREEN)Cub3D compiled $(MAGENTA)UwU!$(DEFAULT)"
+all:		mlx $(NAME)
 
-debug: ${DNAME}
+$(NAME):
+			@echo "$(CURSIVE)Compiling...$(DEFAULT)"
+			@chmod 777 minilibx-linux/configure
+			@$(MAKE) -C minilibx-linux all
+			@$(MAKE) -C libft all
+			$(CC) $(CFLAGS) -g -o $(NAME) $(SRCS) $(MLXFLAGS)
+			@echo "$(GREEN) Cub3D created successfully!$(DEFAULT)"
 
-${DNAME}: ${DEBUGBIN} ${DOBJS} | ${LIBFT}
-	${CC} -o ${DNAME} ${DOBJS} ${DEBUG} ${LFLAGS}
-
-${BIN}/%o: srcs/%c
-	cd minilibx-linux && make
-	${CC} -c $< ${CFLAGS} ${IFLAGS} -o $@
-
-${DEBUGBIN}/%o: srcs/%c
-	${CC} -c $< ${CFLAGS} ${IFLAGS} ${DEBUG} -o $@
-
-${BIN}:
-	@mkdir -p ${BIN}
-
-${DEBUGBIN}:
-	@mkdir -p ${DEBUGBIN}
+mlx:
+			@echo "$(YELLOW)Compiling MLX..."
+			@$(MAKE) -C minilibx-linux all
 
 clean:
-	cd libft && make clean
-	cd minilibx-linux && make clean
-	${RM} ${BIN} ${DEBUGBIN}
-	@echo "$(BLUE)objects awe cweean UwU!$(DEFAULT)"
+			@echo "$(BLUE)Cleaning...$(DEFAULT)"
+			@$(MAKE) -C minilibx-linux clean
+			@$(MAKE) -C libft clean
+			@echo "$(CYAN)Object Files Cleaned!$(DEFAULT)"
 
-fclean: clean
-		cd libft && make fclean
-		${RM} ${NAME} ${DNAME}
-		@echo "$(CYAN)Evewithing is cweean!$(DEFAULT)"
+fclean:		clean
+			@$(MAKE) -C libft fclean
+			@rm -f $(NAME)
+			@echo "$(BLUE)Executables Cleaned!$(DEFAULT)"
+
+re:			fclean all
+			@echo "$(MAGENTA)I cweeaned and rebuilt evewithing for u daddy UwU!$(DEFAULT)"
+
 
 run: all
-	 ./$(NAME) ${ARGS}
+	 ./$(NAME) $(ARGS)
 
 gdb:	all
-		gdb --args ./$(NAME) ${ARGS}
+		gdb --args ./$(NAME) $(ARGS)
 
 valgrind: 	all
-			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) ${ARGS}
+			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARGS)
 
-${LIBFT}:
-	@make all -C ${LIBFT} --no-print-directory
-
-re: fclean all
-		@echo "$(GREEN)I cweeaned and rebuilt evewithing for u daddy UwU!$(DEFAULT)"
-
-test: debug
-	@echo "[MAKEFILE] You can setup test arguments by setting up the env FT_LS_ARGS"
-	@echo "[MAKEFILE] Ex: export FT_LS_ARGS=\"-a --recursive ..\""
-	valgrind ${VALGRIND_FLAGS} --log-file=$(VALGRIND_OUTFILE) ./${DNAME} ${FT_LS_ARGS}
-
-show:
-	@printf "UNAME		: ${UNAME}\n"
-	@printf "NAME		: ${NAME}\n"
-	@printf "CC			: ${CC}\n"
-	@printf "CFLAGS		: ${CFLAGS}\n"
-	@printf "LFLAGS		: ${LFLAGS}\n"
-	@printf "SRC		: ${SRC}\n"
-	@printf "OBJS		: ${OBJS}\n"
-
-.PHONY: re all clean fclean debug test ${LIBFT}
+.PHONY: re all clean fclean debug test $(LIBFT)
