@@ -1,15 +1,31 @@
 #include "../includes/cub3d.h"
 
-int freexit(t_cub3d *cubed)
+
+void	free_fileinfo(t_fileinfo *fileinfo)
+{
+	if (fileinfo->ceiling)
+		free(fileinfo->ceiling);
+	if (fileinfo->floor)
+		free(fileinfo->floor);
+	if (fileinfo->north)
+		free(fileinfo->north);
+	if (fileinfo->south)
+		free(fileinfo->south);
+	if (fileinfo->west)
+		free(fileinfo->west);
+	if (fileinfo->east)
+		free(fileinfo->east);
+}
+
+void freexit(t_cub3d *cubed)
 {
 	if (!cubed)
-		return (0);
+		return ;
 	printf("FREEXIT\n");
-	if (!cubed->mapinfo.file)
-		return (0);
-	free(cubed->mapinfo.file);
+	free_fileinfo(&cubed->fileinfo);
+	if (cubed->mapinfo.file)
+		free(cubed->mapinfo.file);
 /* 	if(cubed->tex) */
-	return (1);
 }
 
 int	showerror(t_cub3d *cubed, char *str)
