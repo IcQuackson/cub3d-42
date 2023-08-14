@@ -11,7 +11,8 @@ MLXFLAGS	=	-Iminilibx-linux -Lminilibx-linux -lmlx -lmlx_Linux -L/usr/lib -lXext
 SRCS	=	srcs/main.c srcs/init.c \
 			srcs/file_parser.c srcs/init_textures.c srcs/raycasting.c srcs/map_checker.c \
 			gnl/get_next_line.c srcs/utils.c srcs/player_parser.c srcs/texture_parser.c srcs/texture_checker.c  \
-			srcs/create_map.c srcs/data_parser.c srcs/hooks.c srcs/movements.c libft/libft.a
+			srcs/create_map.c srcs/data_parser.c srcs/hooks.c srcs/movements.c
+OBJS	=	$(SRCS:.c=.o)
 ARGS	= 	./maps/minecraft.cub
 
 # Colors (or Colours?)
@@ -30,12 +31,11 @@ CURSIVE	= \e[33;3m
 
 all:		mlx $(NAME)
 
-$(NAME):
+$(NAME): $(OBJS)
 			@echo "$(CURSIVE)Compiling...$(DEFAULT)"
 			@chmod 777 minilibx-linux/configure
-			@$(MAKE) -C minilibx-linux all
 			@$(MAKE) -C libft all
-			$(CC) $(CFLAGS) -g -o $(NAME) $(SRCS) $(MLXFLAGS)
+			$(CC) $(CFLAGS) -g $(OBJS) libft/libft.a -o $(NAME) $(MLXFLAGS)
 			@echo "$(GREEN) Cub3D created successfully!$(DEFAULT)"
 
 mlx:
@@ -46,6 +46,7 @@ clean:
 			@echo "$(BLUE)Cleaning...$(DEFAULT)"
 			@$(MAKE) -C minilibx-linux clean
 			@$(MAKE) -C libft clean
+			@rm -f $(OBJS)
 			@echo "$(CYAN)Object Files Cleaned!$(DEFAULT)"
 
 fclean:		clean
