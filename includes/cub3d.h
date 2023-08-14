@@ -154,7 +154,7 @@ int				key_down_hook(int keycode, t_cub3d *game_data);
 /*					Data_Parser					*/
 int				parse_data(char *path, t_cub3d *cubed);
 void			store_map(int row, int column, int i, t_cub3d *cubed);
-int				get_num_lines(char *path);
+int				get_num_lines(char *path, t_cub3d *cubed);
 void			store_map(int row, int column, int i, t_cub3d *cubed);
 
 /*					Init						*/
@@ -174,7 +174,7 @@ int				fill_color_textures(t_cub3d *cubed, t_fileinfo *textures, char *line, int
 /*				Texture_Checker				*/
 unsigned long	convert_rgb(int *rgb_tab);
 int				check_textures_validity(t_cub3d *cubed, t_fileinfo *textures);
-int				check_rgb_values(int *rgb);
+int				check_rgb_values(int *rgb, t_cub3d *cubed);
 
 /*				Textures				*/
 int				get_file_data(t_cub3d *cubed, char **map);

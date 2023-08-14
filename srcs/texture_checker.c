@@ -1,6 +1,6 @@
 #include "../includes/cub3d.h"
 
-int	check_rgb_values(int *rgb)
+int	check_rgb_values(int *rgb, t_cub3d *cubed)
 {
 	int	i;
 
@@ -8,7 +8,7 @@ int	check_rgb_values(int *rgb)
 	while (i < 3)
 	{
 		if (rgb[i] < 0 || rgb[i] > 255)
-			return (showerror(NULL, "Invalid RGB color"));
+			return (showerror(cubed, "Invalid RGB color"));
 		i++;
 	}
 	return (1);
@@ -35,8 +35,8 @@ int	check_textures_validity(t_cub3d *cubed, t_fileinfo *textures)
 		return (showerror(cubed, "Missing floor or ceiling"));
 	if (!check_file(textures->north, XPM, cubed) || !check_file(textures->south, XPM, cubed)
 		|| !check_file(textures->west, XPM, cubed) || !check_file(textures->east, XPM, cubed)
-		|| !check_rgb_values(textures->floor) || 
-		!check_rgb_values(textures->ceiling))
+		|| !check_rgb_values(textures->floor, cubed)
+		|| !check_rgb_values(textures->ceiling, cubed))
 		return (0);
 	textures->hex_floor = convert_rgb(textures->floor);
 	textures->hex_ceiling = convert_rgb(textures->ceiling);

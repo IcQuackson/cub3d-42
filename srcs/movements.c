@@ -54,7 +54,8 @@ void move_back(t_cub3d *cubed)
 	double next_pos_y = cubed->player.pos_y - cubed->player.dir_y * moveSpeed;
 
 	// Check if the next position is inside a wall
-	if (cubed->map[(int)next_pos_y][(int)next_pos_x] == '0') {
+	if (cubed->map[(int)next_pos_y][(int)next_pos_x] == '0')
+	{
 		cubed->player.pos_x = next_pos_x;
 		cubed->player.pos_y = next_pos_y;
 	}

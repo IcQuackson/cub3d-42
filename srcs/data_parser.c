@@ -17,7 +17,7 @@ void	free_tab(void **tab)
 	}
 }
 
-int	get_num_lines(char *path)
+int	get_num_lines(char *path, t_cub3d *cubed)
 {
 	int		fd;
 	char	*line;
@@ -26,7 +26,7 @@ int	get_num_lines(char *path)
 	line_count = 0;
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
-		return (showerror(NULL, "Bad Open"));
+		return (showerror(cubed, "Bad Open"));
 	else
 	{
 		line = get_next_line(fd);
@@ -74,7 +74,7 @@ int	parse_data(char *path, t_cub3d *cbd)
 	row = 0;
 	column = 0;
 	cbd->mapinfo.path = path;
-	cbd->mapinfo.line_count = get_num_lines(path);
+	cbd->mapinfo.line_count = get_num_lines(path, cbd);
 	if (cbd->mapinfo.line_count == 0)
 		return (0);
 	cbd->mapinfo.file = ft_calloc(cbd->mapinfo.line_count + 1, sizeof(char *));

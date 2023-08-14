@@ -4,7 +4,7 @@ MLX		=	libmlx.a
 
 # Compiler and flags
 CC			=	cc
-CFLAGS		=	-Wall -Werror -Wextra -g # -fsanitize=address
+CFLAGS		=	-Wall -Werror -Wextra -g# -fsanitize=address
 MLXFLAGS	=	-Iminilibx-linux -Lminilibx-linux -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm
 
 # Files
@@ -15,7 +15,7 @@ SRCS	=	srcs/main.c srcs/init.c \
 OBJS	=	$(SRCS:.c=.o)
 ARGS	= 	./maps/minecraft.cub
 
-# Colors (or Colours?)
+# Colors
 
 DEFAULT = \033[0;39m
 GRAY 	= \033[0;90m
@@ -65,6 +65,9 @@ rerun: re run
 
 gdb:	all
 		gdb --args ./$(NAME) $(ARGS)
+
+lldb:	all
+		lldb ./$(NAME) $(ARGS)
 
 valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARGS)
