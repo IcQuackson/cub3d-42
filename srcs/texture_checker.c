@@ -7,11 +7,11 @@ int	check_rgb_values(int *rgb)
 	i = 0;
 	while (i < 3)
 	{
-		if(rgb[i] < 0 || rgb[i] > 255)
+		if (rgb[i] < 0 || rgb[i] > 255)
 			return (showerror(NULL, "Invalid RGB color"));
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 unsigned long convert_rgb(int *rgb_tab)
@@ -33,11 +33,12 @@ int	check_textures_validity(t_cub3d *cubed, t_fileinfo *textures)
 		return (showerror(cubed, "Missing textures"));
 	if (!textures->floor || !textures->ceiling)
 		return (showerror(cubed, "Missing floor or ceiling"));
-	if (check_file(textures->north, XPM) || check_file(textures->south, XPM)
-		|| check_file(textures->west, XPM) || check_file(textures->east, XPM)
-		|| check_rgb_values(textures->floor) || check_rgb_values(textures->ceiling))
-		return (1);
+	if (!check_file(textures->north, XPM) || !check_file(textures->south, XPM)
+		|| !check_file(textures->west, XPM) || !check_file(textures->east, XPM)
+		|| !check_rgb_values(textures->floor) || 
+		!check_rgb_values(textures->ceiling))
+		return (0);
 	textures->hex_floor = convert_rgb(textures->floor);
 	textures->hex_ceiling = convert_rgb(textures->ceiling);
-	return (0);
+	return (1);
 }

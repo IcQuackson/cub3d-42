@@ -22,6 +22,8 @@ int	*xpm_to_image(t_cub3d *cubed, char *path)
 	image.size_line = 0;
 	image.endian = 0;
 	image.img = mlx_xpm_file_to_image(cubed->mlx, path, &cubed->fileinfo.size, &cubed->fileinfo.size);
+	if(!image.img)
+		return(NULL);
 	image.addr = (int *)mlx_get_data_addr(image.img, &image.pixel_bits, &image.size_line, &image.endian);
 	buffer = ft_calloc(1, (sizeof(int *) * cubed->fileinfo.size * cubed->fileinfo.size));
 	if (!buffer)
@@ -149,20 +151,20 @@ int	*set_rgb(char *line)
 int	fill_color_textures(t_cub3d *cubed, t_fileinfo *textures, char *line, int j)
 {
 	if (line[j + 1] && ft_isprint(line[j + 1]))
-		return (showerror(cubed, "Error\nInvalid color\n"));
+		return (showerror(cubed, "Invalid color"));
 	if (!textures->ceiling && line[j] == 'C')
 	{
 		textures->ceiling = set_rgb(line + j + 1);
 		if (textures->ceiling == 0)
-			return (showerror(cubed, "Error\nInvalid color\n"));
+			return (showerror(cubed, "Invalid color"));
 	}
 	else if (!textures->floor && line[j] == 'F')
 	{
 		textures->floor = set_rgb(line + j + 1);
 		if (textures->floor == 0)
-			return (showerror(cubed, "Error\nInvalid color\n"));
+			return (showerror(cubed, "Invalid color"));
 	}
 	else
-		return (showerror(cubed, "Error\nInvalid color\n"));
-	return (0);
+		return (showerror(cubed, "Invalid color"));
+	return (1);
 }

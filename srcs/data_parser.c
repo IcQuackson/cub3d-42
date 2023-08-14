@@ -26,7 +26,7 @@ int	get_num_lines(char *path)
 	line_count = 0;
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
-		showerror(NULL, "File not found");
+		return (showerror(NULL, "Bad Open"));
 	else
 	{
 		line = get_next_line(fd);
@@ -62,7 +62,7 @@ void	store_map(int row, int column, int i, t_cub3d *cubed)
 	cubed->mapinfo.file[row] = NULL;
 }
 
-void	parse_data(char *path, t_cub3d *cubed)
+int	parse_data(char *path, t_cub3d *cbd)
 {
 	int		row;
 	int		i;
@@ -71,14 +71,17 @@ void	parse_data(char *path, t_cub3d *cubed)
 	i = 0;
 	row = 0;
 	column = 0;
-	cubed->mapinfo.path = path;
-	cubed->mapinfo.line_count = get_num_lines(path);
-	cubed->mapinfo.file = ft_calloc(cubed->mapinfo.line_count + 1, sizeof(char *));
-	if (!(cubed->mapinfo.file))
-		return ;
-	cubed->mapinfo.fd = open(path, O_RDONLY);
-	if (cubed->mapinfo.fd < 0)
-		showerror(cubed, "Bad Open");
-	store_map(row, column, i, cubed);
-	close(cubed->mapinfo.fd);
+	cbd->mapinfo.path = path;
+	cbd->mapinfo.line_count = get_num_lines(path);
+	if (cbd->mapinfo.line_count == 0)
+		return (0);
+	cbd->mapinfo.file = ft_calloc(cbd->mapinfo.line_count + 1, sizeof(char *));
+	if (!(cbd->mapinfo.file))
+		return (showerror(cbd, "Bad Allocation"));
+	cbd->mapinfo.fd = open(path, O_RDONLY);
+	if (cbd->mapinfo.fd < 0)
+		return (showerror(cbd, "Bad Open"));
+	store_map(row, column, i, cbd);
+	close(cbd->mapinfo.fd);
+	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/08/04 09:54:24 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/14 12:51:18 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ int				handle_closewindow(t_cub3d *game_data);
 int				key_down_hook(int keycode, t_cub3d *game_data);
 
 /*					Data_Parser					*/
-void			parse_data(char *path, t_cub3d *cubed);
+int				parse_data(char *path, t_cub3d *cubed);
 void			store_map(int row, int column, int i, t_cub3d *cubed);
 int				get_num_lines(char *path);
 void			store_map(int row, int column, int i, t_cub3d *cubed);

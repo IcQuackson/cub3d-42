@@ -30,7 +30,7 @@ char	*get_texture_path(char *line, int j)
 
 int	fill_direction_textures(t_fileinfo *textures, char *line, int j)
 {
-	if(ft_strncmp(line, "NO", 2) == 0 && !(textures->north))
+	if (ft_strncmp(line, "NO", 2) == 0 && !(textures->north))
 		textures->north = get_texture_path(line, j + 2);
 	else if (ft_strncmp(line, "SO", 2) == 0 && !(textures->south))
 		textures->south = get_texture_path(line, j + 2);
@@ -54,13 +54,13 @@ int	fill_dir_and_text(t_cub3d *cubed, char **map, int i, int j)
 			if (fill_direction_textures(&cubed->fileinfo, map[i], j) == 2)
 				return (1);
 			return (3);
-		}	
+		}
 		else
 		{
-			if (fill_color_textures(cubed, &cubed->fileinfo, map[i], j) == 2)
+			if (!fill_color_textures(cubed, &cubed->fileinfo, map[i], j))
 				return (1);
 			return (3);
-		}	
+		}
 	}
 	else if (ft_isdigit(map[i][j]))
 	{

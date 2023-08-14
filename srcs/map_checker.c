@@ -81,7 +81,7 @@ int	check_chars(t_cub3d *cubed, char **map_tab)
 		}
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 int	check_pos_is_valid(t_cub3d *cubed, char **map_tab)
@@ -93,10 +93,10 @@ int	check_pos_is_valid(t_cub3d *cubed, char **map_tab)
 	j = (int)cubed->player.pos_x;
 	if (ft_strlen(map_tab[i - 1]) < (size_t)j
 		|| ft_strlen(map_tab[i + 1]) < (size_t)j
-		|| is_a_white_space(map_tab[i][j - 1]) == 0
-		|| is_a_white_space(map_tab[i][j + 1]) == 0
-		|| is_a_white_space(map_tab[i - 1][j]) == 0
-		|| is_a_white_space(map_tab[i + 1][j]) == 0)
+		|| !is_a_white_space(map_tab[i][j - 1])
+		|| !is_a_white_space(map_tab[i][j + 1])
+		|| !is_a_white_space(map_tab[i - 1][j])
+		|| !is_a_white_space(map_tab[i + 1][j]))
 		return (1);
 	return (0);
 }
@@ -126,7 +126,7 @@ int	check_pos(t_cub3d *cubed, char **map_tab)
 	}
 	if (check_pos_is_valid(cubed, map_tab) == 1)
 		return (showerror(cubed, "Invalid player position"));
-	return (0);
+	return (1);
 }
 
 int	check_end_of_map(t_mapinfo *map)
@@ -141,10 +141,10 @@ int	check_end_of_map(t_mapinfo *map)
 		while (map->file[i][++j])
 		{
 			if (map->file[i][j] != ' ' && map->file[i][j] != '\n')
-				return (1);
+				return (0);
 		}
 	}
-	return (0);
+	return (1);
 }
 
 int	check_map_validity(t_cub3d *cubed, char **map_tab)
@@ -155,11 +155,11 @@ int	check_map_validity(t_cub3d *cubed, char **map_tab)
 		return (showerror(cubed, "No Walls found"));
 	if (cubed->mapinfo.height < 3)
 		return (showerror(cubed, "Map is too small"));
-	if (check_chars(cubed, map_tab))
-		return (1);
-	if (check_pos(cubed, map_tab))
-		return (1);
-	if (check_end_of_map(&cubed->mapinfo))
+	if (!check_chars(cubed, map_tab))
+		return (0);
+	if (!check_pos(cubed, map_tab))
+		return (0);
+	if (!check_end_of_map(&cubed->mapinfo))
 		return (showerror(cubed, "Map is not at the end"));
-	return (0);
+	return (1);
 }

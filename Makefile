@@ -4,7 +4,7 @@ MLX		=	libmlx.a
 
 # Compiler and flags
 CC			=	cc
-CFLAGS		=	-Wall -Werror -Wextra
+CFLAGS		=	-Wall -Werror -Wextra -g
 MLXFLAGS	=	-Iminilibx-linux -Lminilibx-linux -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm
 
 # Files
@@ -35,7 +35,7 @@ $(NAME): $(OBJS)
 			@echo "$(CURSIVE)Compiling...$(DEFAULT)"
 			@chmod 777 minilibx-linux/configure
 			@$(MAKE) -C libft all
-			$(CC) $(CFLAGS) -g $(OBJS) libft/libft.a -o $(NAME) $(MLXFLAGS)
+			$(CC) $(CFLAGS) $(OBJS) libft/libft.a -g -o $(NAME) $(MLXFLAGS)
 			@echo "$(GREEN) Cub3D created successfully!$(DEFAULT)"
 
 mlx:

@@ -7,5 +7,6 @@ int	showerror(t_cub3d *cubed, char *str)
 	printf("%s", str);
 	write(1, "\n", 1);
 	//freexit(cubed);
+	//exit()
 	return (0);
 }
