@@ -4,7 +4,7 @@ MLX		=	libmlx.a
 
 # Compiler and flags
 CC			=	cc
-CFLAGS		=	-Wall -Werror -Wextra -g
+CFLAGS		=	-Wall -Werror -Wextra -g # -fsanitize=address
 MLXFLAGS	=	-Iminilibx-linux -Lminilibx-linux -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm
 
 # Files
@@ -18,14 +18,14 @@ ARGS	= 	./maps/minecraft.cub
 # Colors (or Colours?)
 
 DEFAULT = \033[0;39m
-GRAY = \033[0;90m
-RED = \033[0;91m
-GREEN = \033[0;92m
-YELLOW = \033[0;93m
-BLUE = \033[0;94m
+GRAY 	= \033[0;90m
+RED 	= \033[0;91m
+GREEN 	= \033[0;92m
+YELLOW 	= \033[0;93m
+BLUE 	= \033[0;94m
 MAGENTA = \033[0;95m
-CYAN = \033[0;96m
-WHITE = \033[0;97m
+CYAN 	= \033[0;96m
+WHITE 	= \033[0;97m
 CURSIVE	= \e[33;3m
 
 

@@ -33,8 +33,8 @@ int	check_textures_validity(t_cub3d *cubed, t_fileinfo *textures)
 		return (showerror(cubed, "Missing textures"));
 	if (!textures->floor || !textures->ceiling)
 		return (showerror(cubed, "Missing floor or ceiling"));
-	if (!check_file(textures->north, XPM) || !check_file(textures->south, XPM)
-		|| !check_file(textures->west, XPM) || !check_file(textures->east, XPM)
+	if (!check_file(textures->north, XPM, cubed) || !check_file(textures->south, XPM, cubed)
+		|| !check_file(textures->west, XPM, cubed) || !check_file(textures->east, XPM, cubed)
 		|| !check_rgb_values(textures->floor) || 
 		!check_rgb_values(textures->ceiling))
 		return (0);

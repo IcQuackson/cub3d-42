@@ -38,6 +38,7 @@ int	get_num_lines(char *path)
 		}
 		close(fd);
 	}
+	free(line);
 	return (line_count);
 }
 
@@ -59,6 +60,7 @@ void	store_map(int row, int column, int i, t_cub3d *cubed)
 		free(line);
 		line = get_next_line(cubed->mapinfo.fd);
 	}
+	free(line);
 	cubed->mapinfo.file[row] = NULL;
 }
 
@@ -83,5 +85,7 @@ int	parse_data(char *path, t_cub3d *cbd)
 		return (showerror(cbd, "Bad Open"));
 	store_map(row, column, i, cbd);
 	close(cbd->mapinfo.fd);
+
 	return (1);
 }
+//686 649

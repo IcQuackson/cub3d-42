@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/08/14 12:51:18 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/14 15:30:23 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,8 @@ int				check_map_validity(t_cub3d *cubed, char **map_tab);
 
 /*					File_Parser					*/
 int				parse_args(t_cub3d *cubed, char **av);
-int				check_file(char *arg, int type);
+int				check_file(char *arg, int type, t_cub3d *cubed);
 int				is_xpm_type(char *filepath);
-int				check_file(char *filepath, int type);
 int				is_folder(char *arg);
 
 /* 					Hooks							*/
