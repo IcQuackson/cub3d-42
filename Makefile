@@ -13,7 +13,7 @@ SRCS	=	srcs/main.c srcs/init.c \
 			gnl/get_next_line.c srcs/utils.c srcs/player_parser.c srcs/texture_parser.c srcs/texture_checker.c  \
 			srcs/create_map.c srcs/data_parser.c srcs/hooks.c srcs/movements.c
 OBJS	=	$(SRCS:.c=.o)
-ARGS	= 	./maps/wrong/directory.cub
+ARGS	= 	./maps/minecraft.cub
 
 # Colors (or Colours?)
 

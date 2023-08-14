@@ -43,7 +43,7 @@ int	*xpm_to_image(t_cub3d *cubed, char *path)
 
 void	init_textures(t_cub3d *cubed)
 {
-	cubed->textures = ft_calloc(5, sizeof * cubed->textures);
+	cubed->textures = ft_calloc(4, sizeof(int *));
 	if (!cubed->textures)
 		return ;
 	printf("north: %s\n", cubed->fileinfo.north);

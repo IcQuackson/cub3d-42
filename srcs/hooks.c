@@ -6,25 +6,22 @@
 		handle_closewindow, game_data);
 } */
 
-void	free_resources(t_cub3d *game_data)
+int	handle_closewindow(t_cub3d *game_data)
 {
 	mlx_destroy_window(game_data->mlx, game_data->win);
 	mlx_destroy_display(game_data->mlx);
+	freexit(game_data);
+	free(game_data->mlx);
 	exit(0);
-}
-
-int	handle_closewindow(t_cub3d *game_data)
-{
-	free_resources(game_data);
-	return (0);
 }
 
 int	key_down_hook(int keycode, t_cub3d *game_data)
 {
-	/* if (keycode == ESC)
+	if (keycode == ESC)
 	{
-		destroy(game_data, "");
-	} */
+		handle_closewindow(game_data);
+
+	}
 	if (keycode == 'w')
 	{
 		printf("w\n");

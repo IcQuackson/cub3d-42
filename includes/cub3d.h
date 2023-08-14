@@ -31,6 +31,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <math.h>
+# include <assert.h>
 
 typedef struct s_image
 {
@@ -216,4 +217,5 @@ double			degree_to_rad(int degree);
 int				showerror(t_cub3d *cubed, char *str);
 void			free_tab(void **tab);
 char			*get_next_line(int fd);
+void			freexit(t_cub3d *cubed);
 #endif
