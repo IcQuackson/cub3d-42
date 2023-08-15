@@ -7,12 +7,16 @@ CC			=	cc
 CFLAGS		=	-Wall -Werror -Wextra -g # -fsanitize=address
 MLXFLAGS	=	-Iminilibx-linux -Lminilibx-linux -lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm
 
+# Directories
+SRCDIR = srcs
+OBJDIR = objs
+
 # Files
 SRCS	=	srcs/main.c srcs/init.c \
 			srcs/file_parser.c srcs/init_textures.c srcs/raycasting.c srcs/map_checker.c \
 			gnl/get_next_line.c srcs/utils.c srcs/player_parser.c srcs/texture_parser.c srcs/texture_checker.c  \
 			srcs/create_map.c srcs/data_parser.c srcs/hooks.c srcs/movements.c
-OBJS	=	$(SRCS:.c=.o)
+OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 ARGS	= 	./maps/minecraft.cub
 
 # Colors (or Colours?)
@@ -29,7 +33,7 @@ WHITE 	= \033[0;97m
 CURSIVE	= \e[33;3m
 
 
-all:		mlx $(NAME)
+all:		$(BIN_DIR) mlx $(NAME)
 
 $(NAME): $(OBJS)
 			@echo "$(CURSIVE)Compiling...$(DEFAULT)"
@@ -37,6 +41,15 @@ $(NAME): $(OBJS)
 			@$(MAKE) -C libft all
 			$(CC) $(CFLAGS) $(OBJS) libft/libft.a -g -o $(NAME) $(MLXFLAGS)
 			@echo "$(GREEN) Cub3D created successfully!$(DEFAULT)"
+
+%.o: %.c
+	$(CC) -Wall -Wextra -Werror -c $< -o $@ 
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 mlx:
 			@echo "$(YELLOW)Compiling MLX..."
@@ -46,7 +59,7 @@ clean:
 			@echo "$(BLUE)Cleaning...$(DEFAULT)"
 			@$(MAKE) -C minilibx-linux clean
 			@$(MAKE) -C libft clean
-			@rm -f $(OBJS)
+			@rm -rf $(OBJDIR)
 			@echo "$(CYAN)Object Files Cleaned!$(DEFAULT)"
 
 fclean:		clean
