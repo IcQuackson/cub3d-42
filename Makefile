@@ -73,16 +73,28 @@ re:			fclean all
 run: all
 	 ./$(NAME) $(ARGS)
 
-test_wrong_map:	all
+test_val_wrong_map:	all
 	@for map_file in ./maps/wrong/*.cub; do \
 		echo "$$map_file"; \
 		valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $$map_file; \
 	done
 
-test_good_map:	all
+test_val_good_map:	all
 	@for map_file in ./maps/good/*.cub; do \
 		echo "$$map_file"; \
 		valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $$map_file; \
+	done
+
+test_wrong_map:	all
+	@for map_file in ./maps/wrong/*.cub; do \
+		echo "$$map_file"; \
+		./$(NAME) $$map_file; \
+	done
+
+test_good_map:	all
+	@for map_file in ./maps/good/*.cub; do \
+		echo "$$map_file"; \
+		./$(NAME) $$map_file; \
 	done
 
 rerun: re run
