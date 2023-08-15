@@ -1,5 +1,5 @@
 # Compiled Files
-NAME	=	cub3d
+NAME	=	cub3D
 MLX		=	libmlx.a
 
 # Compiler and flags
@@ -70,9 +70,20 @@ fclean:		clean
 re:			fclean all
 			@echo "$(MAGENTA)I cweeaned and rebuilt evewithing for u daddy UwU!$(DEFAULT)"
 
-
 run: all
 	 ./$(NAME) $(ARGS)
+
+test_wrong_map:	all
+	@for map_file in ./maps/wrong/*.cub; do \
+		echo "$$map_file"; \
+		valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $$map_file; \
+	done
+
+test_good_map:	all
+	@for map_file in ./maps/good/*.cub; do \
+		echo "$$map_file"; \
+		valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $$map_file; \
+	done
 
 rerun: re run
 
