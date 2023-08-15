@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 12:17:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/07/11 12:20:54 by quackson         ###   ########.fr       */
+/*   Updated: 2023/08/15 17:59:04 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
-
-// remake strcmp
-
 
 int	ft_strcmp(const char *s1, const char *s2)
 {

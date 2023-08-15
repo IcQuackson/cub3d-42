@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/08/15 16:52:51 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/15 18:04:24 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,7 @@ int				no_digit(char *str);
 void			free_tab(void **tab);
 void			freexit(t_cub3d *cubed);
 char			*get_next_line(int fd);
+void			start_program(void);
 
 /*				Utils_Free			*/
 void			free_fileinfo(t_fileinfo *fileinfo);

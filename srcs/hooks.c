@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:10:06 by joao-per          #+#    #+#             */
-/*   Updated: 2023/08/15 17:09:08 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/08/15 18:08:12 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	handle_closewindow(t_cub3d *game_data)
 {
-	showerror(game_data, "Window closed by user");
+	freexit(game_data);
 	exit(0);
 }
 
