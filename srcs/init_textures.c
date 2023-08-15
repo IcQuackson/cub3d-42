@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:49:31 by joao-per          #+#    #+#             */
-/*   Updated: 2023/08/15 17:26:07 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/08/15 17:56:28 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	init_textures(t_cub3d *cubed)
 	cubed->textures = ft_calloc(4, sizeof(int *));
 	if (!cubed->textures)
 		return ;
-	printf("north: %s\n", cubed->fileinfo.north);
 	cubed->textures[0] = xpm_to_image(cubed, cubed->fileinfo.north);
 	cubed->textures[1] = xpm_to_image(cubed, cubed->fileinfo.south);
 	cubed->textures[2] = xpm_to_image(cubed, cubed->fileinfo.east);
