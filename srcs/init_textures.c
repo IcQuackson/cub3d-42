@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   init_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:49:31 by joao-per          #+#    #+#             */
-/*   Updated: 2023/08/15 16:50:11 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/15 17:26:07 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
+void	copy_pixeldata(t_cub3d *cubed, int *buffer, t_image image)
+{
+	int	x;
+	int	y;
+
+	y = -1;
+	while (++y < cubed->fileinfo.size)
+	{
+		x = -1;
+		while (++x < cubed->fileinfo.size)
+			buffer[y * cubed->fileinfo.size + x]
+				= image.addr[y * cubed->fileinfo.size + x];
+	}
+}
 
 /**
  * The function `xpm_to_image` converts an XPM file to an image
@@ -30,8 +45,6 @@ int	*xpm_to_image(t_cub3d *cubed, char *path)
 {
 	t_image	image;
 	int		*buffer;
-	int		x;
-	int		y;
 
 	image.pixel_bits = 0;
 	image.size_line = 0;
@@ -46,14 +59,7 @@ int	*xpm_to_image(t_cub3d *cubed, char *path)
 				* cubed->fileinfo.size * cubed->fileinfo.size));
 	if (!buffer)
 		return (0);
-	y = -1;
-	while (++y < cubed->fileinfo.size)
-	{
-		x = -1;
-		while (++x < cubed->fileinfo.size)
-			buffer[y * cubed->fileinfo.size + x]
-				= image.addr[y * cubed->fileinfo.size + x];
-	}
+	copy_pixeldata(cubed, buffer, image);
 	mlx_destroy_image(cubed->mlx, image.img);
 	return (buffer);
 }
@@ -68,6 +74,9 @@ void	init_textures(t_cub3d *cubed)
 	cubed->textures[1] = xpm_to_image(cubed, cubed->fileinfo.south);
 	cubed->textures[2] = xpm_to_image(cubed, cubed->fileinfo.east);
 	cubed->textures[3] = xpm_to_image(cubed, cubed->fileinfo.west);
+	if (!cubed->textures[0] || !cubed->textures[1]
+		|| !cubed->textures[2] || !cubed->textures[3])
+		handle_closewindow(cubed);
 }
 
 void	init_fileinfo(t_fileinfo *textures)
@@ -110,25 +119,4 @@ int	no_digit(char *str)
 		i++;
 	}
 	return (flag);
-}
-
-int	fill_color_textures(t_cub3d *cubed, t_fileinfo *textures, char *line, int j)
-{
-	if (line[j + 1] && ft_isprint(line[j + 1]))
-		return (showerror(cubed, "Invalid color"));
-	if (!textures->ceiling && line[j] == 'C')
-	{
-		textures->ceiling = set_rgb(line + j + 1);
-		if (textures->ceiling == 0)
-			return (showerror(cubed, "Invalid color"));
-	}
-	else if (!textures->floor && line[j] == 'F')
-	{
-		textures->floor = set_rgb(line + j + 1);
-		if (textures->floor == 0)
-			return (showerror(cubed, "Invalid color"));
-	}
-	else
-		return (showerror(cubed, "Invalid color"));
-	return (1);
 }

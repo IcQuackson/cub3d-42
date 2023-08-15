@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/10 17:31:02 by quackson          #+#    #+#             */
-/*   Updated: 2023/08/02 04:35:55 by joao-per         ###   ########.fr       */
+/*   Created: 2023/08/15 17:09:34 by pedgonca          #+#    #+#             */
+/*   Updated: 2023/08/15 17:09:37 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	main(int ac, char **av)
 	if (!parse_args(&cubed, av))
 		return (0);
 	cubed.mlx = mlx_init();
-	cubed.win = mlx_new_window(cubed.mlx, WIDTH, HEIGHT, "Sussy Cub3d");
 	init_textures(&cubed);
+	cubed.win = mlx_new_window(cubed.mlx, WIDTH, HEIGHT, "Sussy Cub3d");
 	render_raycast(&cubed);
 	mlx_hook(cubed.win, KEY_PRESS_EVENT, KEY_PRESS_MASK,
 		key_down_hook, &cubed);
