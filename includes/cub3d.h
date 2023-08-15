@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/08/14 15:30:23 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/15 16:52:51 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,8 +153,8 @@ int				key_down_hook(int keycode, t_cub3d *game_data);
 
 /*					Data_Parser					*/
 int				parse_data(char *path, t_cub3d *cubed);
-void			store_map(int row, int column, int i, t_cub3d *cubed);
 int				get_num_lines(char *path, t_cub3d *cubed);
+void			store_map(int row, int column, int i, t_cub3d *cubed);
 void			store_map(int row, int column, int i, t_cub3d *cubed);
 
 /*					Init						*/
@@ -169,7 +169,8 @@ void			init_structs(t_cub3d *cubed);
 void			init_textures(t_cub3d *cubed);
 int				*xpm_to_image(t_cub3d *cubed, char *path);
 int				*set_rgb(char *line);
-int				fill_color_textures(t_cub3d *cubed, t_fileinfo *textures, char *line, int j);
+int				fill_color_textures(t_cub3d *cubed, 
+					t_fileinfo *textures, char *line, int j);
 
 /*				Texture_Checker				*/
 unsigned long	convert_rgb(int *rgb_tab);
@@ -179,13 +180,15 @@ int				check_rgb_values(int *rgb, t_cub3d *cubed);
 /*				Textures				*/
 int				get_file_data(t_cub3d *cubed, char **map);
 int				fill_dir_and_text(t_cub3d *cubed, char **map, int i, int j);
-int				fill_direction_textures(t_fileinfo *textures, char *line, int j);
+int				fill_direction_textures(t_fileinfo *textures,
+					char *line, int j);
 char			*get_texture_path(char *line, int j);
 
 /*				Raycasting				*/
 void			get_texture_index(t_cub3d *cubed, t_rc *rc);
 void			init_texture_pixels(t_cub3d *cubed);
-void			update_texture_pixels(t_cub3d *cubed, t_fileinfo *tex, t_rc *rc, int x);
+void			update_texture_pixels(t_cub3d *cubed, 
+					t_fileinfo *tex, t_rc *rc, int x);
 void			init_rc_info(int x, t_rc *rc, t_player *player);
 void			set_dda(t_rc *rc, t_player *player);
 void			do_dda(t_cub3d *cubed, t_rc *rc);
@@ -200,22 +203,30 @@ int				render_raycast(t_cub3d *cubed);
 void			init_direction(t_player *player);
 
 /*				Create_Map				*/
-void			change_space_into_wall(t_cub3d *cubed);
 int				count_map_lines(t_cub3d *cubed, char **file, int i);
 int				fill_map(t_mapinfo *mapinfo, char **map_tab, int index);
 int				get_map_info(t_cub3d *cubed, char **file, int i);
 int				create_map(t_cub3d *cubed, char **file, int i);
+void			change_space_into_wall(t_cub3d *cubed);
 
 /*				Movements				*/
 void			rotate_left(t_cub3d *cubed);
-void 			rotate_right(t_cub3d *cubed);
+void			rotate_right(t_cub3d *cubed);
 void			move_forward(t_cub3d *cubed);
 void			move_back(t_cub3d *cubed);
 double			degree_to_rad(int degree);
 
 /*				Utils				*/
 int				showerror(t_cub3d *cubed, char *str);
+int				is_a_white_space(char c);
+int				no_digit(char *str);
 void			free_tab(void **tab);
-char			*get_next_line(int fd);
 void			freexit(t_cub3d *cubed);
+char			*get_next_line(int fd);
+
+/*				Utils_Free			*/
+void			free_fileinfo(t_fileinfo *fileinfo);
+void			free_double_ptr(char **ptr);
+void			free_pixels(t_cub3d *cubed);
+void			free_textures(t_cub3d *cubed);
 #endif
