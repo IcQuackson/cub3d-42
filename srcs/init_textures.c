@@ -70,6 +70,14 @@ void	init_fileinfo(t_fileinfo *textures)
 	textures->hex_ceiling = 0x0;
 }
 
+/**
+ * The function "no_digit" checks if a given string contains any digits and returns 1 if it does not,
+ * and 0 if it does.
+ * 
+ * @param str The parameter `str` is a pointer to a character array (string).
+ * 
+ * @return the value of the flag variable.
+ */
 int	no_digit(char *str)
 {
 	int		i;

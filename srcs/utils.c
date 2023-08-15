@@ -34,10 +34,15 @@ void	free_pixels(t_cub3d *cubed)
 {
 	int	i;
 
+	if (!cubed)
+		return ;
+	if (!cubed->texture_pixels)
+		return ;
 	i = 0;
 	while (i < HEIGHT + 1)
 	{
-		free(cubed->texture_pixels[i]);
+		if (cubed->texture_pixels[i])
+			free(cubed->texture_pixels[i]);
 		i++;
 	}
 	free(cubed->texture_pixels);

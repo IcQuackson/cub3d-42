@@ -60,12 +60,12 @@ int	check_file(char *filepath, int type, t_cub3d *cubed)
 		return (showerror(cubed, "File is a directory"));
 	fd = open(filepath, O_RDONLY);
 	if (fd == -1)
-		return (showerror(NULL, "File not found"));
+		return (showerror(cubed, "File not found"));
 	close(fd);
 	if (type && !is_cub_type(filepath))
-		return (showerror(NULL, "File is not a .cub file"));
+		return (showerror(cubed, "File is not a .cub file"));
 	if (type == 0 && !is_xpm_type(filepath))
-		return (showerror(NULL, "File is not a .xpm file"));
+		return (showerror(cubed, "File is not a .xpm file"));
 	return (1);
 }
 
