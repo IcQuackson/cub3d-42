@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hooks.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/15 16:10:06 by joao-per          #+#    #+#             */
+/*   Updated: 2023/08/15 16:10:07 by joao-per         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
 /* void	register_hooks(t_cub3d *game_data)
@@ -18,45 +30,20 @@ int	handle_closewindow(t_cub3d *game_data)
 int	key_down_hook(int keycode, t_cub3d *game_data)
 {
 	if (keycode == ESC)
-	{
 		handle_closewindow(game_data);
-
-	}
 	if (keycode == 'w')
-	{
-		printf("w\n");
 		move_forward(game_data);
-	}
 	else if (keycode == 's')
-	{
-		printf("s\n");
 		move_back(game_data);
-	}
 	else if (keycode == 'a')
-	{
-		printf("a\n");
 		rotate_left(game_data);
-		printf("dir_x: %f\n", game_data->player.dir_x);
-		printf("dir_y: %f\n", game_data->player.dir_y);
-		printf("plane_x: %f\n", game_data->player.plane_x);
-		printf("plane_y: %f\n", game_data->player.plane_y);
-
-	}
 	else if (keycode == 'd')
-	{
-		printf("d\n");
 		rotate_right(game_data);
-		printf("dir_x: %f\n", game_data->player.dir_x);
-		printf("dir_y: %f\n", game_data->player.dir_y);
-		printf("plane_x: %f\n", game_data->player.plane_x);
-		printf("plane_y: %f\n", game_data->player.plane_y);
-	}
 	return (0);
 }
 
 int	key_up_hook(int keycode, t_cub3d *game_data)
 {
-	printf("key_up_hook\n");
 	(void) game_data;
 	(void) keycode;
 	return (0);

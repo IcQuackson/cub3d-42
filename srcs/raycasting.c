@@ -1,39 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/15 16:13:42 by joao-per          #+#    #+#             */
+/*   Updated: 2023/08/15 16:19:39 by joao-per         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
 /**
- * The function initializes the texture pixels array in the given cubed struct.
+ * The function initializes the texture
+ * pixels array in the given cubed struct.
  * 
- * @param cubed The parameter "cubed" is a pointer to a structure of type "t_cub3d".
+ * @param cubed The parameter "cubed" is a pointer to
+ * a structure of type "t_cub3d".
  * 
  * @return nothing (void).
  */
-void	init_texture_pixels(t_cub3d *cubed)
+void	init_texture_pixels(t_cub3d *cbd)
 {
 	int	i;
+	int	j;
 
-	if (cubed->texture_pixels)
+	j = -1;
+	if (cbd->texture_pixels)
 	{
-		int	j = -1;
-		while (cubed->texture_pixels[++j])
-			free(cubed->texture_pixels[j]);
-		if (cubed->texture_pixels)
+		while (cbd->texture_pixels[++j])
+			free(cbd->texture_pixels[j]);
+		if (cbd->texture_pixels)
 		{
-			free(cubed->texture_pixels);
-			cubed->texture_pixels = NULL;
+			free(cbd->texture_pixels);
+			cbd->texture_pixels = NULL;
 		}
 	}
-	cubed->texture_pixels = ft_calloc(HEIGHT + 1,
-			sizeof * cubed->texture_pixels);
-	if (!cubed->texture_pixels)
+	cbd->texture_pixels = ft_calloc(HEIGHT + 1, sizeof * cbd->texture_pixels);
+	if (!cbd->texture_pixels)
 		return ;
-	i = 0;
-	while (i < HEIGHT)
+	i = -1;
+	while (++i < HEIGHT)
 	{
-		cubed->texture_pixels[i] = ft_calloc(WIDTH + 1,
-				sizeof * cubed->texture_pixels);
-		if (!cubed->texture_pixels[i])
+		cbd->texture_pixels[i] = ft_calloc(WIDTH + 1,
+				sizeof * cbd->texture_pixels);
+		if (!cbd->texture_pixels[i])
 			return ;
-		i++;
 	}
 }
 
@@ -57,81 +70,56 @@ void	get_texture_index(t_cub3d *cubed, t_rc *rc)
 
 void	update_texture_pixels(t_cub3d *cubed, t_fileinfo *tex, t_rc *rc, int x)
 {
-	int y;
-    int color;
+	int	y;
+	int	color;
 
-    // Calculate the index of the texture to be used for this wall slice
-    get_texture_index(cubed, rc);
-
-    // Calculate the x-coordinate on the texture based on the intersection point
-    tex->x = (int)(rc->wall_x * tex->size);
-
-    // Adjust the x-coordinate if the wall is being rendered from the opposite direction
-    if ((rc->side == 0 && rc->dir_x < 0) || (rc->side == 1 && rc->dir_y > 0))
-        tex->x = tex->size - tex->x - 1;
-
-    // Calculate the step and initial position for sampling the texture vertically
-    tex->step = 1.0 * tex->size / rc->line_height;
-    tex->pos = (rc->draw_start - HEIGHT / 2 + rc->line_height / 2) * tex->step;
-
-    y = rc->draw_start;
-
-    // Iterate over the vertical pixels of the wall slice
-    while (y < rc->draw_end)
-    {
-        // Calculate the y-coordinate on the texture based on the vertical position
-        tex->y = (int)tex->pos & (tex->size - 1);
-        tex->pos += tex->step;
-
-        // Retrieve the color from the texture based on texture coordinates
-        color = cubed->textures[tex->index][tex->size * tex->y + tex->x];
-
-        // Apply shading correction to the color for certain textures
-        if (tex->index == 0 || tex->index == 2)
-            color = (color >> 1) & 8355711;
-
-        // If the color is not transparent, update the pixel in the wall slice buffer
-        if (color > 0)
-            cubed->texture_pixels[y][x] = color;
-
-        y++;
-    }
+	get_texture_index(cubed, rc);
+	tex->x = (int)(rc->wall_x * tex->size);
+	if ((rc->side == 0 && rc->dir_x < 0) || (rc->side == 1 && rc->dir_y > 0))
+		tex->x = tex->size - tex->x - 1;
+	tex->step = 1.0 * tex->size / rc->line_height;
+	tex->pos = (rc->draw_start - HEIGHT / 2 + rc->line_height / 2) * tex->step;
+	y = rc->draw_start;
+	while (y < rc->draw_end)
+	{
+		tex->y = (int)tex->pos & (tex->size - 1);
+		tex->pos += tex->step;
+		color = cubed->textures[tex->index][tex->size * tex->y + tex->x];
+		if (tex->index == 0 || tex->index == 2)
+			color = (color >> 1) & 8355711;
+		if (color > 0)
+			cubed->texture_pixels[y][x] = color;
+		y++;
+	}
 }
 
 /*
- * This function initializes the raycasting information. It calculates the x-coordinate in camera space, 
- * the direction of the rc, the current map square the player is in, and the length of the rc from one 
+ * This function initializes the raycasting information.
+ * It calculates the x-coordinate in camera space, 
+ * the direction of the rc, the current map square the player is in,
+ * and the length of the rc from one 
  * x or y-side to the next x or y-side.
  */
 void	init_rc_info(int x, t_rc *rc, t_player *player)
 {
-    // Initialize the rc structure
 	init_rc(rc);
-
-    // Calculate the x-coordinate in camera space
 	rc->camera_x = 2 * x / (double)WIDTH - 1;
-
-    // Calculate the direction of the rc
 	rc->dir_x = player->dir_x + player->plane_x * rc->camera_x;
 	rc->dir_y = player->dir_y + player->plane_y * rc->camera_x;
-
-    // Calculate the current map square the player is in
 	rc->map_x = (int)player->pos_x;
 	rc->map_y = (int)player->pos_y;
-
-    // Calculate the length of the rc from one x or y-side to the next x or y-side
 	rc->deltadist_x = fabs(1 / rc->dir_x);
 	rc->deltadist_y = fabs(1 / rc->dir_y);
 }
 
-
 /*
- * This function sets the step direction and calculates the side distance for the DDA (Digital Differential Analyzer) 
- * algorithm. The DDA algorithm is used to interpolate values in a grid over a one-unit interval.
+ * This function sets the step direction and calculates the side
+ distance for the DDA (Digital Differential Analyzer) 
+ * algorithm. The DDA algorithm is used to interpolate values
+ in a grid over a one-unit interval.
  */
 void	set_dda(t_rc *rc, t_player *player)
 {
-	// Determine the step direction and calculate the side distance
 	if (rc->dir_x < 0)
 	{
 		rc->step_x = -1;
@@ -155,7 +143,8 @@ void	set_dda(t_rc *rc, t_player *player)
 }
 
 /*
- * This function performs the DDA algorithm until a wall is hit. It checks if the rc has hit a wall and if so, 
+ * This function performs the DDA algorithm until a wall is hit.
+ * It checks if the rc has hit a wall and if so, 
  * it stops the DDA.
  */
 void	do_dda(t_cub3d *cubed, t_rc *rc)
@@ -165,7 +154,6 @@ void	do_dda(t_cub3d *cubed, t_rc *rc)
 	hit = 0;
 	while (hit == 0)
 	{
-		// Perform DDA until a wall is hit
 		if (rc->sidedist_x < rc->sidedist_y)
 		{
 			rc->sidedist_x += rc->deltadist_x;
@@ -178,7 +166,9 @@ void	do_dda(t_cub3d *cubed, t_rc *rc)
 			rc->map_y += rc->step_y;
 			rc->side = 1;
 		}
-		if (rc->map_y < 0.25 || rc->map_x < 0.25 || rc->map_y > cubed->mapinfo.height - 0.25 || rc->map_x > cubed->mapinfo.width - 1.25)
+		if (rc->map_y < 0.25 || rc->map_x < 0.25
+			|| rc->map_y > cubed->mapinfo.height - 0.25
+			|| rc->map_x > cubed->mapinfo.width - 1.25)
 			break ;
 		else if (cubed->map[rc->map_y][rc->map_x] > '0')
 			hit = 1;
@@ -186,29 +176,24 @@ void	do_dda(t_cub3d *cubed, t_rc *rc)
 }
 
 /*
- * This function calculates the distance to the wall, the height of the line to draw on the screen, the lowest 
- * and highest pixel to fill in the current stripe, and the exact position of the wall hit.
+ * This function calculates the distance to the wall, 
+ * the height of the line to draw on the screen, the lowest 
+ * and highest pixel to fill in the current stripe, 
+ * and the exact position of the wall hit.
  */
 void	calculate_height(t_rc *rc, t_player *player)
 {
-    // Calculate the distance to the wall
 	if (rc->side == 0)
 		rc->wall_dist = (rc->sidedist_x - rc->deltadist_x);
 	else
 		rc->wall_dist = (rc->sidedist_y - rc->deltadist_y);
-
-    // Calculate the height of the line to draw on the screen
 	rc->line_height = (int)(HEIGHT / rc->wall_dist);
-
-    // Calculate the lowest and highest pixel to fill in the current stripe
 	rc->draw_start = -(rc->line_height) / 2 + HEIGHT / 2;
 	if (rc->draw_start < 0)
 		rc->draw_start = 0;
 	rc->draw_end = rc->line_height / 2 + HEIGHT / 2;
 	if (rc->draw_end >= HEIGHT)
 		rc->draw_end = HEIGHT - 1;
-
-    // Calculate the exact position of the wall hit
 	if (rc->side == 0)
 		rc->wall_x = player->pos_y + rc->wall_dist * rc->dir_y;
 	else
@@ -259,30 +244,19 @@ void	render_frame(t_cub3d *cubed)
 	int		x;
 	int		y;
 
-	// Create a new image with dimensions WIDTH x HEIGHT
-    image.img = mlx_new_image(cubed->mlx, WIDTH, HEIGHT);
-    
-    // Get image information (pixel bits, size line, endian) for manipulation
-    image.addr = (int *)mlx_get_data_addr(image.img, &image.pixel_bits, &image.size_line, &image.endian);
-    
-    y = -1;
-    // Loop through each row (vertical) of the frame
-    while (++y < HEIGHT)
-    {
-        x = -1;
-        // Loop through each pixel in the current row (horizontal)
-        while (++x < WIDTH)
-            // Call the set_frame function to determine the color of the current pixel
-            set_frame(cubed, &image, x, y);
-    }
-    
-    // Display the rendered image in the window
-    mlx_put_image_to_window(cubed->mlx, cubed->win, image.img, 0, 0);
-    
-    // Destroy the temporary image to avoid memory leaks
-    mlx_destroy_image(cubed->mlx, image.img);
+	image.img = mlx_new_image(cubed->mlx, WIDTH, HEIGHT);
+	image.addr = (int *)mlx_get_data_addr(image.img,
+			&image.pixel_bits, &image.size_line, &image.endian);
+	y = -1;
+	while (++y < HEIGHT)
+	{
+		x = -1;
+		while (++x < WIDTH)
+			set_frame(cubed, &image, x, y);
+	}
+	mlx_put_image_to_window(cubed->mlx, cubed->win, image.img, 0, 0);
+	mlx_destroy_image(cubed->mlx, image.img);
 }
-
 
 int	render_raycast(t_cub3d *cubed)
 {

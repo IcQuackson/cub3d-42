@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   texture_parser.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/15 15:42:08 by joao-per          #+#    #+#             */
+/*   Updated: 2023/08/15 15:42:27 by joao-per         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
 char	*get_texture_path(char *line, int j)
@@ -49,7 +61,8 @@ int	fill_dir_and_text(t_cub3d *cubed, char **map, int i, int j)
 		j++;
 	if (ft_isprint(map[i][j]) && !ft_isdigit(map[i][j]))
 	{
-		if (map[i][j + 1] && ft_isprint(map[i][j + 1]) && !ft_isdigit(map[i][j]))
+		if (map[i][j + 1] &&
+			ft_isprint(map[i][j + 1]) && !ft_isdigit(map[i][j]))
 		{
 			if (fill_direction_textures(&cubed->fileinfo, map[i], j) == 2)
 				return (1);

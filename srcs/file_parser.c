@@ -51,7 +51,6 @@ int	is_xpm_type(char *filepath)
 	return (1);
 }
 
-
 int	check_file(char *filepath, int type, t_cub3d *cubed)
 {
 	int	fd;

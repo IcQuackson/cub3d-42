@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   data_parser.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/15 16:07:38 by joao-per          #+#    #+#             */
+/*   Updated: 2023/08/15 16:07:38 by joao-per         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
 void	free_tab(void **tab)
@@ -85,7 +97,5 @@ int	parse_data(char *path, t_cub3d *cbd)
 		return (showerror(cbd, "Bad Open"));
 	store_map(row, column, i, cbd);
 	close(cbd->mapinfo.fd);
-
 	return (1);
 }
-//686 649

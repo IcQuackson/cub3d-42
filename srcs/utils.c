@@ -1,5 +1,16 @@
-#include "../includes/cub3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/15 15:42:39 by joao-per          #+#    #+#             */
+/*   Updated: 2023/08/15 16:20:03 by joao-per         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../includes/cub3d.h"
 
 void	free_fileinfo(t_fileinfo *fileinfo)
 {
@@ -81,10 +92,8 @@ int	showerror(t_cub3d *cubed, char *str)
 {
 	(void) str;
 	write(1, "\033[31mError\n\033[0;37m", 18);
-	//printf("%s", str);
-	//write(1, "\n", 1);
+	printf("%s", str);
+	write(1, "\n", 1);
 	freexit(cubed);
-	//exit()
 	return (0);
 }
-
