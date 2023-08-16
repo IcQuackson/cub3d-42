@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:10:06 by joao-per          #+#    #+#             */
-/*   Updated: 2023/08/15 18:08:12 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/16 13:19:42 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,12 @@ int	key_down_hook(int keycode, t_cub3d *game_data)
 	else if (keycode == 's')
 		move_back(game_data);
 	else if (keycode == 'a')
-		rotate_left(game_data);
+		strafe_left(game_data);
 	else if (keycode == 'd')
+		strafe_right(game_data);
+	else if (keycode == XK_Left)
+		rotate_left(game_data);
+	else if (keycode == XK_Right)
 		rotate_right(game_data);
 	return (0);
 }

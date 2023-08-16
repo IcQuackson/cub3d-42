@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 18:20:52 by quackson          #+#    #+#             */
-/*   Updated: 2023/08/15 18:04:24 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/16 13:15:53 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,8 @@ void			rotate_right(t_cub3d *cubed);
 void			move_forward(t_cub3d *cubed);
 void			move_back(t_cub3d *cubed);
 double			degree_to_rad(int degree);
+void strafe_right(t_cub3d *cubed);
+void	strafe_left(t_cub3d *cubed);
 
 /*				Utils				*/
 int				showerror(t_cub3d *cubed, char *str);

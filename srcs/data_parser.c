@@ -88,7 +88,7 @@ int	parse_data(char *path, t_cub3d *cbd)
 	cbd->mapinfo.path = path;
 	cbd->mapinfo.line_count = get_num_lines(path, cbd);
 	if (cbd->mapinfo.line_count == 0)
-		return (0);
+		return (showerror(cbd, "Empty File"));
 	cbd->mapinfo.file = ft_calloc(cbd->mapinfo.line_count + 1, sizeof(char *));
 	if (!(cbd->mapinfo.file))
 		return (showerror(cbd, "Bad Allocation"));
