@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:42:08 by joao-per          #+#    #+#             */
-/*   Updated: 2023/08/15 15:42:27 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/18 10:38:07 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,20 @@ int	fill_dir_and_text(t_cub3d *cubed, char **map, int i, int j)
 			ft_isprint(map[i][j + 1]) && !ft_isdigit(map[i][j]))
 		{
 			if (fill_direction_textures(&cubed->fileinfo, map[i], j) == 2)
-				return (1);
+				return (showerror(cubed, "Invalid texture path"));
 			return (3);
 		}
 		else
 		{
 			if (!fill_color_textures(cubed, &cubed->fileinfo, map[i], j))
-				return (1);
+				return (showerror(cubed, "Invalid color"));
 			return (3);
 		}
 	}
 	else if (ft_isdigit(map[i][j]))
 	{
 		if (create_map(cubed, map, i) == 1)
-			return (1);
+			return (showerror(cubed, "Invalid map"));
 		return (0);
 	}
 	return (4);

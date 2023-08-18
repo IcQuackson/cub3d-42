@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:42:39 by joao-per          #+#    #+#             */
-/*   Updated: 2023/08/16 13:38:32 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/18 10:34:21 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	freexit(t_cub3d *cubed)
 	if (cubed->map)
 		free_double_ptr(cubed->map);
 	free_pixels(cubed);
+	exit(0);
 }
 
 int	showerror(t_cub3d *cubed, char *str)
