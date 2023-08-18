@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+         #
+#    By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/15 16:49:04 by joao-per          #+#    #+#              #
-#    Updated: 2023/08/15 17:14:58 by pedgonca         ###   ########.fr        #
+#    Updated: 2023/08/18 10:53:50 by joao-per         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ OBJDIR = objs
 SRCS	=	srcs/main.c srcs/init.c \
 			srcs/file_parser.c srcs/init_textures.c srcs/init_textures2.c srcs/raycasting.c srcs/map_checker.c \
 			gnl/get_next_line.c srcs/utils.c srcs/player_parser.c srcs/texture_parser.c srcs/texture_checker.c  \
-			srcs/create_map.c srcs/data_parser.c srcs/hooks.c srcs/movements.c \
+			srcs/create_map.c srcs/data_parser.c srcs/hooks.c srcs/movements.c srcs/movements2.c \
 			srcs/map_checker_utils.c srcs/utils_free.c srcs/raycasting2.c srcs/raycasting_utils.c srcs/rgb.c
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

@@ -12,7 +12,6 @@
 
 #include "../includes/cub3d.h"
 
-
 int	ft_strchrz(char c, char *line)
 {
 	if (!line)

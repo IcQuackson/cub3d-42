@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:47:18 by joao-per          #+#    #+#             */
-/*   Updated: 2023/08/16 13:17:31 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/18 10:52:59 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,22 +91,6 @@ void	strafe_left(t_cub3d *cubed)
 	movespeed = 0.1;
 	next_pos_x = cubed->player.pos_x - cubed->player.plane_x * movespeed;
 	next_pos_y = cubed->player.pos_y - cubed->player.plane_y * movespeed;
-	if (cubed->map[(int)next_pos_y][(int)next_pos_x] == '0')
-	{
-		cubed->player.pos_x = next_pos_x;
-		cubed->player.pos_y = next_pos_y;
-	}
-}
-
-void strafe_right(t_cub3d *cubed)
-{
-	double	movespeed;
-	double	next_pos_x;
-	double	next_pos_y;
-
-	movespeed = 0.1;
-	next_pos_x = cubed->player.pos_x + cubed->player.plane_x * movespeed;
-	next_pos_y = cubed->player.pos_y + cubed->player.plane_y * movespeed;
 	if (cubed->map[(int)next_pos_y][(int)next_pos_x] == '0')
 	{
 		cubed->player.pos_x = next_pos_x;

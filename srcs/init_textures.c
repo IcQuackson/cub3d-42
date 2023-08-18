@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 16:49:31 by joao-per          #+#    #+#             */
-/*   Updated: 2023/08/15 17:56:28 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/08/18 10:58:15 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ int	*xpm_to_image(t_cub3d *cubed, char *path)
 	image.img = mlx_xpm_file_to_image(cubed->mlx, 
 			path, &cubed->fileinfo.size, &cubed->fileinfo.size);
 	if (!image.img)
+	{
+		showerror(cubed, "Invalid XPM file.");
 		return (NULL);
+	}
 	image.addr = (int *)mlx_get_data_addr(image.img, &image.pixel_bits,
 			&image.size_line, &image.endian);
 	buffer = ft_calloc(1, (sizeof(int *)
