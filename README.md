@@ -1,6 +1,16 @@
-# Cub3D 🎮
+<h1 align="center">
+	🎮 Cub3D 🎮
+</h1>
 
-Welcome to Cub3D! This project is a part of the 42 curriculum. It's a simple ray-casting game inspired by the classic game Wolfenstein 3D.
+<div align="center">
+<img alt="CUB3D" src="https://github.com/joao-per/joao-per/blob/main/Badges/Cub3d.png" />
+</div>
+
+<p align="center">
+	<b><i>Welcome to Cub3D! It's a simple ray-casting game inspired by the classic game Wolfenstein 3D.</i></b>
+</p>
+
+
 
 ## About The Project 📖
 
