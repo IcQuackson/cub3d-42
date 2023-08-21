@@ -7,7 +7,7 @@
 </div>
 
 <p align="center">
-	<b><i>Welcome to Cub3D! It's a simple ray-casting game inspired by the classic game Wolfenstein 3D.</i></b>
+	<b><i>My first RayCaster with miniLibX</i></b>
 </p>
 
 
